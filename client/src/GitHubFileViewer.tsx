@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/atom-one-light.css'; // Import the desired style
+import 'highlight.js/styles/github.css'; // Import the desired style
 import axios from 'axios';
 
 
