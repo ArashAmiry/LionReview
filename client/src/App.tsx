@@ -1,24 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import GitHubFileViewer from './GitHubFileViewer';
 
 function App() {
+  const [showEvent, setShowEvent] = useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      
+      <h1>Display GitHub File <button onClick={() => setShowEvent(showEvent => !showEvent)}></button></h1>
+      {showEvent && (<GitHubFileViewer owner="ArashAmiry" repo="Smasko" path="client/src/App.tsx" />)}
+      {!showEvent && (<GitHubFileViewer owner="dinohromic" repo="PayMe2.0" path="app/src/main/java/com/example/payme20/model/Member.java" />)}
+      
     </div>
   );
 }
