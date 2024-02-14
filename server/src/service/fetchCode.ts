@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-export class RepositorySerivce {
+export class RepositoryService {
 
     async fetchCode(path: string): Promise<string> {
         const parsedUrl = this.parseGithubURL(path);
         const url = `https://api.github.com/repos/${parsedUrl.owner}/${parsedUrl.repo}/contents/${parsedUrl.path}/?ref=${parsedUrl.branch}`;
+        
         const response = await axios.get(url, {
             headers: {
                 'Accept': 'application/vnd.github.v3.raw',
