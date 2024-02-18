@@ -3,9 +3,9 @@ import { GithubRepository } from "../service/GithubRepository";
 
 const fetchCodeService = new GithubRepository();
 
-export const sessionRouter = express.Router();
+export const router = express.Router();
 
-sessionRouter.get("/", async (
+router.get("/", async (
     req: Request<{}, {}, {}, {}>,
     res: Response<String>
 ) => {

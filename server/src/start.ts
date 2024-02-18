@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
-import { sessionRouter } from "./router/session";
+import { router } from "./router/authentication";
 
 export const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/", sessionRouter);
+app.use("/", router);

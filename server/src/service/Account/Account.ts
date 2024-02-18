@@ -1,14 +1,16 @@
+import { LogInManager } from "./LogInManager";
 import { SignUpManager } from "./SignUpManager";
 
 export class Account {
 
     private signUpManager = new SignUpManager();
+    private logInManager = new LogInManager();
 
-    signUp(username: string, password: string, email: string) {
+    signUp(username: string, password: string, email: string) : Boolean{
         return this.signUpManager.signUp(username, password, email);
     }
 
-    logIn(username: string, password: string){
-        
+    logIn(username: string, password: string) : Boolean {
+        return this.logInManager.logIn(username, password);
     }
 }
