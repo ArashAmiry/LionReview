@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-import { RepositoryService } from "../service/fetchCode";
+import { GithubRepository } from "../service/GithubRepository";
 
-const fetchCodeService = new RepositoryService();
+const fetchCodeService = new GithubRepository();
 
 export const sessionRouter = express.Router();
 

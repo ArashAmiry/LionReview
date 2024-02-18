@@ -1,7 +1,7 @@
-import { RepositoryService } from "./fetchCode";
+import { GithubRepository } from "./GithubRepository";
 
 test("If a GitHub path is sent then it should be parsed correctly", async () => {
-    const repositoryService = new RepositoryService();
+    const repositoryService = new GithubRepository();
     const githubUrl = "https://github.com/ArashAmiry/Smasko/blob/mockup/server/src/service/recipe.test.ts";
 
     const parsedUrl = repositoryService.parseGithubURL(githubUrl);

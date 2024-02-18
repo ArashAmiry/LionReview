@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export class RepositoryService {
+export class GithubRepository {
 
     async fetchCode(path: string): Promise<string> {
         const parsedUrl = this.parseGithubURL(path);
