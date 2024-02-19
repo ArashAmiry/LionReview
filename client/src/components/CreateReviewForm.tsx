@@ -7,10 +7,7 @@ import './stylesheets/CreateReviewForm.css';
 
 function CreateReviewForm() {
     return ( 
-      <Container>
-        <Row>
-          <Col></Col>
-          <Col className="col-5 box rounded">
+          <Col md={7} className="box rounded">
             <Tabs
             defaultActiveKey="profile"
             id="uncontrolled-tab-example"
@@ -30,9 +27,6 @@ function CreateReviewForm() {
             </Tab>
           </Tabs>
         </Col>
-        <Col></Col>
-      </Row>
-    </Container>
      );
 }
 
