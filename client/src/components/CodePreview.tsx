@@ -12,6 +12,7 @@ interface File {
 }
 
 const CodePreviewPage = () => {
+    const urls = ['https://api.github.com/repos/arashamiry/smasko/contents/client/src/App.tsx', 'https://api.github.com/repos/dinohromic/PayMe2.0/contents/app/src/main/java/com/example/payme20/model/Member.java'];
     const [files, setFiles] = useState<File[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -43,9 +44,9 @@ const CodePreviewPage = () => {
                 setLoading(false);
             }
         };
-
-        fetchCode('https://api.github.com/repos/arashamiry/smasko/contents/client/src/App.tsx', 0);
-        fetchCode('https://api.github.com/repos/dinohromic/PayMe2.0/contents/app/src/main/java/com/example/payme20/model/Member.java', 1);
+        urls.forEach((url, index) => {
+            fetchCode(url, index);
+        });
     }, []);
 
     useEffect(() => {

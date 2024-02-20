@@ -1,5 +1,5 @@
 .code-container {
-    border-radius: 10px;
+    border-radius: 14px;
     border-color: gray;
     border-style: groove;
     padding: 10px;
@@ -7,7 +7,7 @@
 }
 
 .code-container pre {
-    border-radius: 5px;
+    border-radius: 10px;
     border-color: gray;
     border-style: dotted;
     text-align: left;
