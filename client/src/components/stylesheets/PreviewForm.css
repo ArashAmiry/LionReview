@@ -8,4 +8,6 @@
 
 .textfield-group{
     text-align: left;
+    background-color: rgb(238, 238, 238);
+    border-radius: 10px;
 }

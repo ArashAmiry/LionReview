@@ -22,7 +22,7 @@ function PreviewForm({ questions, textfields }: { questions: string[], textfield
                 {textfields
                     .filter(textfield => textfield !== "")
                     .map((textfield, index) => (
-                        <Form.Group key={index} className="mb-3 textfield-group" controlId={`step-${index}`}>
+                        <Form.Group key={index} className="mb-3 textfield-group p-3" controlId={`step-${index}`}>
                             <Form.Label className="textfield-label">{textfield}</Form.Label>
                             <Form.Control
                                 type="text"
