@@ -1,0 +1,45 @@
+.header-title {
+    text-align: center;
+}
+
+.navigation-content {
+    background-color: red;
+}
+
+.navigation-buttons {
+    background-color: gray;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.header {
+    background-color: white;
+    padding: 0px; 
+    width: 100%;
+    top: 0;
+    overflow: hidden;
+}
+
+.navbar {
+    background-color: rgb(190, 190, 190);
+    padding: 0px;
+}
+
+.nav-item {
+    margin: 10px;
+}
+
+.nav-link {
+    text-align: center;
+    margin: 0px 20px;
+}
+
+.nav-link:hover {
+    border-bottom: solid;
+}
+
+.active {
+    border-bottom: solid;
+    border-color: gray;
+}
