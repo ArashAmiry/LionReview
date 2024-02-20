@@ -6,6 +6,7 @@ import Col from "react-bootstrap/esm/Col";
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
+    const [questions, setQuestions] = useState<string[]>([""]);
 
     const nextStep = () => {
         setCurrentStep(currentStep + 1);
@@ -18,7 +19,7 @@ function CreateReview() {
     return (
         <Container>
             <Row>
-                {currentStep === 1 && <CreateReviewForm />}
+                {currentStep === 1 && <CreateReviewForm questions={questions} setQuestions={(questions) => setQuestions(questions)}/>}
                 {currentStep === 2 && <p>Hej</p>}
             </Row>
             <Row>
