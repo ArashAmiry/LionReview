@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
-import CodePreviewPage from './components/CodePreview';
+import AddCodeLink from './components/AddCodeLink';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <Header />
         <div className="content">
         <Routes>
-          <Route path="/" element={<CodePreviewPage />} />
+          <Route path="/" element={<AddCodeLink />} />
       <Route path="/create" element={<div>hej</div>}/>
         </Routes>
         </div>
