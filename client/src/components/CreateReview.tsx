@@ -10,6 +10,8 @@ import './stylesheets/CreateReview.css'
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
     const [questions, setQuestions] = useState<string[]>([""]);
+    const [textfields, setTextfields] = useState<string[]>([""]);
+
     const amountSteps = 3;
     const navigate = useNavigate();
 
@@ -31,7 +33,9 @@ function CreateReview() {
     return (
         <Container>
             <Row>
-                {currentStep === 1 && <CreateReviewForm questions={questions} setQuestions={(questions) => setQuestions(questions)}/>}
+                {currentStep === 1 && <CreateReviewForm 
+                questions={questions} setQuestions={(questions) => setQuestions(questions)}
+                textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)}/>}
                 {currentStep === 2 && <p>Hej</p>}
             </Row>
             <Row>
