@@ -6,6 +6,7 @@ import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 import './stylesheets/CreateReview.css'
+import PreviewForm from "./PreviewForm";
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -37,6 +38,10 @@ function CreateReview() {
                 questions={questions} setQuestions={(questions) => setQuestions(questions)}
                 textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)}/>}
                 {currentStep === 2 && <p>Hej</p>}
+
+                <Col md={5}>
+                    <PreviewForm questions={questions} textfields={textfields}/>
+                </Col>
             </Row>
             <Row>
                 <Col md={4} id="navButtons" className="my-4 d-flex justify-content-start px-0">

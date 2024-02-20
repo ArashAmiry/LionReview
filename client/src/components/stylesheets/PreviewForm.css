@@ -1,0 +1,11 @@
+.preview-box {
+    background-color: white;
+    height: 50vh;
+    margin-top: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.textfield-group{
+    text-align: left;
+}

@@ -31,7 +31,7 @@ function Question({questions, setQuestions}: {questions: string[], setQuestions:
                 <QuestionRow question={question} index={index} deleteQuestion={() => deleteQuestion(index)} handleChangeQuestion={(e) => handleChangeQuestion(e, index)} />
             ))}
             <Button variant="outline-secondary" className="btn-outline-secondary mt-3 mb-3" onClick={() => addQuestion()}>
-                Add new step
+                Add new question
             </Button>
         </>
     )

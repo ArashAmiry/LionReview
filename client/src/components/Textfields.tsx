@@ -32,7 +32,7 @@ function Textfields({textfields, setTextfields}: {textfields: string[], setTextf
                 <TextfieldRow textfield={textfield} index={index} deleteTextfield={() => deleteTextfield(index)} handleChangeTextfield={(e) => handleChangeTextfield(e, index)} />
             ))}
             <Button variant="outline-secondary" className="btn-outline-secondary mt-3 mb-3" onClick={() => addTextfield()}>
-                Add new step
+                Add new textfield question
             </Button>
         </>
     )
