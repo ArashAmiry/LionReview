@@ -1,7 +1,6 @@
 .code-container {
     border-radius: 14px;
-    border-color: gray;
-    border-style: groove;
+    background-color: white;
     padding: 10px;
     height: 10%;
 }

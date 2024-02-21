@@ -3,7 +3,7 @@ import './stylesheets/PreviewForm.css';
 
 function PreviewForm({reviewTitle, questions, textfields }: {reviewTitle: string, questions: string[], textfields: string[] }) {
     return (
-        <Card className="preview-box">
+        <Card className="preview-box third-step">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2">
                 {questions

@@ -41,37 +41,40 @@ function CreateReview() {
     }
 
     return (
-        <Container>
-            <Row>
+        <Container fluid className="m-0 p-0">
+            <Row className="first-step">
                 {currentStep === 1 && <AddCodeLink />}
             </Row>
-            {currentStep !== 1 &&
-                <Row>
-                    {currentStep === 2 &&
-                        <Col md={7} className="form-box px-0">
+            {currentStep === 2 &&
+                <Row className="second-step">
+                    <Col md={7} className="form-box px-0">
 
-                            <Row className="pb-3"><Col md={12}><Form.Control name="desc" type="text" placeholder={`Title of review form...`} onChange={(e) => handleChangeReviewTitle(e)} /></Col></Row>
-                            <Row>
-                                {currentStep === 2 && <CreateReviewForm
-                                    questions={questions} setQuestions={(questions) => setQuestions(questions)}
-                                    textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />}
-                            </Row>
-                        </Col>
-                    }
-                    {currentStep === 2 &&
-                        <Col md={5}>
-                            <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
-                        </Col>
-                    }
-                    {currentStep === 3 && <CodePreviewPage />}
-                    {currentStep === 3 &&
-                        <Col md={5}>
-                            <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
-                        </Col>
-                    }
+                        <Row className="pb-3">
+                            <Col md={12}><Form.Control name="desc" type="text" placeholder={`Title of review form...`} onChange={(e) => handleChangeReviewTitle(e)} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            {currentStep === 2 && <CreateReviewForm
+                                questions={questions} setQuestions={(questions) => setQuestions(questions)}
+                                textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />}
+                        </Row>
+                    </Col>
+
+                    <Col md={5}>
+                        <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
+                    </Col>
                 </Row>
             }
-            <Row>
+
+            {currentStep === 3 &&
+                <Row>
+                    <Col className="code-preview" md={9}><CodePreviewPage /></Col>
+                    <Col md={3}>
+                        <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
+                    </Col>
+                </Row>
+            }
+            <Row className="first-step second-step">
                 <Col md={4} id="navButtons" className="my-4 d-flex justify-content-start px-0">
                     {currentStep === 1 && <Button size="lg" variant="danger" onClick={() => previousStep()}>Exit</Button>}
                     {currentStep !== 1 && <Button size="lg" variant="light" onClick={() => previousStep()}>Back</Button>}

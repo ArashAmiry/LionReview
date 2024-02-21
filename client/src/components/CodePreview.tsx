@@ -17,7 +17,7 @@ const CodePreviewPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if(files.length !== 0) {
+        if (files.length !== 0) {
             setFiles([])
         }
         const fetchCode = async (url: string, index: number) => {
@@ -25,7 +25,6 @@ const CodePreviewPage = () => {
                 const response = await axios.get(url, {
                     headers: {
                         'Accept': 'application/vnd.github.v3.raw',
-                        'Authorization': 'Bearer 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',
                     },
                 });
 
@@ -71,18 +70,16 @@ const CodePreviewPage = () => {
     }
 
     return (
-        <Container className='code-container'>
-            <Row>
-                {files.map((file, index) => (
-                    <Col key={index} md="6">
-                        <h1 className='code-header'>{file.name}</h1>
-                        <pre>
-                            <code>{file.content}</code>
-                        </pre>
-                    </Col>
-                ))}
-            </Row>
-        </Container>
+        <Row className='code-container'>
+            {files.map((file, index) => (
+                <Col key={index} md="6" className='p-0'>
+                    <h1 className='code-header'>{file.name}</h1>
+                    <pre>
+                        <code>{file.content}</code>
+                    </pre>
+                </Col>
+            ))}
+        </Row>
     );
 }
 
