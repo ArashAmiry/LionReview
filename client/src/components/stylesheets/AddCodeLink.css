@@ -1,0 +1,19 @@
+.links-container {
+    border-radius: 14px;
+    border-color: gray;
+    border-style: groove;
+    padding: 10px;
+    height: 10%;
+    width: 80%;
+}
+
+.link-row {
+    border-radius: 14px;
+    border-width: 1px;
+    border-color: gray;
+    border-style: groove;
+    padding: 10px;
+    height: 10%;
+    width: 80%;
+}
+
