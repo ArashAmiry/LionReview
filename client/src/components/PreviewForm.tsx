@@ -1,12 +1,11 @@
 import { Card, Form } from "react-bootstrap";
 import './stylesheets/PreviewForm.css';
 
-function PreviewForm({ questions, textfields }: { questions: string[], textfields: string[] }) {
-
-
+function PreviewForm({reviewTitle, questions, textfields }: {reviewTitle: string, questions: string[], textfields: string[] }) {
     return (
         <Card className="preview-box">
-            <Card.Body className="mx-5 mt-5">
+            <Card.Title className="m-3">{reviewTitle}</Card.Title>
+            <Card.Body className="mx-5 mt-2">
                 {questions
                     .filter(question => question !== "")
                     .map((question, index) => (

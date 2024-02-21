@@ -10,7 +10,7 @@ function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }
   { questions: string[], setQuestions: (questions: string[]) => void, 
     textfields: string[], setTextfields: (textfields: string[]) => void}) {
   return (
-    <Col md={7} className="box rounded">
+    <Col md={12} className="box rounded">
       <Tabs
         defaultActiveKey="home"
         id="uncontrolled-tab-example"

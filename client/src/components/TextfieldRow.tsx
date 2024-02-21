@@ -5,7 +5,7 @@ import { Form, Container, Row, Col, Image, Button, CloseButton } from 'react-boo
 function TextfieldRow({textfield, index, handleChangeTextfield, deleteTextfield} : {textfield: string, index: number, handleChangeTextfield: (e: ChangeEvent, index: number) => void, deleteTextfield: (index: number) => void}) {
     
     return (
-        <Form.Group key={index} className='step-row py-3'>
+        <Form.Group key={index} className='step-row py-3 px-4'>
             <Row>
                 <Col xs={10}>
                     <Form.Control name="desc" type="text" placeholder={`Write a textfield question here...`} value={textfield} aria-required="true" onChange={(e) => handleChangeTextfield(e, index)} />
