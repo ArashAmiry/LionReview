@@ -5,7 +5,7 @@ import { Form, Container, Row, Col, Image, Button, CloseButton } from 'react-boo
 function QuestionRow({question, index, handleChangeQuestion, deleteQuestion} : {question: string, index: number, handleChangeQuestion: (e: ChangeEvent, index: number) => void, deleteQuestion: (index: number) => void}) {
     
     return (
-        <Form.Group key={index} className='step-row py-3'>
+        <Form.Group key={index} className='step-row py-3 px-4'>
             <Row>
                 <Col xs={10}>
                     <Form.Control name="desc" type="text" placeholder={`Write a question here...`} value={question} aria-required="true" onChange={(e) => handleChangeQuestion(e, index)} />

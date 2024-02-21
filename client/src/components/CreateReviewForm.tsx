@@ -4,16 +4,21 @@ import './stylesheets/CreateReviewForm.css';
 import { Col } from 'react-bootstrap';
 import Question from "./Question";
 import PresetQuestions from "./PresetQuestions";
+import Textfields from "./Textfields";
 
 
-function CreateReviewForm({ questions, setQuestions }: { questions: string[], setQuestions: (questions: string[]) => void }) {
+function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }: 
+  { questions: string[], setQuestions: (questions: string[]) => void, 
+    textfields: string[], setTextfields: (textfields: string[]) => void}) {
   return (
-    <Col md={7} className="box rounded">
+    <Col md={12} className="box rounded">
       <Tabs
         defaultActiveKey="home"
         id="uncontrolled-tab-example"
         className="mb-3"
       >
+        <Tab eventKey="home" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
+        <Tab eventKey="profile" title="Textfields"><Textfields textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} /></Tab>
         <Tab eventKey="home" title="Questions">
           <Question questions={questions} setQuestions={(questions) => setQuestions(questions)} />
         </Tab>
