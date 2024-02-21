@@ -25,7 +25,7 @@ const AddCodeLink = () => {
     }
 
     return (
-        <Container className='links-container'>
+        <Col className='links-container'>
             <div className="d-flex justify-content-center">
                 <h3>Add the link to one or two code files</h3>
             </div>
@@ -39,7 +39,7 @@ const AddCodeLink = () => {
                         Add a second file
                     </Button>
                 </div>}
-        </Container>
+        </Col>
     );
 }
 
@@ -72,7 +72,7 @@ const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
                         }} />
                 </Col>
                 <Col sm={2} className="d-flex justify-content-center align-items-center">
-                    <Button variant="danger" onClick={() => deleteLink()} > Del</Button>
+                    <Button variant="danger" onClick={() => deleteLink()} > Remove</Button>
                 </Col>
             </Row>
         </Container>

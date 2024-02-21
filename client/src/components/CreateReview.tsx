@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import './stylesheets/CreateReview.css'
 import PreviewForm from "./PreviewForm";
 import { Form } from "react-bootstrap";
+import AddCodeLink from "./AddCodeLink";
+import CodePreviewPage from "./CodePreview";
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -41,18 +43,34 @@ function CreateReview() {
     return (
         <Container>
             <Row>
-                <Col md={7} className="form-box px-0">
-
-                    <Row className="pb-3"><Col md={12}><Form.Control name="desc" type="text" placeholder={`Title of review form...`} onChange={(e) => handleChangeReviewTitle(e)}/></Col></Row>
-                    <Row>{currentStep === 1 && <CreateReviewForm
-                        questions={questions} setQuestions={(questions) => setQuestions(questions)}
-                        textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />}
-                        {currentStep === 2 && <p>Hej</p>}</Row>
-                </Col>
-                <Col md={5}>
-                    <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
-                </Col>
+                {currentStep === 1 && <AddCodeLink />}
             </Row>
+            {currentStep !== 1 &&
+                <Row>
+                    {currentStep === 2 &&
+                        <Col md={7} className="form-box px-0">
+
+                            <Row className="pb-3"><Col md={12}><Form.Control name="desc" type="text" placeholder={`Title of review form...`} onChange={(e) => handleChangeReviewTitle(e)} /></Col></Row>
+                            <Row>
+                                {currentStep === 2 && <CreateReviewForm
+                                    questions={questions} setQuestions={(questions) => setQuestions(questions)}
+                                    textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />}
+                            </Row>
+                        </Col>
+                    }
+                    {currentStep === 2 &&
+                        <Col md={5}>
+                            <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
+                        </Col>
+                    }
+                    {currentStep === 3 && <CodePreviewPage />}
+                    {currentStep === 3 &&
+                        <Col md={5}>
+                            <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
+                        </Col>
+                    }
+                </Row>
+            }
             <Row>
                 <Col md={4} id="navButtons" className="my-4 d-flex justify-content-start px-0">
                     {currentStep === 1 && <Button size="lg" variant="danger" onClick={() => previousStep()}>Exit</Button>}

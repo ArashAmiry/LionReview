@@ -25,6 +25,7 @@ const CodePreviewPage = () => {
                 const response = await axios.get(url, {
                     headers: {
                         'Accept': 'application/vnd.github.v3.raw',
+                        'Authorization': 'Bearer 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',
                     },
                 });
 
