@@ -4,7 +4,7 @@
     border-style: groove;
     padding: 10px;
     height: 10%;
-    align-content: left;
+    width: 80%;
 }
 
 .link-row {
@@ -15,6 +15,5 @@
     padding: 10px;
     height: 10%;
     width: 80%;
-    align-content: left;
 }
 

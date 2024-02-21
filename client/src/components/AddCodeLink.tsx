@@ -16,24 +16,30 @@ const AddCodeLink = () => {
         setFileUrls(list);
     }
     const deleteLink = (index: number) => {
-        const list = [...fileUrls];
+        let list = [...fileUrls];
         list.splice(index, 1);
+        if (list.length === 0) {
+            list = [""];
+        }
         setFileUrls(list);
     }
 
     return (
         <Container className='links-container'>
-            <h3>Add the link</h3>
+            <div className="d-flex justify-content-center">
+                <h3>Add the link to one or two code files</h3>
+            </div>
             {fileUrls.map((url, index) => (
-                <LinkRow key={index} githublink={url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)}/>
+                <LinkRow key={index} githublink={url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} />
             ))}
 
-            {!(fileUrls.length === 2) && 
-            <Button variant="outline-secondary" className="btn-outline-secondary mt-3" onClick={() => addLink()}>
-                Add a second file
-            </Button>}
+            {!(fileUrls.length === 2) &&
+                <div className="d-flex justify-content-center mt-3">
+                    <Button variant="outline-secondary" className="btn-outline-secondary" onClick={() => addLink()}>
+                        Add a second file
+                    </Button>
+                </div>}
         </Container>
-
     );
 }
 
@@ -45,15 +51,15 @@ interface LinkRowProps {
 
 const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
     return (
-        <Container className="link-row">
+        <Container className="link-row my-3">
             <Row className="align-items-center">
                 <Col sm={1} className="d-flex justify-content-center align-items-center">
                     <Image alt='image of github logo' src={img} width={30} height={30} roundedCircle />
                 </Col>
-                <Col sm={6} className="d-flex align-items-center">
-                    <p className="mb-0">Paste the link to the file in your GitHub repository:</p>
+                <Col sm={5} className="d-flex justify-content-center align-items-center">
+                    <p className="mb-0">Link to the file in your GitHub repository:</p>
                 </Col>
-                <Col sm={4} className="d-flex align-items-center">
+                <Col sm={4} className="d-flex justify-content-center align-items-center">
                     <Form.Control
                         data-testid="name-input"
                         name="link" type="text"
@@ -65,13 +71,11 @@ const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
                             setLink(value);
                         }} />
                 </Col>
-                <Col sm={1} className="d-flex align-items-center">
+                <Col sm={2} className="d-flex justify-content-center align-items-center">
                     <Button variant="danger" onClick={() => deleteLink()} > Del</Button>
                 </Col>
             </Row>
         </Container>
-
-
     )
 }
 
