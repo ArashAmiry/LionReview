@@ -13,22 +13,48 @@ interface Category {
 
 interface PresetQuestionsProps {
     categories: Category[];
+    questions: string[];
+    setQuestions: (questions: string[]) => void;
 }
 
-function PresetQuestions ({ categories }: PresetQuestionsProps) {
+function PresetQuestions ({ categories, questions, setQuestions }: PresetQuestionsProps) {
     const allQuestionsCategory : Category = {name: "All", questions: categories.flatMap(category => category.questions)};
     const [selectedCategory, setSelectedCategory] = useState<Category>(allQuestionsCategory);
     const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
 
-    function handleRemove(question : string): void {
-        const index = selectedQuestions.findIndex((selectedQuestion) => selectedQuestion === question);
+    useEffect(() => {
+        const removedPresetQuestions = selectedQuestions.filter(x => !questions.includes(x));
+        removedPresetQuestions.forEach(removeFromSelectedList);
+    }, [questions]);
+
+    function handleRemove(removedQuestion: string): void {
+       removeFromSelectedList(removedQuestion);
+       removeFromQuestionsList(removedQuestion);
+    }
+
+    function removeFromSelectedList(removedQuestion: string): void {
+        const index = selectedQuestions.findIndex((selectedQuestion) => selectedQuestion === removedQuestion);
         const newSelectedQuestions = [...selectedQuestions];
         newSelectedQuestions.splice(index, 1);
         setSelectedQuestions(newSelectedQuestions);
     }
 
-    function handleAdd(question: string): void {
-        setSelectedQuestions([...selectedQuestions, question]);
+    function removeFromQuestionsList(removedQuestion: string): void {
+        const index = questions.findIndex((question) => question === removedQuestion);
+        const updatedList = [...questions];
+        updatedList.splice(index, 1);
+        if (updatedList.length === 0) {
+          setQuestions([""]);
+        }
+        else {
+          setQuestions(updatedList);
+        }
+    }
+
+
+    function handleAdd(addedQuestion: string): void {
+        setSelectedQuestions([...selectedQuestions, addedQuestion]);
+        setQuestions([...questions, addedQuestion]);
     }
 
     function handleChange(question: string): void {
