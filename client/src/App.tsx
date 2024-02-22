@@ -3,19 +3,22 @@ import logo from './logo.svg';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
+import LoginSquare from './components/LoginSquare';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
+        <Header /> 
+       
         <div className="content">
         <Routes>
-          <Route path="/" element={<header className="App-header">
+          <Route path="/" element={<header className="App-header"> 
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+       
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -25,6 +28,7 @@ function App() {
           Learn React
         </a>
       </header>} />
+      <Route path = "/logIn" element = {<div>  <LoginSquare /> </div>}/>
       <Route path="/create" element={<div>hej</div>}/>
         </Routes>
         </div>
