@@ -4,6 +4,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css'; // or another style of your choice
 import { Col, Container, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
+import GITHUB_TOKEN from '../github_token';
 
 interface File {
     url: string;
@@ -25,6 +26,7 @@ const CodePreviewPage = () => {
                 const response = await axios.get(url, {
                     headers: {
                         'Accept': 'application/vnd.github.v3.raw',
+                        'Authorization': 'Bearer ' + GITHUB_TOKEN,
                     },
                 });
 
