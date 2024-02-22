@@ -34,7 +34,7 @@ function App() {
           Learn React
         </a>
       </header>} />
-      <Route path = "/logIn" element = {<div>  <LoginSquare /> </div>}/>
+      <Route path = "/logIn" element = {<div> <LoginPage> <LoginSquare /> </LoginPage>  </div>}/>
       <Route path="/create" element={<div>hej</div>}/>
         </Routes>
       

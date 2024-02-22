@@ -1,9 +1,14 @@
+  .start-page-container{
+    display: flex;
+    flex-direction: row;
+  }
+  
   .login-text-container{
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 33%;
+    width: 500px;
     top: 150px;
     left: 10%;
   }
@@ -14,4 +19,5 @@
   }
   .app-name{
     color: aliceblue;
+    font-size: 5em;
   }
