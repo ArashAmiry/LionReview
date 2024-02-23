@@ -5,34 +5,40 @@ import 'highlight.js/styles/github.css';
 import { Col, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
 
-interface File {
+export interface CodeFile {
     url: string;
     content: string;
     name: string;
 }
 
 interface CodePreviewPageProps {
-    urls: string[]
+    urls: string[];
+    cachedFiles: Record<string, CodeFile>; 
+    updateCachedFiles: (url: string, fileData: CodeFile) => void;
 }
 
-const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
-    const [files, setFiles] = useState<File[]>([]);
+const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPageProps) => {
+    const [files, setFiles] = useState<CodeFile[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const fetchCode = async (url: string): Promise<File> => {
+        const fetchCode = async (url: string): Promise<CodeFile> => {
+            if (cachedFiles[url]) {
+                return cachedFiles[url];
+            }
             try {
-                console.log(url)
                 const response = await axios.get('http://localhost:8080/create', {
                     params: {
                         path: url
                     }
                 });
-                return {
+                const newFile : CodeFile = {
                     url: url,
                     content: response.data,
                     name: extractFileName(url)
                 };
+                updateCachedFiles(url, newFile);
+                return newFile;
             } catch (error) {
                 console.error('Error fetching file content:', error);
                 return {
@@ -73,7 +79,7 @@ const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
     if (loading) {
         return <div>Loading...</div>;
     }
-    console.log(files)
+
     return (
         <Row className='code-container'>
             {files.length === 2 &&
