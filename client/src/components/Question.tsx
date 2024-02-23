@@ -28,7 +28,7 @@ function Question({questions, setQuestions}: {questions: string[], setQuestions:
     return (
         <>
             {questions.map((question, index) => (
-                <QuestionRow question={question} index={index} deleteQuestion={() => deleteQuestion(index)} handleChangeQuestion={(e) => handleChangeQuestion(e, index)} />
+                <QuestionRow key={index} question={question} index={index} deleteQuestion={() => deleteQuestion(index)} handleChangeQuestion={(e) => handleChangeQuestion(e, index)} />
             ))}
             <Button variant="outline-secondary" className="btn-outline-secondary mt-3 mb-3" onClick={() => addQuestion()}>
                 Add new question
