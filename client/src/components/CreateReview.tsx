@@ -10,6 +10,7 @@ import PreviewForm from "./PreviewForm";
 import { Form } from "react-bootstrap";
 import AddCodeLink from "./AddCodeLink";
 import CodePreviewPage from "./CodePreview";
+import { CodeFile } from './CodePreview';
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -17,6 +18,14 @@ function CreateReview() {
     const [textfields, setTextfields] = useState<string[]>([""]);
     const [reviewTitle, setReviewTitle] = useState<string>("");
     const [urls, setUrls] = useState<string[]>([""]);
+    const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
+
+    const updateCachedFiles = (url: string, fileData: CodeFile) => {
+        setCachedFiles(prevState => ({
+            ...prevState,
+            [url]: fileData
+        }));
+    };
 
     const amountSteps = 3;
     const navigate = useNavigate();
@@ -68,7 +77,7 @@ function CreateReview() {
 
             {currentStep === 3 &&
                 <Row>
-                    <Col className="code-preview" md={9}><CodePreviewPage urls={urls} /></Col>
+                    <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles}  /></Col>
                     <Col md={3}>
                         <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
                     </Col>
