@@ -11,7 +11,7 @@ function App() {
         <Header />
         <div className="content">
           <Routes>
-            <Route path="/" element={<AddCodeLink />} />
+            <Route path="/" element={<div>hej</div>} />
             <Route path="/create" element={<CreateReview />} />
           </Routes>
         </div>
