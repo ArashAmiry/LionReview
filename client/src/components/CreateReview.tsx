@@ -33,17 +33,13 @@ function CreateReview() {
     const navigate = useNavigate();
 
     const nextStep = () => {
-        switch (currentStep) {
-            case amountSteps:
-                // Todo
-                break;
-            case 1:
-                setTriedToSubmit(true);
-                if (invalidURLExists) {
-                      return;
-                } 
-                setCurrentStep(currentStep + 1);
+        if (currentStep === 1) {
+            setTriedToSubmit(true);
+            if (invalidURLExists) {
+                return
+            } 
         }
+        setCurrentStep(currentStep + 1);    
     };
 
     const previousStep = () => {
