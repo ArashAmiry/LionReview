@@ -1,4 +1,3 @@
-import Row from "react-bootstrap/esm/Row";
 import CreateReviewForm from "./CreateReviewForm";
 import Container from "react-bootstrap/esm/Container";
 import { ChangeEvent, useState } from "react";
@@ -7,7 +6,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 import './stylesheets/CreateReview.css'
 import PreviewForm from "./PreviewForm";
-import { Form } from "react-bootstrap";
+import { Form, Row } from "react-bootstrap";
 import AddCodeLink from "./AddCodeLink";
 import CodePreviewPage from "./CodePreview";
 import { CodeFile } from './CodePreview';
@@ -51,9 +50,11 @@ function CreateReview() {
     }
     return (
         <Container fluid className="m-0 p-0">
-            <Row className="first-step">
-                {currentStep === 1 && <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)}/>}
-            </Row>
+            {currentStep === 1 &&
+                    <Row className="first-step">
+                    <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)} />
+                </Row>
+            }
             {currentStep === 2 &&
                 <Row className="second-step">
                     <Col md={7} className="form-box px-0">
@@ -76,8 +77,8 @@ function CreateReview() {
             }
 
             {currentStep === 3 &&
-                <Row>
-                    <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles}  /></Col>
+                <Row className="code-row">
+                    <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles} /></Col>
                     <Col md={3}>
                         <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
                     </Col>
