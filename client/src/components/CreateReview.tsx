@@ -10,12 +10,22 @@ import PreviewForm from "./PreviewForm";
 import { Form } from "react-bootstrap";
 import AddCodeLink from "./AddCodeLink";
 import CodePreviewPage from "./CodePreview";
+import { CodeFile } from './CodePreview';
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
     const [questions, setQuestions] = useState<string[]>([""]);
     const [textfields, setTextfields] = useState<string[]>([""]);
     const [reviewTitle, setReviewTitle] = useState<string>("");
+    const [urls, setUrls] = useState<string[]>([""]);
+    const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
+
+    const updateCachedFiles = (url: string, fileData: CodeFile) => {
+        setCachedFiles(prevState => ({
+            ...prevState,
+            [url]: fileData
+        }));
+    };
 
     const amountSteps = 3;
     const navigate = useNavigate();
@@ -39,11 +49,10 @@ function CreateReview() {
         const { value } = e.target as HTMLInputElement;
         setReviewTitle(value);
     }
-
     return (
         <Container fluid className="m-0 p-0">
             <Row className="first-step">
-                {currentStep === 1 && <AddCodeLink />}
+                {currentStep === 1 && <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)}/>}
             </Row>
             {currentStep === 2 &&
                 <Row className="second-step">
@@ -68,7 +77,7 @@ function CreateReview() {
 
             {currentStep === 3 &&
                 <Row>
-                    <Col className="code-preview" md={9}><CodePreviewPage /></Col>
+                    <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles}  /></Col>
                     <Col md={3}>
                         <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
                     </Col>

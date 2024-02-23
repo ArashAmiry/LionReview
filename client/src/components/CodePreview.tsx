@@ -1,55 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css'; // or another style of your choice
-import { Col, Container, Row } from 'react-bootstrap';
+import 'highlight.js/styles/github.css';
+import { Col, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
-import GITHUB_TOKEN from '../github_token';
 
-interface File {
+export interface CodeFile {
     url: string;
     content: string;
     name: string;
 }
 
-const CodePreviewPage = () => {
-    const urls = ['https://api.github.com/repos/arashamiry/smasko/contents/client/src/App.tsx', 'https://api.github.com/repos/dinohromic/PayMe2.0/contents/app/src/main/java/com/example/payme20/model/Member.java'];
-    const [files, setFiles] = useState<File[]>([]);
+interface CodePreviewPageProps {
+    urls: string[];
+    cachedFiles: Record<string, CodeFile>; 
+    updateCachedFiles: (url: string, fileData: CodeFile) => void;
+}
+
+const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPageProps) => {
+    const [files, setFiles] = useState<CodeFile[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if (files.length !== 0) {
-            setFiles([])
-        }
-        const fetchCode = async (url: string, index: number) => {
+        const fetchCode = async (url: string): Promise<CodeFile> => {
+            if (cachedFiles[url]) {
+                return cachedFiles[url];
+            }
             try {
-                const response = await axios.get(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3.raw',
-                        'Authorization': 'Bearer ' + GITHUB_TOKEN,
-                    },
+                const response = await axios.get('http://localhost:8080/create', {
+                    params: {
+                        path: url
+                    }
                 });
-
-                setFiles(prevFiles => {
-                    const updatedFiles = [...prevFiles];
-                    updatedFiles[index] = {
-                        url: url,
-                        content: response.data,
-                        name: extractFileName(url)
-                    };
-                    return updatedFiles;
-                });
-
+                const newFile : CodeFile = {
+                    url: url,
+                    content: response.data,
+                    name: extractFileName(url)
+                };
+                updateCachedFiles(url, newFile);
+                return newFile;
             } catch (error) {
                 console.error('Error fetching file content:', error);
-            } finally {
-                setLoading(false);
+                return {
+                    url: "",
+                    content: "",
+                    name: "File not found"
+                }
             }
         };
-        urls.forEach((url, index) => {
-            fetchCode(url, index);
-        });
-    }, []);
+
+        const fetchAllFiles = async () => {
+            const filesPromises = urls.map(url => fetchCode(url));
+            const fetchedFiles = await Promise.all(filesPromises);
+            setFiles(fetchedFiles);
+            setLoading(false);
+
+        };
+
+        fetchAllFiles();
+    }, [urls]);
 
     useEffect(() => {
         // Highlight code when the 'files' state updates
@@ -70,17 +79,26 @@ const CodePreviewPage = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
-
     return (
         <Row className='code-container'>
-            {files.map((file, index) => (
-                <Col key={index} md="6" className='p-0'>
-                    <h1 className='code-header'>{file.name}</h1>
-                    <pre>
-                        <code>{file.content}</code>
-                    </pre>
-                </Col>
-            ))}
+            {files.length === 2 &&
+                files.map((file, index) => (
+                    <Col key={index} md="6" className='p-0'>
+                        <h1 className='code-header'>{file.name}</h1>
+                        <pre>
+                        <code>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content }</code>
+                        </pre>
+                    </Col>
+                ))}
+            {files.length === 1 &&
+                files.map((file, index) => (
+                    <Col key={index} md="12" className='p-0'>
+                        <h1 className='code-header'>{file.name}</h1>
+                        <pre>
+                            <code>{typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}</code>
+                        </pre>
+                    </Col>
+                ))}
         </Row>
     );
 }

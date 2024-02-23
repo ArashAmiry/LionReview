@@ -3,25 +3,30 @@ import './stylesheets/AddCodeLink.css';
 import img from '../images/github-logo.png';
 import { useState } from "react";
 
-const AddCodeLink = () => {
+interface AddCodeLinkProps {
+    urls: string[],
+    setUrls: (array : string[]) => void
+}
+
+const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
     const [fileUrls, setFileUrls] = useState<string[]>([""])
 
     const addLink = () => {
-        setFileUrls([...fileUrls, ""])
+        setUrls([...urls, ""])
     }
 
     const setLink = (link: string, index: number) => {
-        const list = [...fileUrls];
+        const list = [...urls];
         list[index] = link;
-        setFileUrls(list);
+        setUrls(list);
     }
     const deleteLink = (index: number) => {
-        let list = [...fileUrls];
+        let list = [...urls];
         list.splice(index, 1);
         if (list.length === 0) {
             list = [""];
         }
-        setFileUrls(list);
+        setUrls(list);
     }
 
     return (
@@ -29,11 +34,11 @@ const AddCodeLink = () => {
             <div className="d-flex justify-content-center">
                 <h3>Add the link to one or two code files</h3>
             </div>
-            {fileUrls.map((url, index) => (
+            {urls.map((url, index) => (
                 <LinkRow key={index} githublink={url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} />
             ))}
 
-            {!(fileUrls.length === 2) &&
+            {!(urls.length === 2) &&
                 <div className="d-flex justify-content-center mt-3">
                     <Button variant="outline-secondary" className="btn-outline-secondary" onClick={() => addLink()}>
                         Add a second file

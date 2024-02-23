@@ -29,7 +29,7 @@ function Textfields({textfields, setTextfields}: {textfields: string[], setTextf
     return(
         <>
             {textfields.map((textfield, index) => (
-                <TextfieldRow textfield={textfield} index={index} deleteTextfield={() => deleteTextfield(index)} handleChangeTextfield={(e) => handleChangeTextfield(e, index)} />
+                <TextfieldRow key={index} textfield={textfield} index={index} deleteTextfield={() => deleteTextfield(index)} handleChangeTextfield={(e) => handleChangeTextfield(e, index)} />
             ))}
             <Button variant="outline-secondary" className="btn-outline-secondary mt-3 mb-3" onClick={() => addTextfield()}>
                 Add new textfield question
