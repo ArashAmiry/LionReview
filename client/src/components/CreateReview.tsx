@@ -79,7 +79,7 @@ function CreateReview() {
             {currentStep === 3 &&
                 <Row className="code-row">
                     <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles} /></Col>
-                    <Col md={3}>
+                    <Col md={3} className="p-0">
                         <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
                     </Col>
                 </Row>

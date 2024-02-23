@@ -1,10 +1,10 @@
 import { Container, Button, Image, Row, Col, Navbar, Nav } from "react-bootstrap";
 import img from "../images/logo.png";
 import { NavLink } from "react-router-dom";
-//import './stylesheets/Header.css';
+import './stylesheets/Header.css';
 const Header = () => {
     return (
-        <Navbar bg="light" data-bs-theme="light">
+        <Navbar bg="light" data-bs-theme="light" className="navbar">
         <Container>
           <Navbar.Brand as={NavLink} to="/"><Image src={img}/></Navbar.Brand>
           <Nav className="me-auto">
