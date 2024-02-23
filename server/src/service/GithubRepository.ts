@@ -1,4 +1,5 @@
 import axios from 'axios';
+import GITHUB_TOKEN from '../github_token'
 
 export class GithubRepository {
 
@@ -9,6 +10,7 @@ export class GithubRepository {
         const response = await axios.get(url, {
             headers: {
                 'Accept': 'application/vnd.github.v3.raw',
+                'Authorization': 'Bearer ' + GITHUB_TOKEN,
             },
         });
 

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css'; // or another style of your choice
+import 'highlight.js/styles/github.css';
 import { Col, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
-import GITHUB_TOKEN from '../github_token';
 
 interface File {
     url: string;
@@ -17,80 +16,8 @@ interface CodePreviewPageProps {
 }
 
 const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
-    //const urls = ['https://api.github.com/repos/arashamiry/smasko/contents/client/src/App.tsx', 'https://api.github.com/repos/dinohromic/PayMe2.0/contents/app/src/main/java/com/example/payme20/model/Member.java'];
     const [files, setFiles] = useState<File[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-
-    /* useEffect(() => {
-        if (files.length !== 0) {
-            setFiles([])
-        }
-        const fetchCode = async (url: string, index: number) => {
-            try {
-                const response = await axios.get(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3.raw',
-                        'Authorization': 'Bearer ' + GITHUB_TOKEN,
-                    },
-                });
-
-                setFiles(prevFiles => {
-                    const updatedFiles = [...prevFiles];
-                    updatedFiles[index] = {
-                        url: url,
-                        content: response.data,
-                        name: extractFileName(url)
-                    };
-                    return updatedFiles;
-                });
-
-            } catch (error) {
-                console.error('Error fetching file content:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        urls.forEach((url, index) => {
-            fetchCode(url, index);
-        });
-
-    }, []); */
-
-    /* useEffect(() => {
-        const fetchCode = async (url: string): Promise<File> => {
-            try {
-                const response = await axios.get(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3.raw',
-                        'Authorization': 'Bearer ' + GITHUB_TOKEN,
-                    },
-                });
-    
-                return {
-                    url: url,
-                    content: response.data,
-                    name: extractFileName(url)
-                };
-            } catch (error) {
-                console.error('Error fetching file content:', error);
-                return {
-                    url: "",
-                    content: "",
-                    name: "File not found"
-                }
-            }
-        };
-    
-        const fetchAllFiles = async () => {
-            const filesPromises = urls.map(url => fetchCode(url));
-            const fetchedFiles = await Promise.all(filesPromises);
-            setFiles(fetchedFiles);
-            setLoading(false);
-            
-        };
-    
-        fetchAllFiles();
-    }, []); */
 
     useEffect(() => {
         const fetchCode = async (url: string): Promise<File> => {

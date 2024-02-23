@@ -1,2 +1,2 @@
 node_modules/
-/client/src/github_token.ts
+/server/src/github_token.ts
