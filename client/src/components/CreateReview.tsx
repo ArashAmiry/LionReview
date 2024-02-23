@@ -19,6 +19,8 @@ function CreateReview() {
     const [reviewTitle, setReviewTitle] = useState<string>("");
     const [urls, setUrls] = useState<string[]>([""]);
     const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
+    const [triedToSubmit, setTriedToSubmit] = useState<boolean>(false);
+    const [invalidURLExists, setInvalidURLExists] = useState<boolean>(true);
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setCachedFiles(prevState => ({
@@ -31,10 +33,17 @@ function CreateReview() {
     const navigate = useNavigate();
 
     const nextStep = () => {
-        if (currentStep === amountSteps) {
-            // Todo
+        switch (currentStep) {
+            case amountSteps:
+                // Todo
+                break;
+            case 1:
+                setTriedToSubmit(true);
+                if (invalidURLExists) {
+                      return;
+                } 
+                setCurrentStep(currentStep + 1);
         }
-        setCurrentStep(currentStep + 1);
     };
 
     const previousStep = () => {
@@ -52,7 +61,7 @@ function CreateReview() {
     return (
         <Container fluid className="m-0 p-0">
             <Row className="first-step">
-                {currentStep === 1 && <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)}/>}
+                {currentStep === 1 && <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)} setInvalidURLExists={setInvalidURLExists} triedToSubmit={triedToSubmit} invalidURLExists={invalidURLExists}/>}
             </Row>
             {currentStep === 2 &&
                 <Row className="second-step">

@@ -1,21 +1,26 @@
 import { Form, Col, Container, Row, Image, Button } from "react-bootstrap";
 import './stylesheets/AddCodeLink.css';
 import img from '../images/github-logo.png';
-import { useState } from "react";
 
 interface AddCodeLinkProps {
     urls: string[],
     setUrls: (array : string[]) => void
+    triedToSubmit: boolean
+    invalidURLExists: boolean
+    setInvalidURLExists: (exists: boolean) => void
 }
 
-const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
-    const [fileUrls, setFileUrls] = useState<string[]>([""])
-
+const AddCodeLink = ({urls, setUrls, invalidURLExists, setInvalidURLExists, triedToSubmit}: AddCodeLinkProps) => {
     const addLink = () => {
         setUrls([...urls, ""])
     }
 
     const setLink = (link: string, index: number) => {
+        if (!isValidUrl(link) || new URL(link).hostname !== 'github.com') {
+            setInvalidURLExists(true);
+        } else {
+            setInvalidURLExists(false);
+        }
         const list = [...urls];
         list[index] = link;
         setUrls(list);
@@ -28,6 +33,15 @@ const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
         }
         setUrls(list);
     }
+
+    const isValidUrl = (urlString: string | URL) => {
+      try { 
+      	return Boolean(new URL(urlString)); 
+      }
+      catch(e){ 
+      	return false; 
+      }
+  }
 
     return (
         <Col className='links-container'>
@@ -44,6 +58,7 @@ const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
                         Add a second file
                     </Button>
                 </div>}
+            {(triedToSubmit && invalidURLExists) && <p className="error-message">{"Error: At least one invalid URL"}</p>}
         </Col>
     );
 }
