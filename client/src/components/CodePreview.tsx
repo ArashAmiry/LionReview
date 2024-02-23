@@ -22,7 +22,6 @@ const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
     useEffect(() => {
         const fetchCode = async (url: string): Promise<File> => {
             try {
-                console.log(url)
                 const response = await axios.get('http://localhost:8080/create', {
                     params: {
                         path: url
@@ -73,7 +72,6 @@ const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
     if (loading) {
         return <div>Loading...</div>;
     }
-    console.log(files)
     return (
         <Row className='code-container'>
             {files.length === 2 &&
@@ -81,7 +79,7 @@ const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
                     <Col key={index} md="6" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>
                         <pre>
-                            <code>{file.content}</code>
+                        <code>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content }</code>
                         </pre>
                     </Col>
                 ))}
@@ -90,7 +88,7 @@ const CodePreviewPage = ({ urls }: CodePreviewPageProps) => {
                     <Col key={index} md="12" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>
                         <pre>
-                            <code>{file.content}</code>
+                            <code>{typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}</code>
                         </pre>
                     </Col>
                 ))}
