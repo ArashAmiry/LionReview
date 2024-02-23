@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { router } from "./router/authentication";
+import { router } from "./router/session";
 
 export const app = express();
 
