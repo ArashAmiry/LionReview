@@ -9,6 +9,8 @@ import LoginSquare from './components/LoginSquare';
 import StartPage from './components/StartPage'
 import LoginPage from './components/LoginPage'
 import Background from './components/Background';
+import FormsStartPage from './components/FormsStartPage';
+import PopulateForms from './components/PopulateForms';
 
 function App() {
   return (
@@ -35,6 +37,7 @@ function App() {
         </a>
       </header>} />
       <Route path = "/logIn" element = {<div> <LoginPage> <LoginSquare /> </LoginPage>  </div>}/>
+      <Route path = "/myReviews" element = {<div> <FormsStartPage ><PopulateForms/></FormsStartPage> </div>}/>
       <Route path="/create" element={<div>hej</div>}/>
         </Routes>
       

@@ -17,7 +17,7 @@ const LoginSquare: React.FC = () => {
   
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle login logic here
+    // Handle login logic here check for existing users 
   };
   
   return (
