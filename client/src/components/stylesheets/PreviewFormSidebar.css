@@ -1,0 +1,12 @@
+.sidebar{
+    height: 90vh;
+    border-radius: 0px;
+}
+
+.sidebar-form{
+    overflow-y: auto;
+}
+
+.sidebar > button {
+    border-radius: 0px;
+}

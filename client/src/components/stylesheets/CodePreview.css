@@ -1,5 +1,4 @@
 .code-container {
-    border-radius: 14px;
     background-color: white;
     padding: 10px;
     height: 10%;
@@ -11,7 +10,7 @@
     border-style: dotted;
     text-align: left;
     max-width: 100%;
-    height: calc(100vh * 0.6);
+    height: 80vh;
     
 }
 

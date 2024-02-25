@@ -18,6 +18,9 @@
 
 .code-preview{
     background-color: white;
-    margin-top: 70px;
-    border-radius: 10px;
+}
+
+.code-row{
+    height: 90vh;
+    margin-right: 0px;
 }
