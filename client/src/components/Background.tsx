@@ -6,7 +6,7 @@ interface BlueBackgroundProps {
 
 const BlueBackground: React.FC<BlueBackgroundProps> = ({ children }) => {
   return (
-    <div style={{ backgroundColor: '#243945', height: '100vh' }}>
+    <div style={{ backgroundColor: '#243945', height: '90vh' }}>
       {children}
     </div>
   );
