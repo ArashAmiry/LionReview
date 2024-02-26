@@ -1,0 +1,49 @@
+.loginsquare-container {
+    position: relative;
+    width: 300px;
+    padding: 20px;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    top: 150px; 
+    left: 150px;
+}
+
+.loginsquare-heading {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.loginsquare-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.loginsquare-input {
+    margin-bottom: 15px;
+}
+
+.loginsquare-input label {
+    font-weight: bold;
+}
+
+.loginsquare-input input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.loginsquare-submit {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.loginsquare-submit:hover {
+    background-color: #0056b3;
+}
