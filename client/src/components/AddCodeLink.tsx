@@ -1,24 +1,37 @@
 import { Form, Col, Container, Row, Image, Button } from "react-bootstrap";
 import './stylesheets/AddCodeLink.css';
 import img from '../images/github-logo.png';
-import { useState } from "react";
 
 interface AddCodeLinkProps {
     urls: string[],
     setUrls: (array : string[]) => void
+    triedToSubmit: boolean
+    invalidURLExists: boolean
+    setInvalidURLExists: (exists: boolean) => void
 }
 
-const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
-    const [fileUrls, setFileUrls] = useState<string[]>([""])
-
+const AddCodeLink = ({urls, setUrls, invalidURLExists, setInvalidURLExists, triedToSubmit}: AddCodeLinkProps) => {
+    const validateUrls = (list : string[]) => {
+        let hasInvalidURL = false;
+        list.forEach(item => {
+            if (!isValidUrl(item)) {
+                hasInvalidURL = true;  
+                return;
+            }
+        });
+        setInvalidURLExists(hasInvalidURL);
+    }
+    
     const addLink = () => {
         setUrls([...urls, ""])
+        setInvalidURLExists(true);
     }
 
     const setLink = (link: string, index: number) => {
         const list = [...urls];
         list[index] = link;
         setUrls(list);
+        validateUrls(list);
     }
     const deleteLink = (index: number) => {
         let list = [...urls];
@@ -27,7 +40,17 @@ const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
             list = [""];
         }
         setUrls(list);
+        validateUrls(list);
     }
+
+    const isValidUrl = (urlString: string | URL) => {
+      try { 
+      	return Boolean(new URL(urlString).hostname === 'github.com'); 
+      }
+      catch(e){ 
+      	return false; 
+      }
+  }
 
     return (
         <Col className='links-container'>
@@ -44,6 +67,7 @@ const AddCodeLink = ({urls, setUrls}: AddCodeLinkProps) => {
                         Add a second file
                     </Button>
                 </div>}
+            {(triedToSubmit && invalidURLExists) && <p className="error-message">{"Error: At least one invalid URL"}</p>}
         </Col>
     );
 }
