@@ -2,7 +2,15 @@
   "dependencies": {
     "concurrently": "^8.2.2"
   },
+  "name": "kandidat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm start --prefix client\""
-  }
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm start --prefix client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
