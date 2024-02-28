@@ -1,2 +1,3 @@
 node_modules/
 /server/src/github_token.ts
+/server/src/db/password.ts
