@@ -3,10 +3,14 @@ import { accountModel } from "../../db/account.db";
 export class LogInManager {
 
     async logIn(username: string, password: string): Promise<Boolean> {
-
-        const hash: string = await this.getHashForUsername(username);
-
-        return this.validatePassword(password, hash);
+        try {
+            const hash: string = await this.getHashForUsername(username);
+            return this.validatePassword(password, hash);
+        }
+        catch(error) {
+            console.log(error)
+            return false;
+        } 
     }
 
     validatePassword(password: string, hash: string): Boolean {
