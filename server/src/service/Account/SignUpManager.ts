@@ -2,7 +2,7 @@ export class SignUpManager {
 
      signUp(username: string, password: string, email: string): Boolean {
 
-        if (!true) { // Username and email falsly validated with database
+        if (!this.validateUserNameAndEmail(username, email)) {
             return false;
         }
 
@@ -13,9 +13,14 @@ export class SignUpManager {
                 .hash(password, saltRounds)
                 .then((hash: string) => {
                     console.log('Hash ', hash);
-                    // Save in database
+                    // Save username, email and hash in database 
                 })
                 .catch((err: Error) => console.error(err.message));
        
+    }
+
+    validateUserNameAndEmail(username: string, email: string): Boolean {
+        // TODO: Validate the new username and email, should not exist in database
+        return true;
     }
 }

@@ -17,7 +17,6 @@ router.post("/signup", async (
         const username = req.body.username;
         const password = req.body.password;
         const email = req.body.email;
-        console.log("innan sign up");
 
         if (account.signUp(username, password, email)){
             res.status(200).send("Successfully signed up.");
@@ -39,6 +38,8 @@ router.post("/login", async (
         
         const username = req.body.username;
         const password = req.body.password;
+
+        console.log("router " + account.logIn(username, password))
 
         if (account.logIn(username, password)){
             res.status(200).send(username);

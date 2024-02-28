@@ -11,6 +11,7 @@ export class Account {
     }
 
     logIn(username: string, password: string) : Boolean {
+        console.log("account" + this.logInManager.logIn(username, password))
         return this.logInManager.logIn(username, password);
     }
 }
