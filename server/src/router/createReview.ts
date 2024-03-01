@@ -3,9 +3,9 @@ import { GithubRepository } from "../service/GithubRepository";
 
 const fetchCodeService = new GithubRepository();
 
-export const router = express.Router();
+export const createReviewRouter = express.Router();
 
-router.get("/create", async (
+createReviewRouter.get("/", async (
     req: Request<{}, {}, {path: string}>, // Expecting a query parameter named 'path' of type string
     res: Response<String>
 ) => {
