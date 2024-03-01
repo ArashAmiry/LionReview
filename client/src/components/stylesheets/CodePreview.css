@@ -1,0 +1,22 @@
+.code-container {
+    background-color: white;
+    padding: 10px;
+    height: 10%;
+}
+
+.code-container pre {
+    border-radius: 10px;
+    border-color: gray;
+    border-style: dotted;
+    text-align: left;
+    max-width: 100%;
+    height: 80vh;
+    
+}
+
+.code-container code {
+    overflow-x: scroll;
+    overflow-y: auto; 
+    width: 100%;
+    height: 100%;
+}

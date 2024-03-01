@@ -1,18 +1,25 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import GITHUB_TOKEN from '../github_token'
 
 export class GithubRepository {
 
     async fetchCode(path: string): Promise<string> {
-        const parsedUrl = this.parseGithubURL(path);
-        const url = `https://api.github.com/repos/${parsedUrl.owner}/${parsedUrl.repo}/contents/${parsedUrl.path}/?ref=${parsedUrl.branch}`;
-        
-        const response = await axios.get(url, {
-            headers: {
-                'Accept': 'application/vnd.github.v3.raw',
-            },
-        });
+        try {
+            const parsedUrl = this.parseGithubURL(path);
+            const url = `https://api.github.com/repos/${parsedUrl.owner}/${parsedUrl.repo}/contents/${parsedUrl.path}?ref=${parsedUrl.branch}`;
 
-        return JSON.parse(JSON.stringify(response.data));
+            const response: AxiosResponse = await axios.get(url, {
+                headers: {
+                    'Accept': 'application/vnd.github.v3.raw',
+                    'Authorization': 'Bearer ' + GITHUB_TOKEN,
+                },
+            });
+
+            return JSON.parse(JSON.stringify(response.data));
+        } catch (error) {
+            console.error('Error fetching code:', error);
+            throw new Error('Failed to fetch code from GitHub');
+        }
     }
 
     parseGithubURL(githubUrl: string) {

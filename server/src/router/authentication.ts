@@ -7,9 +7,9 @@ import { IAccountService } from "../service/Account/IAccountService";
 
 const account: IAccountService = new Account();
 
-export const router = express.Router();
+export const authenticationRouter = express.Router();
 
-router.post("/signup", async (
+authenticationRouter.post("/signup", async (
     req: Request<{}, {}, IAccount>,
     res: Response<String>
 ) => {
@@ -31,7 +31,7 @@ router.post("/signup", async (
     }
 });
 
-router.post("/login", async (
+authenticationRouter.post("/login", async (
     req: Request<{}, {}, { username: string, password: string }>,
     res: Response<String>
 ) => {
@@ -40,7 +40,7 @@ router.post("/login", async (
         const username = req.body.username;
         const password = req.body.password;
 
-        console.log("router " + account.logIn(username, password))
+        console.log("authenticationRouter " + account.logIn(username, password))
 
         if (await account.logIn(username, password)) {
             req.session.id = username;

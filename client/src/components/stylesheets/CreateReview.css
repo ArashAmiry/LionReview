@@ -1,0 +1,26 @@
+#navButtons > *  {
+    margin-right: 1rem;
+}
+
+.form-box{
+    background-color: white;
+    height: 50vh;
+    margin-top: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-radius: 7px;
+}
+
+.first-step, .second-step{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.code-preview{
+    background-color: white;
+}
+
+.code-row{
+    height: 90vh;
+    margin-right: 0px;
+}
