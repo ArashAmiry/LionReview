@@ -7,6 +7,10 @@ export interface IReviewSession {
             content: string
         }[],
 
-        questions: string[]
-    }[];
+        questions: {
+            question: string,
+            questionType: 'binary' | 'scale' | 'text',
+            scaleRange?: number
+        }[];
+    }
 }

@@ -9,8 +9,7 @@ const reviewSessionSchema: Schema = new Schema({
         required: true,
     },
     
- // Alternative: break to more schemas and use them here instead.
-    codePreviews: {
+    review: {
         type: [
             {
                 formName: {
@@ -32,10 +31,21 @@ const reviewSessionSchema: Schema = new Schema({
                     validate: [arrayLimit, '{PATH} exceeds the limit of 2'], // Custom validator
                 },
 
-                questions: {
-                    type: [String],
-                    required: true,
-                }
+                questions: [{
+                    type: {
+                        type: String,
+                        enum: ['binary', 'scale', 'text'],
+                        required: true
+                    },
+                    question: {
+                        type: String,
+                        required: true
+                    },
+                    scaleRange: { // How to validate? (Type must be scale if scaleRange has a value)
+                        type: Number,
+                        default: 5,
+                    }
+                }]
             }
         ]
     }
@@ -48,6 +58,6 @@ function arrayLimit(val: any[]) {
 }
 
 
-export const reviewSessionModel = conn.model<IReviewSession>("ReviewSession", reviewSessionSchema);
+export const reviewModel = conn.model<IReviewSession>("ReviewSession", reviewSessionSchema);
 
 

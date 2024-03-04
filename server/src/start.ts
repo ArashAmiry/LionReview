@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import { authenticationRouter } from "./router/authentication";
 import session from "express-session";
-import { createReviewRouter } from "./router/createReview";
+import { fetchCodeRouter } from "./router/fetchCode";
+import { reviewRouter } from "./router/review";
 
 export const app = express();
 
@@ -18,5 +19,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use("/create", createReviewRouter);
+app.use("/fetch", fetchCodeRouter);
+app.use("/review", reviewRouter);
 app.use("/auth", authenticationRouter);
