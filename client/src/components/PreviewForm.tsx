@@ -3,7 +3,7 @@ import './stylesheets/PreviewForm.css';
 import TextfieldList from "./TextfieldList";
 import QuestionList from "./QuestionList";
 
-function PreviewForm({reviewTitle, questions, textfields }: {reviewTitle: string, questions: string[], textfields: string[] }) {
+function PreviewForm({reviewTitle, questions, textfields }: {reviewTitle: string, questions: {questionType: string, question: string}[], textfields: {questionType: string, question: string}[] }) {
     return (
         <Card className="preview-box">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>

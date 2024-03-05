@@ -3,7 +3,7 @@ import QuestionList from "./QuestionList";
 import TextfieldList from "./TextfieldList";
 import "./stylesheets/PreviewFormSidebar.css";
 
-function PreviewFormSidebar({reviewTitle, questions, textfields, previousStep} : {reviewTitle : string, questions: string[], textfields : string[], previousStep: () => void}) {
+function PreviewFormSidebar({reviewTitle, questions, textfields, previousStep} : {reviewTitle : string, questions: {questionType: string, question: string}[], textfields : {questionType: string, question: string}[], previousStep: () => void}) {
     return (
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>

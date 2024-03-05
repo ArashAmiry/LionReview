@@ -14,8 +14,8 @@ import PreviewFormSidebar from "./PreviewFormSidebar";
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
-    const [questions, setQuestions] = useState<string[]>([""]);
-    const [textfields, setTextfields] = useState<string[]>([""]);
+    const [questions, setQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "binary", question: ""}]);
+    const [textfields, setTextfields] = useState<{questionType: string, question: string}[]>([{questionType: "text", question: ""}]);
     const [reviewTitle, setReviewTitle] = useState<string>("");
     const [urls, setUrls] = useState<string[]>([""]);
     const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
