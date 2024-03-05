@@ -1,11 +1,13 @@
-import { reviewModel } from "../db/reviewSession.db";
-import { IReviewSession } from "../model/IReviewSession";
+import { reviewModel } from "../db/review";
+import { IReview } from "../model/IReview";
 
 export class ReviewService {
-    async createReview(review: IReviewSession) {
-        reviewModel.create(
-            
-        )
+    async createReview(review: IReview) {
+        console.log(review.review[0].questions);
+        reviewModel.create({
+            username: review.username,
+            review: review.review
+        });
     }
 
 }

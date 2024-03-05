@@ -1,6 +1,6 @@
-export interface IReviewSession {
+export interface IReview {
     username: string;
-    codePreviews: {
+    review: [{
         formName: string,
         codeSegments: {
             filename: string,
@@ -9,8 +9,7 @@ export interface IReviewSession {
 
         questions: {
             question: string,
-            questionType: 'binary' | 'scale' | 'text',
-            scaleRange?: number
+            questionType: 'binary' | 'range' | 'text'
         }[];
-    }
+    }]
 }

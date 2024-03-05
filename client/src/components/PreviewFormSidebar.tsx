@@ -3,7 +3,7 @@ import QuestionList from "./QuestionList";
 import TextfieldList from "./TextfieldList";
 import "./stylesheets/PreviewFormSidebar.css";
 
-function PreviewFormSidebar({reviewTitle, questions, textfields, previousStep} : {reviewTitle : string, questions: {questionType: string, question: string}[], textfields : {questionType: string, question: string}[], previousStep: () => void}) {
+function PreviewFormSidebar({submitReview, reviewTitle, questions, textfields, previousStep} : {submitReview: (e : React.MouseEvent) => void, reviewTitle : string, questions: {questionType: string, question: string}[], textfields : {questionType: string, question: string}[], previousStep: () => void}) {
     return (
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
@@ -12,7 +12,7 @@ function PreviewFormSidebar({reviewTitle, questions, textfields, previousStep} :
                 <TextfieldList textfields={textfields}/>
                 
             </Card.Body>
-                <Button size="lg" variant="success">Create form</Button>
+                <Button onClick={(e) => submitReview(e)} size="lg" variant="success">Create form</Button>
                 <Button size="lg" variant="light" onClick={() => previousStep()}>Back</Button>
         </Card>
     )

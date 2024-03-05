@@ -1,8 +1,8 @@
 import { Schema, Model } from "mongoose";
 import { conn } from "./conn";
-import { IReviewSession } from "../model/IReviewSession";
+import { IReview } from "../model/IReview";
 
-const reviewSessionSchema: Schema = new Schema({
+const reviewSchema: Schema = new Schema({
 
     username: {
         type: String,
@@ -32,18 +32,14 @@ const reviewSessionSchema: Schema = new Schema({
                 },
 
                 questions: [{
-                    type: {
+                    questionType: {
                         type: String,
-                        enum: ['binary', 'scale', 'text'],
+                        enum: ['binary', 'range', 'text'],
                         required: true
                     },
                     question: {
                         type: String,
                         required: true
-                    },
-                    scaleRange: { // How to validate? (Type must be scale if scaleRange has a value)
-                        type: Number,
-                        default: 5,
                     }
                 }]
             }
@@ -58,6 +54,6 @@ function arrayLimit(val: any[]) {
 }
 
 
-export const reviewModel = conn.model<IReviewSession>("ReviewSession", reviewSessionSchema);
+export const reviewModel = conn.model<IReview>("Review", reviewSchema);
 
 

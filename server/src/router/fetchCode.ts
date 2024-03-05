@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { GithubRepository } from "../service/GithubRepository";
-import { IReviewSession } from "../model/IReviewSession";
+import { IReview } from "../model/IReview";
 
 const fetchCodeService = new GithubRepository();
 
