@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
