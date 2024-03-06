@@ -27,7 +27,7 @@ const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPa
                 return cachedFiles[url];
             }
             try {
-                const response = await axios.get('http://localhost:8080/create', {
+                const response = await axios.get('http://localhost:8080/fetch', {
                     params: {
                         path: url
                     }

@@ -10,12 +10,13 @@ import { Form, Row } from "react-bootstrap";
 import AddCodeLink from "./AddCodeLink";
 import CodePreviewPage from "./CodePreview";
 import { CodeFile } from './CodePreview';
+import axios from 'axios';
 import PreviewFormSidebar from "./PreviewFormSidebar";
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
-    const [questions, setQuestions] = useState<string[]>([""]);
-    const [textfields, setTextfields] = useState<string[]>([""]);
+    const [binaryQuestions, setBinaryQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "binary", question: ""}]);
+    const [textFieldQuestions, setTextfieldQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "text", question: ""}]);
     const [reviewTitle, setReviewTitle] = useState<string>("");
     const [urls, setUrls] = useState<string[]>([""]);
     const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
@@ -55,6 +56,27 @@ function CreateReview() {
         setReviewTitle(value);
     }
 
+    const submitReview = async (event: React.MouseEvent) => {
+        const codeSegments : {filename : string, content: string}[] = [];
+        Object.entries(cachedFiles).forEach(record => {
+        const filename = record[1].name;
+        const content = record[1].content;
+        
+        codeSegments.push({
+            "filename": filename,
+            "content": content
+        })});
+
+        await axios.post('http://localhost:8080/review', {
+            "username": "username",
+            "review": [{
+                "formName": reviewTitle,
+                "codeSegments": codeSegments,
+                "questions": [...binaryQuestions, ...textFieldQuestions]
+            }]
+        });
+    }
+
     return (
         <Container fluid className="m-0 p-0">
             {currentStep === 1 &&
@@ -72,13 +94,13 @@ function CreateReview() {
                         </Row>
                         <Row>
                             {currentStep === 2 && <CreateReviewForm
-                                questions={questions} setQuestions={(questions) => setQuestions(questions)}
-                                textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />}
+                                questions={binaryQuestions} setQuestions={(questions) => setBinaryQuestions(questions)}
+                                textfields={textFieldQuestions} setTextfields={(textfields) => setTextfieldQuestions(textfields)} />}
                         </Row>
                     </Col>
 
                     <Col md={5}>
-                        <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
+                        <PreviewForm reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} />
                     </Col>
                 </Row>
             }
@@ -87,7 +109,7 @@ function CreateReview() {
                 <Row className="code-row">
                     <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles} /></Col>
                     <Col md={3} className="p-0">
-                        <PreviewFormSidebar reviewTitle={reviewTitle} questions={questions} textfields={textfields} previousStep={() => previousStep()}/>
+                        <PreviewFormSidebar submitReview={(e) => submitReview(e)} reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} previousStep={() => previousStep()}/>
                     </Col>
                 </Row>
             }

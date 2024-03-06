@@ -8,43 +8,43 @@ import ListGroup from "react-bootstrap/esm/ListGroup";
 
 interface Category {
     name: string;
-    questions: string[];
+    questions: {questionType: string, question: string}[];
 }
 
 interface PresetQuestionsProps {
     categories: Category[];
-    questions: string[];
-    setQuestions: (questions: string[]) => void;
+    questions: {questionType: string, question: string}[];
+    setQuestions: (questions: {questionType: string, question: string}[]) => void;
 }
 
 function PresetQuestions ({ categories, questions, setQuestions }: PresetQuestionsProps) {
     const allQuestionsCategory : Category = {name: "All", questions: categories.flatMap(category => category.questions)};
     const [selectedCategory, setSelectedCategory] = useState<Category>(allQuestionsCategory);
-    const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
+    const [selectedQuestions, setSelectedQuestions] = useState<{questionType: string, question: string}[]>([]);
 
     useEffect(() => {
         const removedPresetQuestions = selectedQuestions.filter(x => !questions.includes(x));
         removedPresetQuestions.forEach(removeFromSelectedList);
     }, [questions]);
 
-    function handleRemove(removedQuestion: string): void {
+    function handleRemove(removedQuestion: {questionType: string, question: string}): void {
        removeFromSelectedList(removedQuestion);
        removeFromQuestionsList(removedQuestion);
     }
 
-    function removeFromSelectedList(removedQuestion: string): void {
-        const index = selectedQuestions.findIndex((selectedQuestion) => selectedQuestion === removedQuestion);
+    function removeFromSelectedList(removedQuestion: {questionType: string, question: string}): void {
+        const index = selectedQuestions.findIndex((selectedQuestion) => selectedQuestion.question === removedQuestion.question);
         const newSelectedQuestions = [...selectedQuestions];
         newSelectedQuestions.splice(index, 1);
         setSelectedQuestions(newSelectedQuestions);
     }
 
-    function removeFromQuestionsList(removedQuestion: string): void {
-        const index = questions.findIndex((question) => question === removedQuestion);
+    function removeFromQuestionsList(removedQuestion: {questionType: string, question: string}): void {
+        const index = questions.findIndex((question) => question.question === removedQuestion.question);
         const updatedList = [...questions];
         updatedList.splice(index, 1);
         if (updatedList.length === 0) {
-          setQuestions([""]);
+          setQuestions([{questionType: "binary", question: ""}]);
         }
         else {
           setQuestions(updatedList);
@@ -52,12 +52,12 @@ function PresetQuestions ({ categories, questions, setQuestions }: PresetQuestio
     }
 
 
-    function handleAdd(addedQuestion: string): void {
+    function handleAdd(addedQuestion: {questionType: string, question: string}): void {
         setSelectedQuestions([...selectedQuestions, addedQuestion]);
         setQuestions([...questions, addedQuestion]);
     }
 
-    function handleChange(question: string): void {
+    function handleChange(question: {questionType: string, question: string}): void {
         if (selectedQuestions.includes(question)) {
             handleRemove(question);
         } else {
@@ -74,7 +74,7 @@ function PresetQuestions ({ categories, questions, setQuestions }: PresetQuestio
                     <Form.Check
                         key={index}
                         type="checkbox"
-                        label={question}
+                        label={question.question}
                         checked={selectedQuestions.includes(question)}
                         onChange={() => handleChange(question)}
                         />
