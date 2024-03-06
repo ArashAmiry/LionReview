@@ -1,6 +1,7 @@
-import { Schema, Model } from "mongoose";
+import { Schema } from "mongoose";
 import { conn } from "./conn";
 import { ObjectId } from "mongodb";
+import { IAnswer } from "../model/IAnswer";
 
 
 const answerSchema: Schema = new Schema({
@@ -13,8 +14,12 @@ const answerSchema: Schema = new Schema({
     question: {
         type: ObjectId,
         ref: 'Review.questions'
+    },
+
+    answer: {
+        type: String,
+        required: true
     }
-    
 });
 
-export const reviewModel = conn.model<IReview>("Answer", answerSchema);
+export const reviewModel = conn.model<IAnswer>("Answer", answerSchema);

@@ -10,4 +10,13 @@ export class ReviewService {
         });
     }
 
+    async getReview(reviewId: string) : Promise<IReview | undefined> {
+        const review = await reviewModel.findById(reviewId).exec();
+        if (review !== undefined && review !== null){
+            return review.toObject();
+        }
+        
+        throw new Error("No review was found with id: " + reviewId);
+    }
+
 }
