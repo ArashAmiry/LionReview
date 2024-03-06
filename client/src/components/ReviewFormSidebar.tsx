@@ -4,6 +4,10 @@ import TextfieldList from "./TextfieldList";
 import "./stylesheets/PreviewFormSidebar.css";
 
 function ReviewFormSidebar({reviewId} : {reviewId: string}) {
+    const reviewTitle = "Title";
+    const questions = ["checkbox"];
+    const textfields = ["textfield"];
+    
     return (
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
