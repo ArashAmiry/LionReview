@@ -11,6 +11,7 @@ import LoginPage from './components/LoginPage'
 import Background from './components/Background';
 import FormsStartPage from './components/FormsStartPage';
 import PopulateForms from './components/PopulateForms';
+import RespondentReview from './components/RespondentReview';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
       </header>} />
       <Route path = "/logIn" element = {<div> <LoginPage> <LoginSquare /> </LoginPage>  </div>}/>
       <Route path="/create" element={<CreateReview />}/>
+      <Route path="/answer/:reviewId" element={<RespondentReview />}/>
       <Route path = "/myReviews" element = {<div> <FormsStartPage ><PopulateForms/></FormsStartPage> </div>}/>
         </Routes>
       

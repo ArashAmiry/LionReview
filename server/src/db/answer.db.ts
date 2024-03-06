@@ -8,6 +8,11 @@ const answerSchema: Schema = new Schema({
     reviewID: {
         type: ObjectId,
         ref: 'Review'
+    },
+
+    question: {
+        type: ObjectId,
+        ref: 'Review.questions'
     }
     
 });

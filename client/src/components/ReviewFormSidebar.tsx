@@ -5,8 +5,8 @@ import "./stylesheets/PreviewFormSidebar.css";
 
 function ReviewFormSidebar({reviewId} : {reviewId: string}) {
     const reviewTitle = "Title";
-    const questions = ["checkbox"];
-    const textfields = ["textfield"];
+    const questions = [{"questionType": "binary", "question": "Binary question"}];
+    const textfields = [{"questionType": "textfield", "question": "Textfield question"}];
     
     return (
         <Card className="sidebar">
