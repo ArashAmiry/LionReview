@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { CodeFile } from "./CodePreview";
+import hljs from "highlight.js";
 
-function CodeReview({files} : {files: {name: string, content: string}[]}) {
+function CodeReview({ files }: { files: { name: string, content: string }[] }) {
     
+    useEffect(() => {
+        // Highlight code when the 'files' state updates
+        files.forEach(({ content }) => {
+            if (content) {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightAll();
+                });
+            }
+        });
+    }, [files]);
+
     return (
         <Row className='code-container'>
             {files.length === 2 &&

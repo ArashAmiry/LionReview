@@ -25,17 +25,12 @@ function RespondentReview() {
 
     useEffect(() => {
         fetchReview().then((response) => {
-            if (response){
+            if (response) {
                 console.log(response);
-                setFiles([{
-                    name: response.review[0].codeSegments[0].filename,
-                    content: response.review[0].codeSegments[0].content
-                },
-                {
-                    name: response.review[0].codeSegments[1].filename,
-                    content: response.review[0].codeSegments[1].content
-                }
-                ]);
+                setFiles(response.review[0].codeSegments.map(segment => ({
+                    name: segment.filename,
+                    content: segment.content
+                })));
                 console.log(files);
             }
         });
@@ -47,7 +42,7 @@ function RespondentReview() {
     }
 
     return (
-        <Container fluid>
+        <Container fluid className="px-0">
             <Row className="code-row">
                 <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
                 <Col md={3} className="p-0">
