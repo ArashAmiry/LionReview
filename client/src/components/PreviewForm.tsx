@@ -1,7 +1,7 @@
 import { Card, Form } from "react-bootstrap";
 import './stylesheets/PreviewForm.css';
-import TextfieldList from "./TextfieldList";
-import QuestionList from "./QuestionList";
+import TextfieldList from "./TextfieldListPreview";
+import QuestionList from "./QuestionListPreview";
 
 function PreviewForm({reviewTitle, questions, textfields }: {reviewTitle: string, questions: {questionType: string, question: string}[], textfields: {questionType: string, question: string}[] }) {
     return (

@@ -1,19 +1,19 @@
 import { Card } from "react-bootstrap";
-import QuestionList from "./QuestionList";
-import TextfieldList from "./TextfieldList";
+import QuestionList from "./QuestionListPreview";
+import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PreviewFormSidebar.css";
+import QuestionListReview from "./QuestionListReview";
+import TextfieldListReview from "./TextfieldListReview";
 
-function ReviewFormSidebar({reviewId} : {reviewId: string}) {
+function ReviewFormSidebar({textfields, questions} : {textfields: { id: string, question: string }[], questions: { id: string, question: string }[]}) {
     const reviewTitle = "Title";
-    const questions = [{"questionType": "binary", "question": "Binary question"}];
-    const textfields = [{"questionType": "textfield", "question": "Textfield question"}];
-    
+
     return (
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionList questions={questions} />
-                <TextfieldList textfields={textfields}/>
+                <QuestionListReview questions={questions} />
+                <TextfieldListReview textfields={textfields}/>
             </Card.Body>
         </Card>
     )

@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 
-function QuestionList({ questions }: { questions: {questionType: string, question: string}[] }) {
+function QuestionListPreview({ questions }: { questions: {questionType: string, question: string}[] }) {
     return (
         <>
             {questions
@@ -18,4 +18,4 @@ function QuestionList({ questions }: { questions: {questionType: string, questio
     )
 }
 
-export default QuestionList;
+export default QuestionListPreview;

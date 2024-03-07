@@ -9,6 +9,8 @@ import { IReview } from "../interfaces/IReview";
 function RespondentReview() {
 
     const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
+    const [questions, setQuestions] = useState<{ id: string, question: string }[]>();
+    const [textfields, setTextfields] = useState<{ id: string, question: string }[]>();
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -28,6 +30,20 @@ function RespondentReview() {
                     name: segment.filename,
                     content: segment.content
                 })));
+
+                setQuestions(response.review[0].questions
+                    .filter(question => question.questionType === "binary")
+                    .map(filteredQuestion => ({
+                        id: filteredQuestion._id,
+                        question: filteredQuestion.question
+                    })));
+
+                setTextfields(response.review[0].questions
+                    .filter(question => question.questionType === "text")
+                    .map(filteredQuestion => ({
+                        id: filteredQuestion._id,
+                        question: filteredQuestion.question
+                    })))
             }
         });
     }, [reviewId]); // This effect runs when `reviewId` changes
@@ -36,7 +52,7 @@ function RespondentReview() {
         return <div>No review ID provided</div>;
     }
 
-    if (!files){
+    if (!files || !questions || !textfields) {
         return <div>Loading...</div>
     }
 
@@ -45,7 +61,7 @@ function RespondentReview() {
             <Row className="code-row">
                 <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
                 <Col md={3} className="p-0">
-                    <ReviewFormSidebar reviewId={reviewId} />
+                    <ReviewFormSidebar textfields={textfields} questions={questions} />
                 </Col>
             </Row>
         </Container>

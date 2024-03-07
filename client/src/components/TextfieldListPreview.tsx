@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 
-function TextfieldList({ textfields }: { textfields: {questionType: string, question: string}[] }) {
+function TextfieldListPreview({ textfields }: { textfields: {questionType: string, question: string}[] }) {
     return (
         <>
             {textfields
@@ -19,4 +19,4 @@ function TextfieldList({ textfields }: { textfields: {questionType: string, ques
     )
 }
 
-export default TextfieldList;
+export default TextfieldListPreview;
