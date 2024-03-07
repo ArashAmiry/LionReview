@@ -10,7 +10,7 @@ function TextfieldListReview({ textfields }: { textfields: {id: string, question
                         <Form.Label className="textfield-label">{textfield.question}</Form.Label>
                         <Form.Control
                             type="text"
-                            defaultValue="Textfield answer..."
+                            placeholder="Textfield answer..."
                              // or disabled, depending on your needs
                         />
                     </Form.Group>
