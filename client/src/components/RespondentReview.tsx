@@ -4,41 +4,56 @@ import { useParams } from 'react-router-dom';
 import ReviewFormSidebar from "./ReviewFormSidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { IReview } from "../interfaces/IReview";
 
-function RespondentReview(){
+function RespondentReview() {
 
-    const [review, setReview] = useState(null);
+    const [files, setFiles] = useState([{ name: "", content: "" }]);
 
-    const {reviewId} = useParams<{ reviewId: string }>();
 
-    const fetchReview = async () => {
+
+    const { reviewId } = useParams<{ reviewId: string }>();
+
+    const fetchReview = async (): Promise<IReview | undefined> => {
         try {
             const response = await axios.get(`http://localhost:8080/review/${reviewId}`);
-            setReview(response.data);
-        } catch (e){
+            return response.data;
+        } catch (e) {
             console.log(e);
         }
-        
     }
 
     useEffect(() => {
-        fetchReview();
-    }, [reviewId])
+        fetchReview().then((response) => {
+            if (response){
+                console.log(response);
+                setFiles([{
+                    name: response.review[0].codeSegments[0].filename,
+                    content: response.review[0].codeSegments[0].content
+                },
+                {
+                    name: response.review[0].codeSegments[1].filename,
+                    content: response.review[0].codeSegments[1].content
+                }
+                ]);
+                console.log(files);
+            }
+        });
 
-    if (typeof reviewId !== 'string' || reviewId.length == 0){
+    }, [reviewId]); // This effect runs when `reviewId` changes
+
+    if (typeof reviewId !== 'string' || reviewId.length == 0) {
         return <div>No review ID provided</div>;
     }
 
-
-
-    return(
-        <Container>
+    return (
+        <Container fluid>
             <Row className="code-row">
-                    <Col className="code-preview" md={9}><CodeReview reviewId={reviewId}/></Col>
-                    <Col md={3} className="p-0">
-                        <ReviewFormSidebar reviewId={reviewId}/>
-                    </Col>
-                </Row>
+                <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
+                <Col md={3} className="p-0">
+                    <ReviewFormSidebar reviewId={reviewId} />
+                </Col>
+            </Row>
         </Container>
     )
 }

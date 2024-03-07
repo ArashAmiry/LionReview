@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { CodeFile } from "./CodePreview";
 
-function CodeReview({reviewId} : {reviewId: string}) {
-    const [files, setFiles] = useState<CodeFile[]>([]);
+function CodeReview({files} : {files: {name: string, content: string}[]}) {
     
     return (
         <Row className='code-container'>
