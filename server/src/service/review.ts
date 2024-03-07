@@ -11,9 +11,14 @@ export class ReviewService {
     }
 
     async getReview(reviewId: string) : Promise<IReview | undefined> {
-        const review = await reviewModel.findById(reviewId).exec();
-        if (review !== undefined && review !== null){
-            return review.toObject();
+        try {
+            const review = await reviewModel.findOne({_id: reviewId}).exec();
+            if (review !== null) { // since findById returns null if no document is found
+                return review.toObject();
+            }
+        } catch (error) {
+            console.error('An error occurred while fetching the review:', error);
+            // Handle the error appropriately
         }
         
         throw new Error("No review was found with id: " + reviewId);

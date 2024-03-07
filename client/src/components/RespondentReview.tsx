@@ -8,10 +8,7 @@ import { IReview } from "../interfaces/IReview";
 
 function RespondentReview() {
 
-    const [files, setFiles] = useState([{ name: "", content: "" }]);
-
-
-
+    const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -25,20 +22,22 @@ function RespondentReview() {
 
     useEffect(() => {
         fetchReview().then((response) => {
+            console.log(response?._id);
             if (response) {
-                console.log(response);
                 setFiles(response.review[0].codeSegments.map(segment => ({
                     name: segment.filename,
                     content: segment.content
                 })));
-                console.log(files);
             }
         });
-
     }, [reviewId]); // This effect runs when `reviewId` changes
 
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
         return <div>No review ID provided</div>;
+    }
+
+    if (!files){
+        return <div>Loading...</div>
     }
 
     return (

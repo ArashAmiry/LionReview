@@ -3,7 +3,6 @@ import { conn } from "./conn";
 import { IReview } from "../model/IReview";
 
 const reviewSchema: Schema = new Schema({
-
     username: {
         type: String,
         required: true,

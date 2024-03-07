@@ -1,4 +1,5 @@
 export interface IReview {
+    _id: string;
     username: string;
     review: [{
         formName: string,
@@ -8,6 +9,7 @@ export interface IReview {
         }[],
 
         questions: {
+            _id: string;
             question: string,
             questionType: 'binary' | 'range' | 'text'
         }[];
