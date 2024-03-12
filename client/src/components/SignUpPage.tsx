@@ -3,9 +3,10 @@ import { NavLink } from "react-router-dom";
 import { Container, Nav } from "react-bootstrap";
 import React, { ReactNode } from 'react';
 import LoginSquare from './LoginSquare';
+import SignupSquare from './SignupSquare';
 
-const LoginPage: React.FC = () => {
-    const signInMess = "Log in to";
+const SignupPage: React.FC = () => {
+    const signInMess = "Sign up to";
     const appName = "ReviewTool";
 
   return (
@@ -14,11 +15,11 @@ const LoginPage: React.FC = () => {
         <p className='signinto'>{signInMess}</p>
         <p className='app-name'>{appName}</p>
       </div>        
-      <LoginSquare />
+      <SignupSquare />
         
     </Container>
 
   );
 };
 
-export default LoginPage;
+export default SignupPage;

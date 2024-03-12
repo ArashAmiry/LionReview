@@ -11,6 +11,7 @@ import LoginPage from './components/LoginPage'
 import Background from './components/Background';
 import FormsStartPage from './components/FormsStartPage';
 import PopulateForms from './components/PopulateForms';
+import SignupPage from './components/SignUpPage';
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
           Learn React
         </a>
       </header>} />
-      <Route path = "/logIn" element = {<div> <LoginPage> <LoginSquare /> </LoginPage>  </div>}/>
+      <Route path ="/logIn" element = {<LoginPage />}/>
+      <Route path ="/signUp" element = {<SignupPage />}/>
       <Route path="/create" element={<CreateReview />}/>
       <Route path = "/myReviews" element = {<div> <FormsStartPage ><PopulateForms/></FormsStartPage> </div>}/>
         </Routes>

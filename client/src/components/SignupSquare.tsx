@@ -5,12 +5,17 @@ import './stylesheets/LoginSquare.css';
 import axios from 'axios';
 import { error } from 'console';
 
-const LoginSquare: React.FC = () => {
+const SignupSquare: React.FC = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,19 +24,22 @@ const LoginSquare: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:8080/auth/logIn', {
+    const res = await axios.post('http://localhost:8080/auth/signUp', {
       "username": username,
+      "email": email,
       "password": password
     })
       .catch(function (error) {
         console.log(error);
       });
+      console.log(res)
+
   };
 
   return (
     <Container className="loginsquare-container" style={{ top: '150px', left: '150px' }}>
       <Row className="d-flex flex-column align-items-center justify-content-center">
-        <h2 className="loginsquare-heading">Login</h2>
+        <h2 className="loginsquare-heading">Sign Up</h2>
         <Form className="loginsquare-form" onSubmit={handleSubmit}>
           <Form.Group className="loginsquare-input">
             <Form.Control
@@ -44,6 +52,14 @@ const LoginSquare: React.FC = () => {
             />
             <Form.Control
               className='mb-3'
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder="Email"
+              required
+            />
+            <Form.Control
+              className='mb-3'
               type="password"
               value={password}
               onChange={handlePasswordChange}
@@ -52,15 +68,12 @@ const LoginSquare: React.FC = () => {
             />
           </Form.Group>
           <Button variant="primary" type="submit" className="loginsquare-submit">
-            Log In
+            Sign Up
           </Button>
-          <div className="forgot-password">
-            <Link to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
-          </div>
         </Form>
       </Row>
     </Container>
   );
 };
 
-export default LoginSquare;
+export default SignupSquare;

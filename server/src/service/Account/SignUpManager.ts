@@ -8,7 +8,6 @@ export class SignUpManager {
         }
         const bcrypt = require("bcrypt");
         const saltRounds = 10;
-
         return await bcrypt
             .hash(password, saltRounds)
             .then((hash: string) => {
@@ -19,8 +18,12 @@ export class SignUpManager {
                     password: hash,
                     email: email
                 });
+                return true;
             })
-            .catch((err: Error) => console.error(err.message));
+            .catch((err: Error) => {
+                console.error(err.message);
+                return false;
+            });
 
     }
 

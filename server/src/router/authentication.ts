@@ -8,7 +8,7 @@ const account: IAccountService = new Account();
 
 export const authenticationRouter = express.Router();
 
-authenticationRouter.post("/signup", async (
+authenticationRouter.post("/signUp", async (
     req: Request<{}, {}, IAccount>,
     res: Response<String>
 ) => {
@@ -30,7 +30,7 @@ authenticationRouter.post("/signup", async (
     }
 });
 
-authenticationRouter.post("/login", async (
+authenticationRouter.post("/logIn", async (
     req: Request<{}, {}, { username: string, password: string }>,
     res: Response<String>
 ) => {
@@ -38,15 +38,14 @@ authenticationRouter.post("/login", async (
 
         const username = req.body.username;
         const password = req.body.password;
-
-        console.log("authenticationRouter " + account.logIn(username, password))
+        console.log("authenticationRouter " + await account.logIn(username, password))
 
         if (await account.logIn(username, password)) {
-            req.session.id = username;
+            //req.session.id = username;
             res.status(200).send(username);
         }
         else {
-            res.status(400).send("Could not log in.");
+            res.status(401).send("Could not log in.");
         }
 
     } catch (e: any) {
