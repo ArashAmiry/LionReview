@@ -16,5 +16,16 @@ reviewRouter.post("/", async (
     } catch (e: any) {
         res.status(500).send(e.message);
     }
+});
 
-})
+reviewRouter.get("/:username", async (
+    req: Request<{username : string}, {}, {}>,
+    res: Response<IReview[]>
+) => {
+    try {
+        const reviews = await reviewService.getReviews(req.params.username);
+        res.status(200).send(reviews);
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
