@@ -22,6 +22,8 @@ function CreateReview() {
     const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
     const [triedToSubmit, setTriedToSubmit] = useState<boolean>(false);
     const [invalidURLExists, setInvalidURLExists] = useState<boolean>(true);
+    const amountSteps = 3;
+    const navigate = useNavigate();
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setCachedFiles(prevState => ({
@@ -30,8 +32,11 @@ function CreateReview() {
         }));
     };
 
-    const amountSteps = 3;
-    const navigate = useNavigate();
+    const getNonEmptyQuestions = (questions : {questionType: string, question: string}[]) => {
+        return questions.filter(question => question.question.trim() !== '');
+    };
+    
+    
 
     const nextStep = () => {
         if (currentStep === 1) {
@@ -39,6 +44,10 @@ function CreateReview() {
             if (invalidURLExists) {
                 return
             } 
+        } else if (currentStep === 2) {
+            if (getNonEmptyQuestions([...binaryQuestions, ...textFieldQuestions]).length === 0) {
+                return
+            }
         }
         setCurrentStep(currentStep + 1);    
     };
@@ -67,12 +76,14 @@ function CreateReview() {
             "content": content
         })});
 
+
         await axios.post('http://localhost:8080/review', {
-            "username": "username",
-            "review": [{
+            "name": "temporaryName",
+            "createdBy": "username",
+            "pages": [{
                 "formName": reviewTitle,
                 "codeSegments": codeSegments,
-                "questions": [...binaryQuestions, ...textFieldQuestions]
+                "questions": [...getNonEmptyQuestions(binaryQuestions), ...getNonEmptyQuestions(textFieldQuestions)]
             }]
         });
     }

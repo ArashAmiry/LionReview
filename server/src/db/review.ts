@@ -3,13 +3,17 @@ import { conn } from "./conn";
 import { IReview } from "../model/IReview";
 
 const reviewSchema: Schema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
 
-    username: {
+    createdBy: {
         type: String,
         required: true,
     },
     
-    review: {
+    pages: {
         type: [
             {
                 formName: {

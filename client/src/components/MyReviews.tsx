@@ -8,9 +8,10 @@ import Card from "react-bootstrap/esm/Card";
 import Badge from "react-bootstrap/esm/Badge";
 import ToggleButtonGroup from "react-bootstrap/esm/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/esm/ToggleButton";
+import axios from "axios";
 
 interface MyReviewsProps {
-  userId: number;
+  username: string;
 }
 
 type Review = {
@@ -27,50 +28,51 @@ enum ReviewStatusFilter {
   Completed = "Completed",
 }
 
-const MyReviews = ({ userId }: MyReviewsProps) => {
-  const [myReviews, setMyReviews] = useState<Review[]>([]);
+const MyReviews = ({ username }: MyReviewsProps) => {
+  const [myReviews, setMyReviews] = useState<Review[]>([{
+    name: "Example Review 1",
+    id: 69,
+    status: "Draft",
+    created: "March 8, 2024, 10:00 AM",
+  },
+  {
+    name: "Example Review 2",
+    id: 70,
+    status: "InProgress",
+    created: "March 8, 2024, 10:00 AM",
+  },
+  {
+    name: "Example Review 3",
+    id: 71,
+    status: "Completed",
+    created: "March 8, 2024, 10:00 AM",
+  }]);
+  
   const [statusFilter, setStatusFilter] = useState<ReviewStatusFilter>(
     ReviewStatusFilter.All
   );
 
   useEffect(() => {
     const fetchReviews = async () => {
-      try {
-        const response = await fetch("https://localhost:8080/review/get");
-        if (response.ok) {
-          const data = await response.json();
-          setMyReviews(data.reviews);
+      const response = await axios.get(`http://localhost:8080/review/${username}`)
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+        
+          console.log(error.request);
         } else {
-          console.error("Failed to fetch reviews");
+          console.log('Error', error.message);
         }
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      }
-    };
-    setMyReviews([
-      ...myReviews,
-      {
-        name: "Example Review 1",
-        id: 69,
-        status: "Draft",
-        created: "March 8, 2024, 10:00 AM",
-      },
-      {
-        name: "Example Review 2",
-        id: 70,
-        status: "InProgress",
-        created: "March 8, 2024, 10:00 AM",
-      },
-      {
-        name: "Example Review 3",
-        id: 71,
-        status: "Completed",
-        created: "March 8, 2024, 10:00 AM",
-      }
-    ]);
+      });
+      console.log(response);
 
-    //fetchReviews();
-  }, [userId]);
+    };
+
+    fetchReviews();
+  }, [username]);
 
   const handleChange = (status: ReviewStatusFilter) => {
     setStatusFilter(status);
@@ -101,6 +103,7 @@ const MyReviews = ({ userId }: MyReviewsProps) => {
                 variant="light"
                 id={"tbg-btn-" + index}
                 value={ReviewStatusFilter[status]}
+                key={index}
               >
                 {ReviewStatusFilter[status]}
               </ToggleButton>

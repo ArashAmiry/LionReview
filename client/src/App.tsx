@@ -55,7 +55,7 @@ function App() {
               <Route path="/create" element={<CreateReview />} />
               <Route
                 path="/myReviews"
-                element={<MyReviews userId={0}  />}
+                element={<MyReviews username={"username"}  />}
               />
             </Routes>
           </div>

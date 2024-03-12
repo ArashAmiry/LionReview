@@ -1,6 +1,7 @@
 export interface IReview {
-    username: string;
-    review: [{
+    name: string;
+    createdBy: string;
+    pages: [{
         formName: string,
         codeSegments: {
             filename: string,
