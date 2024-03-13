@@ -36,13 +36,14 @@ authenticationRouter.post("/logIn", async (
 ) => {
     try {
 
-        const username = req.body.username;
+        const user = req.body.username;
         const password = req.body.password;
-        console.log("authenticationRouter " + await account.logIn(username, password))
-
-        if (await account.logIn(username, password)) {
+        console.log("authenticationRouter " + await account.logIn(user, password))
+        const login = await account.logIn(user, password);
+        console.log(login)
+        if (login.success) {
             //req.session.id = username;
-            res.status(200).send(username);
+            res.status(200).send(login.username);
         }
         else {
             res.status(401).send("Could not log in.");

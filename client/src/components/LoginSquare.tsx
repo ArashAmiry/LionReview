@@ -6,11 +6,11 @@ import axios from 'axios';
 import { error } from 'console';
 
 const LoginSquare: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ const LoginSquare: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await axios.post('http://localhost:8080/auth/logIn', {
-      "username": email,
+      "username": username,
       "password": password
     })
       .catch(function (error) {
@@ -36,9 +36,9 @@ const LoginSquare: React.FC = () => {
             <Form.Control
               className='mb-3'
               type="text"
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="Email"
+              value={username}
+              onChange={handleUserChange}
+              placeholder="Username or Email"
               required
             />
             <Form.Control

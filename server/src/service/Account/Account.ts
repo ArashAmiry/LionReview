@@ -17,7 +17,7 @@ export class Account implements IAccountService{
         return await this.signUpManager.signUp(username, password, email);
     }
 
-    async logIn(username: string, password: string) : Promise<Boolean> {
+    async logIn(username: string, password: string) : Promise<{username: string, success: Boolean}> {
         console.log("account" + this.logInManager.logIn(username, password))
         return await this.logInManager.logIn(username, password);
     }
