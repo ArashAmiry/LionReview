@@ -67,7 +67,7 @@ const AddCodeLink = ({urls, setUrls, invalidURLExists, setInvalidURLExists, trie
                         Add a second file
                     </Button>
                 </div>}
-            {(triedToSubmit && invalidURLExists) && <p className="error-message">{"Error: At least one invalid URL"}</p>}
+            {(triedToSubmit && invalidURLExists) && <p className="fs-5 fw-bold text-danger">{"Invalid URL"}</p>}
         </Col>
     );
 }

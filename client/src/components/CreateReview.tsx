@@ -22,6 +22,7 @@ function CreateReview() {
     const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
     const [triedToSubmit, setTriedToSubmit] = useState<boolean>(false);
     const [invalidURLExists, setInvalidURLExists] = useState<boolean>(true);
+    const [formErrorMessage, setFormErrorMessage] = useState<string>("");
     const amountSteps = 3;
     const navigate = useNavigate();
 
@@ -35,8 +36,6 @@ function CreateReview() {
     const getNonEmptyQuestions = (questions : {questionType: string, question: string}[]) => {
         return questions.filter(question => question.question.trim() !== '');
     };
-    
-    
 
     const nextStep = () => {
         if (currentStep === 1) {
@@ -46,7 +45,10 @@ function CreateReview() {
             } 
         } else if (currentStep === 2) {
             if (getNonEmptyQuestions([...binaryQuestions, ...textFieldQuestions]).length === 0) {
+                setFormErrorMessage("At least one question is required to continue.")
                 return
+            } else {
+                setFormErrorMessage("");
             }
         }
         setCurrentStep(currentStep + 1);    
@@ -111,7 +113,7 @@ function CreateReview() {
                     </Col>
 
                     <Col md={5}>
-                        <PreviewForm reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} />
+                        <PreviewForm reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} errorMessage={formErrorMessage} />
                     </Col>
                 </Row>
             }
