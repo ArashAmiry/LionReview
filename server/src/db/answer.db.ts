@@ -6,14 +6,10 @@ import { IAnswer } from "../model/IAnswer";
 
 const answerSchema: Schema = new Schema({
 
-    reviewID: {
+    questionId: {
         type: ObjectId,
-        ref: 'Review'
-    },
-
-    question: {
-        type: ObjectId,
-        ref: 'Review.questions'
+        ref: 'Review.questions',
+        required: true
     },
 
     answer: {
@@ -22,4 +18,4 @@ const answerSchema: Schema = new Schema({
     }
 });
 
-export const reviewModel = conn.model<IAnswer>("Answer", answerSchema);
+export const answerModel = conn.model<IAnswer>("Answer", answerSchema);

@@ -25,9 +25,20 @@ reviewRouter.get("/:reviewId", async (
 ) => {
     try {
         const review = await reviewService.getReview(req.params.reviewId);
-        console.log(review);
         res.status(200).send(review);
     } catch (e: any) {
         res.status(500).send(e.message);
     }
 })
+
+reviewRouter.post("/answer", async (
+    req: Request<{}, {}, {questionId: string, answer: string}>,
+    res: Response<String>
+) => {
+    try {
+        await reviewService.submitReview(req.body.questionId, req.body.answer);
+        res.status(200).send("Answers to review successfully submitted.");
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});

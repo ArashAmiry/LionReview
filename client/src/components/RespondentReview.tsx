@@ -9,8 +9,8 @@ import { IReview } from "../interfaces/IReview";
 function RespondentReview() {
 
     const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
-    const [questions, setQuestions] = useState<{ id: string, question: string }[]>();
-    const [textfields, setTextfields] = useState<{ id: string, question: string }[]>();
+    const [questions, setQuestions] = useState<{ id: string, question: string, answer: string }[]>();
+    const [textfields, setTextfields] = useState<{ id: string, question: string, answer: string }[]>();
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -24,25 +24,26 @@ function RespondentReview() {
 
     useEffect(() => {
         fetchReview().then((response) => {
-            console.log(response?._id);
             if (response) {
-                setFiles(response.review[0].codeSegments.map(segment => ({
+                setFiles(response.pages[0].codeSegments.map(segment => ({
                     name: segment.filename,
                     content: segment.content
                 })));
 
-                setQuestions(response.review[0].questions
+                setQuestions(response.pages[0].questions
                     .filter(question => question.questionType === "binary")
                     .map(filteredQuestion => ({
                         id: filteredQuestion._id,
-                        question: filteredQuestion.question
+                        question: filteredQuestion.question,
+                        answer: ""
                     })));
 
-                setTextfields(response.review[0].questions
+                setTextfields(response.pages[0].questions
                     .filter(question => question.questionType === "text")
                     .map(filteredQuestion => ({
                         id: filteredQuestion._id,
-                        question: filteredQuestion.question
+                        question: filteredQuestion.question,
+                        answer: ""
                     })))
             }
         });

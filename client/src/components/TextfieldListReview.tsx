@@ -1,6 +1,12 @@
 import { Form } from "react-bootstrap";
 
-function TextfieldListReview({ textfields }: { textfields: {id: string, question: string}[] }) {
+function TextfieldListReview({ textfields }: { textfields: {id: string, question: string, answer: string}[] }) {
+
+    const handleTextfieldChange = (answer: string, id: string) => {
+        const textfieldIndex = textfields.findIndex(q => q.id === id);
+        textfields[textfieldIndex].answer = answer;
+      };
+
     return (
         <>
             {textfields
@@ -11,6 +17,7 @@ function TextfieldListReview({ textfields }: { textfields: {id: string, question
                         <Form.Control
                             type="text"
                             placeholder="Textfield answer..."
+                            onChange={(e) => handleTextfieldChange(e.target.value, textfield.id)}
                              // or disabled, depending on your needs
                         />
                     </Form.Group>
