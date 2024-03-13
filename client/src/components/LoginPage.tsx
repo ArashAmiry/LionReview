@@ -5,16 +5,14 @@ import React, { ReactNode } from 'react';
 import LoginSquare from './LoginSquare';
 
 const LoginPage: React.FC = () => {
-  const signInMess = "Log in to";
-  const appName = "ReviewTool";
 
   return (
     <Container>
       <Row>
         <Col sm={7} className="d-flex flex-column justify-content-center">
           <Container className='text-container'>
-            <p className='log-in-to'>{signInMess}</p>
-            <p className='app-name'>{appName}</p>
+            <p className='log-in-to'>Log in to</p>
+            <p className='app-name'>ReviewTool</p>
           </Container>
         </Col>
         <Col sm={5}>

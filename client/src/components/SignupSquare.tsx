@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Assuming you have set up React Router
-import './stylesheets/LoginSquare.css';
+import { Link } from 'react-router-dom';
+import './stylesheets/SignUpSquare.css';
 import axios from 'axios';
-import { error } from 'console';
 
 const SignupSquare: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -32,16 +31,16 @@ const SignupSquare: React.FC = () => {
       .catch(function (error) {
         console.log(error);
       });
-      console.log(res)
+    console.log(res)
 
   };
 
   return (
-    <Container className="loginsquare-container" style={{ top: '150px', left: '150px' }}>
+    <Container className="signup-square-container">
       <Row className="d-flex flex-column align-items-center justify-content-center">
-        <h2 className="loginsquare-heading">Sign Up</h2>
-        <Form className="loginsquare-form" onSubmit={handleSubmit}>
-          <Form.Group className="loginsquare-input">
+        <h2>Sign up to create free code reviews</h2>
+        <Form className="signup-square-form" onSubmit={handleSubmit}>
+          <Form.Group className="signup-square-input">
             <Form.Control
               className='mb-3'
               type="text"
@@ -67,7 +66,7 @@ const SignupSquare: React.FC = () => {
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit" className="loginsquare-submit">
+          <Button variant="primary" type="submit" className="signup-button">
             Sign Up
           </Button>
         </Form>

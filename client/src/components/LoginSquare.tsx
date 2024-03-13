@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Assuming you have set up React Router
+import { Link } from 'react-router-dom';
 import './stylesheets/LoginSquare.css';
 import axios from 'axios';
 import { error } from 'console';
 
 const LoginSquare: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ const LoginSquare: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await axios.post('http://localhost:8080/auth/logIn', {
-      "username": username,
+      "username": email,
       "password": password
     })
       .catch(function (error) {
@@ -36,9 +36,9 @@ const LoginSquare: React.FC = () => {
             <Form.Control
               className='mb-3'
               type="text"
-              value={username}
-              onChange={handleUsernameChange}
-              placeholder="Username"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder="Email"
               required
             />
             <Form.Control
@@ -50,7 +50,7 @@ const LoginSquare: React.FC = () => {
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit" className="loginsquare-submit">
+          <Button variant="primary" type="submit" className="login-button">
             Log In
           </Button>
 
@@ -58,7 +58,7 @@ const LoginSquare: React.FC = () => {
           <hr className='divider' />
           <p className='create-new-text'>Don't have an account?</p>
           <Button variant="primary" className="create-new-account">
-          <Link to="/signUp" className="link-button">Create new account</Link>
+            <Link to="/signUp" className="link-button">Create new account</Link>
           </Button>
         </Form>
       </Row>
