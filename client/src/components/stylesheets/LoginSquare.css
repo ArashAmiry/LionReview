@@ -35,17 +35,18 @@
     background-color: #d9d9d9; /* Keep the same color when focused */
   }
 
-.login-button {
+.create-new-account {
     background-color: #ffffff;
     color: #000000;
     border-color: #ffae12;
     border-radius: 30px;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
+    align-self: center;
 }
 
-.login-button:hover {
+.create-new-account:hover {
     background-color: #c9c9c9;
     color: #000000;
     border-color: #ffae12;
@@ -60,20 +61,19 @@
     margin: 10px 0;
 }
 
-.create-new-account {
+.login-button{
     background-color: #ffae12;
     color: #000000;
     border-color: #000000;
     border-width: 2px;
     border-radius: 30px;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    width: 80%;
-    align-self: center;
+    
 }
 
-.create-new-account:hover {
+.login-button:hover {
     background-color: #ffac12ae;
     border-color: #000000;
     color: #000000;
