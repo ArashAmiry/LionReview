@@ -10,17 +10,21 @@ import { Form, Row } from "react-bootstrap";
 import AddCodeLink from "./AddCodeLink";
 import CodePreviewPage from "./CodePreview";
 import { CodeFile } from './CodePreview';
+import axios from 'axios';
 import PreviewFormSidebar from "./PreviewFormSidebar";
 
 function CreateReview() {
     const [currentStep, setCurrentStep] = useState(1);
-    const [questions, setQuestions] = useState<string[]>([""]);
-    const [textfields, setTextfields] = useState<string[]>([""]);
+    const [binaryQuestions, setBinaryQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "binary", question: ""}]);
+    const [textFieldQuestions, setTextfieldQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "text", question: ""}]);
     const [reviewTitle, setReviewTitle] = useState<string>("");
     const [urls, setUrls] = useState<string[]>([""]);
     const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
     const [triedToSubmit, setTriedToSubmit] = useState<boolean>(false);
     const [invalidURLExists, setInvalidURLExists] = useState<boolean>(true);
+    const [formErrorMessage, setFormErrorMessage] = useState<string>("");
+    const amountSteps = 3;
+    const navigate = useNavigate();
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setCachedFiles(prevState => ({
@@ -29,8 +33,9 @@ function CreateReview() {
         }));
     };
 
-    const amountSteps = 3;
-    const navigate = useNavigate();
+    const getNonEmptyQuestions = (questions : {questionType: string, question: string}[]) => {
+        return questions.filter(question => question.question.trim() !== '');
+    };
 
     const nextStep = () => {
         if (currentStep === 1) {
@@ -38,6 +43,13 @@ function CreateReview() {
             if (invalidURLExists) {
                 return
             } 
+        } else if (currentStep === 2) {
+            if (getNonEmptyQuestions([...binaryQuestions, ...textFieldQuestions]).length === 0) {
+                setFormErrorMessage("At least one question is required to continue.")
+                return
+            } else {
+                setFormErrorMessage("");
+            }
         }
         setCurrentStep(currentStep + 1);    
     };
@@ -53,6 +65,29 @@ function CreateReview() {
     const handleChangeReviewTitle = (e: ChangeEvent) => {
         const { value } = e.target as HTMLInputElement;
         setReviewTitle(value);
+    }
+
+    const submitReview = async (event: React.MouseEvent) => {
+        const codeSegments : {filename : string, content: string}[] = [];
+        Object.entries(cachedFiles).forEach(record => {
+        const filename = record[1].name;
+        const content = record[1].content;
+        
+        codeSegments.push({
+            "filename": filename,
+            "content": content
+        })});
+
+
+        await axios.post('http://localhost:8080/review', {
+            "name": "temporaryName",
+            "createdBy": "username",
+            "pages": [{
+                "formName": reviewTitle,
+                "codeSegments": codeSegments,
+                "questions": [...getNonEmptyQuestions(binaryQuestions), ...getNonEmptyQuestions(textFieldQuestions)]
+            }]
+        });
     }
 
     return (
@@ -72,13 +107,13 @@ function CreateReview() {
                         </Row>
                         <Row>
                             {currentStep === 2 && <CreateReviewForm
-                                questions={questions} setQuestions={(questions) => setQuestions(questions)}
-                                textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />}
+                                questions={binaryQuestions} setQuestions={(questions) => setBinaryQuestions(questions)}
+                                textfields={textFieldQuestions} setTextfields={(textfields) => setTextfieldQuestions(textfields)} />}
                         </Row>
                     </Col>
 
                     <Col md={5}>
-                        <PreviewForm reviewTitle={reviewTitle} questions={questions} textfields={textfields} />
+                        <PreviewForm reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} errorMessage={formErrorMessage} />
                     </Col>
                 </Row>
             }
@@ -87,7 +122,7 @@ function CreateReview() {
                 <Row className="code-row">
                     <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles} /></Col>
                     <Col md={3} className="p-0">
-                        <PreviewFormSidebar reviewTitle={reviewTitle} questions={questions} textfields={textfields} previousStep={() => previousStep()}/>
+                        <PreviewFormSidebar submitReview={(e) => submitReview(e)} reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} previousStep={() => previousStep()}/>
                     </Col>
                 </Row>
             }
