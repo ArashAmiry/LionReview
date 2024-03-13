@@ -29,9 +29,8 @@ const LoginSquare: React.FC = () => {
   };
 
   return (
-    <Container className="loginsquare-container" style={{ top: '150px', left: '150px' }}>
+    <Container className="loginsquare-container">
       <Row className="d-flex flex-column align-items-center justify-content-center">
-        <h2 className="loginsquare-heading">Login</h2>
         <Form className="loginsquare-form" onSubmit={handleSubmit}>
           <Form.Group className="loginsquare-input">
             <Form.Control
@@ -54,9 +53,13 @@ const LoginSquare: React.FC = () => {
           <Button variant="primary" type="submit" className="loginsquare-submit">
             Log In
           </Button>
-          <div className="forgot-password">
-            <Link to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
-          </div>
+
+          <Link className="mt-2 forgot-password" to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
+          <hr className='divider' />
+          <p className='create-new-text'>Don't have an account?</p>
+          <Button variant="primary" className="create-new-account">
+          <Link to="/signUp" className="link-button">Create new account</Link>
+          </Button>
         </Form>
       </Row>
     </Container>

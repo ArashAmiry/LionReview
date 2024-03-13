@@ -12,12 +12,17 @@
     top: 150px;
     left: 10%;
   }
-  .signinto{
+  .log-in-to{
     color: aliceblue;
     font-family: serif;
     font-size: 3em;
+    text-align: left;
   }
   .app-name{
     color: aliceblue;
     font-size: 5em;
+    text-align: left;
+  }
+  .text-container {
+    width: fit-content;
   }
