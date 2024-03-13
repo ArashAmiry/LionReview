@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './stylesheets/SignUpSquare.css';
 import axios from 'axios';
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 const SignupSquare: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -57,14 +59,19 @@ const SignupSquare: React.FC = () => {
               placeholder="Email"
               required
             />
-            <Form.Control
-              className='mb-3'
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder="Password"
-              required
-            />
+            <InputGroup>
+              <Form.Control
+                className='mb-3'
+                type={passwordVisible ? "text" : "password"}
+                value={password}
+                onChange={handlePasswordChange}
+                placeholder="Password"
+                required
+              />
+              {password && <InputGroup.Text className='mb-3 visibility' onClick={() => setPasswordVisible(!passwordVisible)}>
+                {passwordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </InputGroup.Text>}
+            </InputGroup>
           </Form.Group>
           <Button variant="primary" type="submit" className="signup-button">
             Sign Up

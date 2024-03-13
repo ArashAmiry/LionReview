@@ -27,9 +27,13 @@
 .loginsquare-input input {
     padding: 8px;
     background-color: #d9d9d9;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 10px;
 }
+
+.loginsquare-input input:focus {
+    background-color: #d9d9d9; /* Keep the same color when focused */
+  }
 
 .login-button {
     background-color: #ffffff;
@@ -87,4 +91,10 @@
     /* Remove default underline */
     display: inline-block;
     /* Ensure link behaves like a block element */
+}
+
+.visibility {
+    cursor: pointer;
+    background-color: #d9d9d9;
+    border: none;
 }
