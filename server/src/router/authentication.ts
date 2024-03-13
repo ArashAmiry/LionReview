@@ -35,20 +35,21 @@ authenticationRouter.post("/logIn", async (
     res: Response<String>
 ) => {
     try {
-
+        if (typeof(req.body.username) !== "string" || typeof(req.body.password) !== "string"
+        || req.body.username === "" || req.body.password === "") {
+            res.status(400).send("Invalid username or password")
+        }
         const user = req.body.username;
         const password = req.body.password;
-        console.log("authenticationRouter " + await account.logIn(user, password))
+
         const login = await account.logIn(user, password);
-        console.log(login)
-        if (login.success) {
-            //req.session.id = username;
-            res.status(200).send(login.username);
-        }
-        else {
+
+        if (!login.success) {
             res.status(401).send("Could not log in.");
         }
-
+        res.status(200).send(login.username); 
+        // Ska egentligen vara session här, typ req.session.id = login.username;
+        
     } catch (e: any) {
         res.status(500).send(e.message);
     }
