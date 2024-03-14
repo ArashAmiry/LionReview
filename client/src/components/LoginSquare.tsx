@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './stylesheets/LoginSquare.css';
 import axios from 'axios';
 import { error } from 'console';
@@ -10,6 +10,7 @@ const LoginSquare: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -28,6 +29,7 @@ const LoginSquare: React.FC = () => {
       .catch(function (error) {
         console.log(error);
       });
+    navigate('/')
   };
 
   return (

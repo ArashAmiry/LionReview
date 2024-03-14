@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './stylesheets/SignUpSquare.css';
 import axios from 'axios';
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
@@ -10,6 +10,7 @@ const SignupSquare: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -34,7 +35,7 @@ const SignupSquare: React.FC = () => {
         console.log(error);
       });
     console.log(res)
-
+    navigate("/logIn");
   };
 
   return (

@@ -86,11 +86,8 @@
 
 .link-button {
     color: inherit;
-    /* Inherit text color from parent */
     text-decoration: none;
-    /* Remove default underline */
     display: inline-block;
-    /* Ensure link behaves like a block element */
 }
 
 .visibility {

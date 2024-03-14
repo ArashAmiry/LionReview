@@ -49,7 +49,10 @@ authenticationRouter.post("/logIn", async (
         }
         res.status(200).send(login.username); 
         // Ska egentligen vara session här, typ req.session.id = login.username;
-        
+        req.session.user = login.username;
+        req.session.save();
+        console.log("session " + req.session.user)
+
     } catch (e: any) {
         res.status(500).send(e.message);
     }

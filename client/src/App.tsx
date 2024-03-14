@@ -11,6 +11,9 @@ import Background from './components/Background';
 import FormsStartPage from './components/FormsStartPage';
 import PopulateForms from './components/PopulateForms';
 import SignupPage from './components/SignUpPage';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
