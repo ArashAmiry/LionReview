@@ -33,4 +33,3 @@ app.use(express.json());
 app.use("/fetch", fetchCodeRouter);
 app.use("/review", reviewRouter);
 app.use("/auth", authenticationRouter);
-app.use("/create", createReviewRouter);
