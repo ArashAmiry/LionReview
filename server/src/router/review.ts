@@ -30,6 +30,19 @@ reviewRouter.get("/:username", async (
     }
 });
 
+reviewRouter.get("/single/:reviewId", async (
+    req: Request<{ reviewId: string }, {}, {}>,
+    res: Response<IReview>
+) => {
+    try {
+        console.log("Hello")
+        const review = await reviewService.getReview(req.params.reviewId);
+        res.status(200).send(review);
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+})
+
 reviewRouter.post("/answer", async (
     req: Request<{}, {}, {questionId: string, answer: string}>,
     res: Response<String>

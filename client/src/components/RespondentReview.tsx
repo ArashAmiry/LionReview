@@ -15,7 +15,7 @@ function RespondentReview() {
 
     const fetchReview = async (): Promise<IReview | undefined> => {
         try {
-            const response = await axios.get(`http://localhost:8080/review/${reviewId}`);
+            const response = await axios.get(`http://localhost:8080/review/single/${reviewId}`);
             return response.data;
         } catch (e) {
             console.log(e);

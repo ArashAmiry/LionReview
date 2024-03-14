@@ -5,11 +5,36 @@ import { IReview } from "../model/IReview";
 export class ReviewService {
     async createReview(review: IReview) {
         reviewModel.create({
-            username: review.username,
-            review: review.review
+            name: review.name,
+            createdBy: review.createdBy,
+            pages: review.pages
         });
     }
-    
+
+    async getReviews(username: string) {
+        try {
+            const reviews = await reviewModel.find({ createdBy: username }).exec();
+            return reviews;
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+            throw error;
+        }
+    }
+
+    async getReview(reviewId: string): Promise<IReview | undefined> {
+        try {
+            const review = await reviewModel.findOne({ _id: reviewId }).exec();
+            if (review !== null) { // since findById returns null if no document is found
+                return review.toObject();
+            }
+        } catch (error) {
+            console.error('An error occurred while fetching the review:', error);
+            // Handle the error appropriately
+        }
+
+        throw new Error("No review was found with id: " + reviewId);
+    }
+
     async submitReview(questionId: string, answer: string) {
         try {
             const answers = await this.getAnswers(questionId) ?? [];
