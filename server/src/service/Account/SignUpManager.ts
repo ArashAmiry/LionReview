@@ -8,7 +8,6 @@ export class SignUpManager {
         }
         const bcrypt = require("bcrypt");
         const saltRounds = 10;
-
         return await bcrypt
             .hash(password, saltRounds)
             .then((hash: string) => {
@@ -16,21 +15,26 @@ export class SignUpManager {
                 // Save username, email and hash in database 
                 accountModel.create({
                     username: username,
-                    password: hash,
-                    email: email
+                    email: email,
+                    password: hash
+
                 });
+                return true;
             })
-            .catch((err: Error) => console.error(err.message));
+            .catch((err: Error) => {
+                console.error(err.message);
+                return false;
+            });
 
     }
 
     async validateUserNameAndEmail(username: string, email: string): Promise<Boolean | undefined> {
         // TODO: Validate the new username and email, should not exist in database
-        if(await accountModel.findOne({username: username}).exec()) {
+        if (await accountModel.findOne({ username: username }).exec()) {
             console.log("Username already exists");
             return false;
         }
-        if(await accountModel.findOne({email: email}).exec()) {
+        if (await accountModel.findOne({ email: email }).exec()) {
             console.log("Email already exists");
             return false;
         }

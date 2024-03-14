@@ -1,22 +1,22 @@
-import './stylesheets/LoginPage.css'
+import './stylesheets/SignUpPage.css'
 import { NavLink } from "react-router-dom";
 import { Col, Container, Nav, Row } from "react-bootstrap";
 import React, { ReactNode } from 'react';
-import LoginSquare from './LoginSquare';
+import SignupSquare from './SignupSquare';
 
-const LoginPage: React.FC = () => {
+const SignupPage: React.FC = () => {
 
   return (
     <Container>
       <Row>
         <Col sm={7} className="d-flex flex-column justify-content-center">
           <Container className='text-container'>
-            <p className='log-in-to'>Log in to</p>
+            <p className='log-in-to'>Sign up to</p>
             <p className='app-name'>ReviewTool</p>
           </Container>
         </Col>
         <Col sm={5}>
-          <LoginSquare />
+          <SignupSquare />
         </Col>
       </Row>
     </Container>
@@ -24,4 +24,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

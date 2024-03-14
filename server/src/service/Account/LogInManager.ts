@@ -2,14 +2,16 @@ import { accountModel } from "../../db/account.db";
 
 export class LogInManager {
 
-    async logIn(username: string, password: string): Promise<Boolean> {
+    async logIn(username: string, password: string): Promise<{username: string, success: Boolean}> {
         try {
-            const hash: string = await this.getHashForUsername(username);
-            return this.validatePassword(password, hash);
+            const acc = await this.getHashForUsername(username);
+            const hash: string = acc.hashPassword;
+            const success: Boolean = await this.validatePassword(password, hash)
+            return {username: acc.username, success: success};
         }
         catch(error) {
             console.log(error)
-            return false;
+            return {username: "error", success: false};
         } 
     }
 
@@ -20,12 +22,17 @@ export class LogInManager {
             .catch((err: Error) => console.error(err.message));
     }
 
-    async getHashForUsername(username: string): Promise<string> {
+    async getHashForUsername(user: string): Promise<{username: string, hashPassword: string}> {
 
         // TODO: Get hash for username's password in database
-        const account = await accountModel.findOne({ username: username }).exec();
+        const account = await accountModel.findOne({ 
+            $or: [
+              { username: user }, // Check if the string matches the username
+              { email: user }     // Check if the string matches the email
+            ]
+          }).exec();
         if (account) {
-            return account.password;
+            return {username: account.username, hashPassword: account.password};
         } else {
             throw new Error('User not found');
         }

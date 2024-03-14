@@ -6,7 +6,10 @@ interface BlueBackgroundProps {
 
 const BlueBackground: React.FC<BlueBackgroundProps> = ({ children }) => {
   return (
-    <div style={{ backgroundColor: '#243945', height: '90vh' }}>
+    <div
+      className="d-flex flex-column justify-content-center"
+      style={{ backgroundColor: '#243945', height: '90vh' }}
+    >
       {children}
     </div>
   );

@@ -13,6 +13,10 @@ import FormsStartPage from "./components/MyReviews";
 import PopulateForms from "./components/PopulateForms";
 import MyReviews from "./components/MyReviews";
 import RespondentReview from './components/RespondentReview';
+import SignupPage from './components/SignUpPage';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
@@ -22,47 +26,21 @@ function App() {
         <Background>
           <div className="content">
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <p>
-                      Edit <code>src/App.tsx</code> and save to reload.
-                    </p>
-                    <a
-                      className="App-link"
-                      href="https://reactjs.org"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Learn React
-                    </a>
-                  </header>
-                }
-              />
-              <Route
-                path="/logIn"
-                element={
-                  <div>
-                    {" "}
-                    <LoginPage>
-                      {" "}
-                      <LoginSquare />{" "}
-                    </LoginPage>{" "}
-                  </div>
-                }
-              />
+              <Route path="/" element={<StartPage />} />
+              <Route path="/logIn" element={<LoginPage />} />
+              <Route path="/signUp" element={<SignupPage />} />
               <Route path="/create" element={<CreateReview />} />
-              <Route path="/answer/:reviewId" element={<RespondentReview />}/>
+              <Route path="/answer/:reviewId" element={<RespondentReview />} />
               <Route
                 path="/myReviews"
-                element={<MyReviews username={"username"}  />}
+                element={<MyReviews username={"username"} />}
               />
             </Routes>
+
           </div>
         </Background>
       </div>
+
     </Router>
   );
 }

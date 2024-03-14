@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import './stylesheets/LoginSquare.css';
+import './stylesheets/SignUpSquare.css';
 import axios from 'axios';
-import { error } from 'console';
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
-const LoginSquare: React.FC = () => {
+const SignupSquare: React.FC = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
-  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,27 +26,38 @@ const LoginSquare: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:8080/auth/logIn', {
+    const res = await axios.post('http://localhost:8080/auth/signUp', {
       "username": username,
+      "email": email,
       "password": password
     })
       .catch(function (error) {
         console.log(error);
       });
-    navigate('/')
+    console.log(res)
+    navigate("/logIn");
   };
 
   return (
-    <Container className="loginsquare-container">
+    <Container className="signup-square-container">
       <Row className="d-flex flex-column align-items-center justify-content-center">
-        <Form className="loginsquare-form" onSubmit={handleSubmit}>
-          <Form.Group className="loginsquare-input">
+        <h2>Sign up to create free code reviews</h2>
+        <Form className="signup-square-form" onSubmit={handleSubmit}>
+          <Form.Group className="signup-square-input">
             <Form.Control
               className='mb-3'
               type="text"
               value={username}
-              onChange={handleUserChange}
-              placeholder="Username or Email"
+              onChange={handleUsernameChange}
+              placeholder="Username"
+              required
+            />
+            <Form.Control
+              className='mb-3'
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder="Email"
               required
             />
             <InputGroup>
@@ -59,15 +74,8 @@ const LoginSquare: React.FC = () => {
               </InputGroup.Text>}
             </InputGroup>
           </Form.Group>
-          <Button variant="primary" type="submit" className="login-button">
-            Log In
-          </Button>
-
-          <Link className="mt-2 forgot-password" to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
-          <hr className='divider' />
-          <p className='create-new-text'>Don't have an account?</p>
-          <Button variant="primary" className="create-new-account">
-            <Link to="/signUp" className="link-button">Create new account</Link>
+          <Button variant="primary" type="submit" className="signup-button">
+            Sign Up
           </Button>
         </Form>
       </Row>
@@ -75,4 +83,4 @@ const LoginSquare: React.FC = () => {
   );
 };
 
-export default LoginSquare;
+export default SignupSquare;

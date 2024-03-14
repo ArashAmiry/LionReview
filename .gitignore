@@ -1,3 +1,4 @@
 node_modules/
 /server/src/github_token.ts
+/server/src/session_secret.ts
 /server/src/db/password.ts
