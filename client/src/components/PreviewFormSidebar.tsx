@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap";
-import QuestionList from "./QuestionList";
-import TextfieldList from "./TextfieldList";
+import QuestionList from "./QuestionListPreview";
+import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PreviewFormSidebar.css";
 
 function PreviewFormSidebar({submitReview, reviewTitle, questions, textfields, previousStep} : {submitReview: (e : React.MouseEvent) => void, reviewTitle : string, questions: {questionType: string, question: string}[], textfields : {questionType: string, question: string}[], previousStep: () => void}) {

@@ -1,7 +1,7 @@
 export interface IReview {
-    name: string;
-    createdBy: string;
-    pages: [{
+    _id: string;
+    username: string;
+    pages: {
         formName: string,
         codeSegments: {
             filename: string,
@@ -11,7 +11,7 @@ export interface IReview {
         questions: {
             _id: string;
             question: string,
-            questionType: 'binary' | 'range' | 'text'
+            questionType: string
         }[];
-    }]
+    }[];
 }

@@ -1,6 +1,12 @@
 import { Form } from "react-bootstrap";
 
-function TextfieldList({ textfields }: { textfields: {questionType: string, question: string}[] }) {
+function TextfieldListReview({ textfields }: { textfields: {id: string, question: string, answer: string}[] }) {
+
+    const handleTextfieldChange = (answer: string, id: string) => {
+        const textfieldIndex = textfields.findIndex(q => q.id === id);
+        textfields[textfieldIndex].answer = answer;
+      };
+
     return (
         <>
             {textfields
@@ -10,8 +16,9 @@ function TextfieldList({ textfields }: { textfields: {questionType: string, ques
                         <Form.Label className="textfield-label">{textfield.question}</Form.Label>
                         <Form.Control
                             type="text"
-                            defaultValue="Textfield answer..."
-                            readOnly // or disabled, depending on your needs
+                            placeholder="Textfield answer..."
+                            onChange={(e) => handleTextfieldChange(e.target.value, textfield.id)}
+                             // or disabled, depending on your needs
                         />
                     </Form.Group>
                 ))}
@@ -19,4 +26,4 @@ function TextfieldList({ textfields }: { textfields: {questionType: string, ques
     )
 }
 
-export default TextfieldList;
+export default TextfieldListReview;

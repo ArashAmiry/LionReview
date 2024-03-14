@@ -12,6 +12,7 @@ import Background from "./components/Background";
 import FormsStartPage from "./components/MyReviews";
 import PopulateForms from "./components/PopulateForms";
 import MyReviews from "./components/MyReviews";
+import RespondentReview from './components/RespondentReview';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
                 }
               />
               <Route path="/create" element={<CreateReview />} />
+              <Route path="/answer/:reviewId" element={<RespondentReview />}/>
               <Route
                 path="/myReviews"
                 element={<MyReviews username={"username"}  />}
