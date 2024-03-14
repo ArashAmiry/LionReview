@@ -13,7 +13,6 @@ authenticationRouter.post("/signUp", async (
     res: Response<String>
 ) => {
     try {
-
         const username = req.body.username;
         const password = req.body.password;
         const email = req.body.email;
@@ -47,11 +46,14 @@ authenticationRouter.post("/logIn", async (
         if (!login.success) {
             res.status(401).send("Could not log in.");
         }
-        res.status(200).send(login.username); 
-        // Ska egentligen vara session här, typ req.session.id = login.username;
+
         req.session.user = login.username;
+        console.log(req.session)
         req.session.save();
-        console.log("session " + req.session.user)
+
+        res.status(200).send("Successfully logged in."); 
+        // Ska egentligen vara session här, typ req.session.id = login.username;
+        
 
     } catch (e: any) {
         res.status(500).send(e.message);

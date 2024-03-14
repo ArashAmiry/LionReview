@@ -10,7 +10,7 @@ createReviewRouter.get("/", async (
     res: Response<String>
 ) => {
     try {
-        console.log("user: " + req.session.user)
+        console.log(req.session)
         if(req.session.user === undefined)
             
         if(typeof(req.query.path) !== "string") {
