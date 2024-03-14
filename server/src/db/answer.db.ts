@@ -12,8 +12,8 @@ const answerSchema: Schema = new Schema({
         required: true
     },
 
-    answer: {
-        type: String,
+    answers: {
+        type: [String],
         required: true
     }
 });

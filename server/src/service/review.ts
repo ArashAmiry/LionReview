@@ -27,10 +27,12 @@ export class ReviewService {
 
     async submitReview(questionId: string, answer: string) {
         try {
+            const answers = await this.getAnswers(questionId) ?? [];
+
             const result = await answerModel.findOneAndUpdate(
                 { questionId: questionId },
                 {
-                    answer: answer
+                    answers: [...answers, answer]
                 },
                 {
                     upsert: true,
@@ -38,10 +40,24 @@ export class ReviewService {
                 }).exec();
 
             console.log(result);
-        } catch (error){
+        } catch (error) {
             console.error('An error occured while updating the database: ', error);
             throw new Error('An error occured while updating the database: ' + error);
         }
-        
+    }
+
+    private async getAnswers(questionId: string): Promise<string[] | undefined> {
+        try {
+            const result = await answerModel.findOne({ questionId: questionId }).exec();
+
+            if (result) {
+                return result.answers
+            } else {
+                console.log("Could not find question with questionID: " + questionId);
+            }
+        } catch (error) {
+            console.log("Error occured when fetching answers", error);
+        }
+
     }
 }
