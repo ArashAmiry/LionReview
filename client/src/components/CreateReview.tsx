@@ -90,9 +90,9 @@ function CreateReview() {
     }
 
     return (
-        <Container fluid className="m-0 p-0">
+        <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
             {currentStep === 1 &&
-                <Row className="first-step">
+                <Row className="first-step ">
                     <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)} setInvalidURLExists={setInvalidURLExists} triedToSubmit={triedToSubmit} invalidURLExists={invalidURLExists}/>
                 </Row>
             }

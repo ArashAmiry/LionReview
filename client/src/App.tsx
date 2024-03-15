@@ -23,8 +23,6 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        
-          <div className="content">
             <Routes>
               <Route path="/" element={<StartPage />} />
               <Route path="/logIn" element={<LoginPage />} />
@@ -38,8 +36,6 @@ function App() {
             </Routes>
 
           </div>
-        
-      </div>
 
     </Router>
   );
