@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { Account } from "../service/Account/Account";
 import { IAccount } from "../model/IAccount";
 import { IAccountService } from "../service/Account/IAccountService";
+import { SendEmail } from "../service/SendEmail";
 
 
 const account: IAccountService = new Account();
@@ -50,7 +51,8 @@ authenticationRouter.post("/logIn", async (
         req.session.user = login.username;
         console.log(req.session)
         req.session.save();
-
+        const email = new SendEmail();
+        email.sendEmail("hej");
         res.status(200).send("Successfully logged in."); 
         // Ska egentligen vara session här, typ req.session.id = login.username;
         
