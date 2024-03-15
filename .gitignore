@@ -3,3 +3,4 @@ node_modules/
 /server/src/session_secret.ts
 /server/src/db/password.ts
 /server/src/service/email_password.ts
+/server/src/service/token_key.ts

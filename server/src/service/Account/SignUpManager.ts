@@ -1,4 +1,6 @@
 import { accountModel } from "../../db/account.db";
+import { SendEmail } from "../SendEmail";
+import { TokenHandler } from "../TokenHandler";
 
 export class SignUpManager {
 
@@ -8,7 +10,7 @@ export class SignUpManager {
         }
         const bcrypt = require("bcrypt");
         const saltRounds = 10;
-        return await bcrypt
+        const successfullyCreated = await bcrypt
             .hash(password, saltRounds)
             .then((hash: string) => {
                 console.log('Hash ', hash);
@@ -16,8 +18,8 @@ export class SignUpManager {
                 accountModel.create({
                     username: username,
                     email: email,
-                    password: hash
-
+                    password: hash,
+                    active: false
                 });
                 return true;
             })
@@ -25,6 +27,14 @@ export class SignUpManager {
                 console.error(err.message);
                 return false;
             });
+        if(successfullyCreated) {
+            const sendEmail = new SendEmail();
+            const tokenGenerator = new TokenHandler();
+            const token = tokenGenerator.generateToken(username);
+            const activationLink = `http://localhost:8080/auth/${token}`;
+            await sendEmail.sendAuthenticationEmail(email, activationLink);
+        }
+        return successfullyCreated;
 
     }
 

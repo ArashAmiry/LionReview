@@ -31,10 +31,12 @@ export class SendEmail {
     /*
     Skicka en 
     */
-    async sendAuthenticationEmail(email: string) {
-        const html = `
+    async sendAuthenticationEmail(email: string, activationLink: string) {
+    const html = `
         <h1> Hello World </h1>
-        `;
+        <p>Click the following link to activate your account:</p>
+        <a href="${activationLink}">Activate Account</a>
+    `;
         const transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com', // kanske fixa
             port: 465,
@@ -47,7 +49,7 @@ export class SendEmail {
 
         const info = await transporter.sendMail({
             from: 'ReviewTool <noreply.reviewtool@gmail.com>',
-            to: email,
+            to: 'anton.boras1@gmail.com',
             subject: 'Account activation',
             html: html
         })

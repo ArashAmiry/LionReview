@@ -1,18 +1,18 @@
 import { accountModel } from "../../db/account.db";
+import { IAccount } from "../../model/IAccount";
 
 export class LogInManager {
 
-    async logIn(username: string, password: string): Promise<{username: string, success: Boolean}> {
+    async logIn(username: string, password: string): Promise<Boolean> {
         try {
-            const acc = await this.getHashForUsername(username);
-            const hash: string = acc.hashPassword;
-            const success: Boolean = await this.validatePassword(password, hash)
-            return {username: acc.username, success: success};
+            const acc = await this.getAccountForUsername(username);
+            const hash: string = acc.password;
+            return (await this.validatePassword(password, hash)) && acc.active;
         }
-        catch(error) {
+        catch (error) {
             console.log(error)
-            return {username: "error", success: false};
-        } 
+            return false
+        };
     }
 
     validatePassword(password: string, hash: string): Boolean {
@@ -22,17 +22,17 @@ export class LogInManager {
             .catch((err: Error) => console.error(err.message));
     }
 
-    async getHashForUsername(user: string): Promise<{username: string, hashPassword: string}> {
+    async getAccountForUsername(user: string): Promise<IAccount> {
 
         // TODO: Get hash for username's password in database
-        const account = await accountModel.findOne({ 
+        const account = await accountModel.findOne({
             $or: [
-              { username: user }, // Check if the string matches the username
-              { email: user }     // Check if the string matches the email
+                { username: user }, // Check if the string matches the username
+                { email: user }     // Check if the string matches the email
             ]
-          }).exec();
+        }).exec();
         if (account) {
-            return {username: account.username, hashPassword: account.password};
+            return account;
         } else {
             throw new Error('User not found');
         }

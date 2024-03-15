@@ -30,13 +30,16 @@ const accountSchema: Schema = new Schema({
 
         required: true
 
+    },
+
+    active: {
+        
+        type: Boolean,
+
+        required: true
     }
 
 });
-
-
-
-
 
 export const accountModel = conn.model<IAccount>("Account", accountSchema);
 
