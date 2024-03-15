@@ -6,6 +6,7 @@ import { SendEmail } from "../service/SendEmail";
 
 
 const account: IAccountService = new Account();
+const sendEmail = new SendEmail();
 
 export const authenticationRouter = express.Router();
 
@@ -52,7 +53,7 @@ authenticationRouter.post("/logIn", async (
         console.log(req.session)
         req.session.save();
         const email = new SendEmail();
-        email.sendEmail("hej");
+
         res.status(200).send("Successfully logged in."); 
         // Ska egentligen vara session här, typ req.session.id = login.username;
         

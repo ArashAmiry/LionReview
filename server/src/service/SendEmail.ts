@@ -2,7 +2,7 @@ import * as nodeMailer from 'nodemailer';
 import EMAIL_PASSWORD from './email_password';
 export class SendEmail {
 
-    async sendEmail(email: string) {
+    async sendReviewEmail(email: string) {
         const html = `
         <h1> Hello World </h1>
         `;
@@ -17,11 +17,38 @@ export class SendEmail {
         });
 
         const info = await transporter.sendMail({
-            from: 'ReviewTool <noreply.reviewtool@gmail.com>', //The email address of the sender.
-            // All email addresses can be plain ‘sender@server.com’ or formatted 
-            //'“Sender Name” sender@server.com', see Address object for details
+            from: 'ReviewTool <noreply.reviewtool@gmail.com>',
             to: 'anton.boras1@gmail.com',
-            subject: 'test test test', // Typ "You have a review to do"
+            subject: 'You have a review to do',
+            html: html
+        })
+
+        console.log("Message sent: " + info.messageId);
+
+    }
+
+
+    /*
+    Skicka en 
+    */
+    async sendAuthenticationEmail(email: string) {
+        const html = `
+        <h1> Hello World </h1>
+        `;
+        const transporter = nodeMailer.createTransport({
+            host: 'smtp.gmail.com', // kanske fixa
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'noreply.reviewtool@gmail.com',
+                pass: EMAIL_PASSWORD
+            }
+        });
+
+        const info = await transporter.sendMail({
+            from: 'ReviewTool <noreply.reviewtool@gmail.com>',
+            to: email,
+            subject: 'Account activation',
             html: html
         })
 
