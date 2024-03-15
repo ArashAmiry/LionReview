@@ -4,140 +4,323 @@ import { ChangeEvent, useState } from "react";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
-import './stylesheets/CreateReview.css'
+import "./stylesheets/CreateReview.css";
 import PreviewForm from "./PreviewForm";
 import { Form, Row } from "react-bootstrap";
 import AddCodeLink from "./AddCodeLink";
 import CodePreviewPage from "./CodePreview";
-import { CodeFile } from './CodePreview';
-import axios from 'axios';
+import { CodeFile } from "./CodePreview";
+import axios from "axios";
 import PreviewFormSidebar from "./PreviewFormSidebar";
 
+type Page = {
+  currentStep: number;
+  binaryQuestions: { questionType: string; question: string }[];
+  textFieldQuestions: { questionType: string; question: string }[];
+  reviewTitle: string;
+  urls: string[];
+  cachedFiles: Record<string, CodeFile>;
+  triedToSubmit: boolean;
+  invalidURLExists: boolean;
+  formErrorMessage: string;
+};
+
+const initialPagesState: Page[] = [
+  {
+    currentStep: 1,
+    binaryQuestions: [{ questionType: "binary", question: "" }],
+    textFieldQuestions: [{ questionType: "text", question: "" }],
+    reviewTitle: "",
+    urls: [""],
+    cachedFiles: {},
+    triedToSubmit: false,
+    invalidURLExists: false,
+    formErrorMessage: "",
+  },
+];
+
 function CreateReview() {
-    const [currentStep, setCurrentStep] = useState(1);
-    const [binaryQuestions, setBinaryQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "binary", question: ""}]);
-    const [textFieldQuestions, setTextfieldQuestions] = useState<{questionType: string, question: string}[]>([{questionType: "text", question: ""}]);
-    const [reviewTitle, setReviewTitle] = useState<string>("");
-    const [urls, setUrls] = useState<string[]>([""]);
-    const [cachedFiles, setCachedFiles] = useState<Record<string, CodeFile>>({});
-    const [triedToSubmit, setTriedToSubmit] = useState<boolean>(false);
-    const [invalidURLExists, setInvalidURLExists] = useState<boolean>(true);
-    const [formErrorMessage, setFormErrorMessage] = useState<string>("");
-    const amountSteps = 3;
-    const navigate = useNavigate();
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [pageData, setPageData] = useState<Page[]>(initialPagesState);
+  const amountSteps = 3;
+  const navigate = useNavigate();
 
-    const updateCachedFiles = (url: string, fileData: CodeFile) => {
-        setCachedFiles(prevState => ({
-            ...prevState,
-            [url]: fileData
-        }));
-    };
+  const updateCachedFiles = (url: string, fileData: CodeFile) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+      const currentPage = updatedPageData[currentPageIndex]; // Get the current page state
+      const updatedCurrentPage = {
+        ...currentPage,
+        cachedFiles: { ...currentPage.cachedFiles, [url]: fileData },
+      }; // Update the cachedFiles of the current page
+      updatedPageData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
+      return updatedPageData; // Return the updated array of page states
+    });
+  };
 
-    const getNonEmptyQuestions = (questions : {questionType: string, question: string}[]) => {
-        return questions.filter(question => question.question.trim() !== '');
-    };
+  const getNonEmptyQuestions = (
+    questions: { questionType: string; question: string }[]
+  ) => {
+    return questions.filter((question) => question.question.trim() !== "");
+  };
 
-    const nextStep = () => {
-        if (currentStep === 1) {
-            setTriedToSubmit(true);
-            if (invalidURLExists) {
-                return
-            } 
-        } else if (currentStep === 2) {
-            if (getNonEmptyQuestions([...binaryQuestions, ...textFieldQuestions]).length === 0) {
-                setFormErrorMessage("At least one question is required to continue.")
-                return
-            } else {
-                setFormErrorMessage("");
-            }
-        }
-        setCurrentStep(currentStep + 1);    
-    };
+  const setTriedToSubmit = (value: boolean) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData];
+      updatedPageData[currentPageIndex].triedToSubmit = value;
+      return updatedPageData;
+    });
+  };
 
-    const previousStep = () => {
-        if (currentStep === 1) {
-            navigate("/")
-            return;
-        }
-        setCurrentStep(currentStep - 1);
-    };
+  const setFormErrorMessage = (message: string) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData];
+      updatedPageData[currentPageIndex].formErrorMessage = message;
+      return updatedPageData;
+    });
+  };
 
-    const handleChangeReviewTitle = (e: ChangeEvent) => {
-        const { value } = e.target as HTMLInputElement;
-        setReviewTitle(value);
+  const setCurrentStep = (step: number) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+      updatedPageData[currentPageIndex].currentStep = step; // Update current step of the current page
+      return updatedPageData; // Return the updated array of page states
+    });
+  };
+
+  const nextStep = () => {
+    if (pageData[currentPageIndex].currentStep === 1) {
+      setTriedToSubmit(true);
+      if (pageData[currentPageIndex].invalidURLExists) {
+        return;
+      }
+    } else if (pageData[currentPageIndex].currentStep === 2) {
+      if (
+        getNonEmptyQuestions([
+          ...pageData[currentPageIndex].binaryQuestions,
+          ...pageData[currentPageIndex].textFieldQuestions,
+        ]).length === 0
+      ) {
+        setFormErrorMessage("At least one question is required to continue.");
+        return;
+      } else {
+        setFormErrorMessage("");
+      }
     }
+    setCurrentStep(pageData[currentPageIndex].currentStep + 1);
+  };
 
-    const submitReview = async (event: React.MouseEvent) => {
-        const codeSegments : {filename : string, content: string}[] = [];
-        Object.entries(cachedFiles).forEach(record => {
-        const filename = record[1].name;
-        const content = record[1].content;
-        
+  const previousStep = () => {
+    if (pageData[currentPageIndex].currentStep === 1) {
+      navigate("/");
+    }
+    setCurrentStep(pageData[currentPageIndex].currentStep - 1);
+  };
+
+  const handleChangeReviewTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+      const currentPage = updatedPageData[currentPageIndex]; // Get the current page state
+      currentPage.reviewTitle = value; // Update the reviewTitle of the currentPage
+      return updatedPageData; // Return the updated page data array
+    });
+  };
+
+  const setBinaryQuestions = (
+    questions: { questionType: string; question: string }[]
+  ) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+      updatedPageData[currentPageIndex].binaryQuestions = questions; // Update binaryQuestions of the current page
+      return updatedPageData; // Return the updated array of page states
+    });
+  };
+
+  const setTextfieldQuestions = (
+    questions: { questionType: string; question: string }[]
+  ) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+      updatedPageData[currentPageIndex].textFieldQuestions = questions; // Update textFieldQuestions of the current page
+      return updatedPageData; // Return the updated array of page states
+    });
+  };
+
+  const setInvalidURLExists = (value: boolean) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+      updatedPageData[currentPageIndex].invalidURLExists = value; // Update invalidURLExists of the current page
+      return updatedPageData; // Return the updated array of page states
+    });
+  };
+
+  const setUrls = (urls: string[]) => {
+    setPageData((prevPageData) => {
+      const updatedPageData = [...prevPageData];
+      updatedPageData[currentPageIndex].urls = urls;
+      return updatedPageData;
+    });
+  };
+
+  const addNewPage = () => {
+    setPageData((prevPageData) => [
+      ...prevPageData,
+      {
+        currentStep: 1,
+        binaryQuestions: [{ questionType: "binary", question: "" }],
+        textFieldQuestions: [{ questionType: "text", question: "" }],
+        reviewTitle: "",
+        urls: [""],
+        cachedFiles: {},
+        triedToSubmit: false,
+        invalidURLExists: false,
+        formErrorMessage: "",
+      },
+    ]);
+    setCurrentPageIndex(currentPageIndex => currentPageIndex + 1);
+  };
+
+  const submitReview = async () => {
+    const reviewPages = pageData.map((pageData) => {
+      const codeSegments: { filename: string; content: string }[] = [];
+      Object.entries(pageData.cachedFiles).forEach((record) => {
         codeSegments.push({
-            "filename": filename,
-            "content": content
-        })});
-
-
-        await axios.post('http://localhost:8080/review', {
-            "name": "temporaryName",
-            "createdBy": "username",
-            "pages": [{
-                "formName": reviewTitle,
-                "codeSegments": codeSegments,
-                "questions": [...getNonEmptyQuestions(binaryQuestions), ...getNonEmptyQuestions(textFieldQuestions)]
-            }]
+          filename: record[1].name,
+          content: record[1].content,
         });
-    }
+      });
 
-    return (
-        <Container fluid className="m-0 p-0">
-            {currentStep === 1 &&
-                <Row className="first-step">
-                    <AddCodeLink urls={urls} setUrls={(urls: string[]) => setUrls(urls)} setInvalidURLExists={setInvalidURLExists} triedToSubmit={triedToSubmit} invalidURLExists={invalidURLExists}/>
+      return {
+        formName: pageData.reviewTitle,
+        codeSegments: codeSegments,
+        questions: [
+          ...getNonEmptyQuestions(pageData.binaryQuestions),
+          ...getNonEmptyQuestions(pageData.textFieldQuestions),
+        ],
+      };
+    });
+    console.log(reviewPages);
+    await axios.post("http://localhost:8080/review/create", {
+      name: "temporaryName",
+      createdBy: "username",
+      pages: reviewPages,
+    });
+  };
+
+  return (
+    <Container fluid className="m-0 p-0">
+          {pageData[currentPageIndex].currentStep === 1 && (
+            <Row className="first-step">
+              <AddCodeLink
+                urls={pageData[currentPageIndex].urls}
+                setUrls={(urls: string[]) => setUrls(urls)}
+                setInvalidURLExists={setInvalidURLExists}
+                triedToSubmit={pageData[currentPageIndex].triedToSubmit}
+                invalidURLExists={pageData[currentPageIndex].invalidURLExists}
+              />
+            </Row>
+          )}
+          {pageData[currentPageIndex].currentStep === 2 && (
+            <Row className="second-step">
+              <Col md={7} className="form-box px-0">
+                <Row className="pb-3">
+                  <Col md={12}>
+                    <Form.Control
+                      name="desc"
+                      type="text"
+                      value={pageData[currentPageIndex].reviewTitle}
+                      placeholder={`Title of review form...`}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        handleChangeReviewTitle(e)
+                      }
+                    />
+                  </Col>
                 </Row>
-            }
-            {currentStep === 2 &&
-                <Row className="second-step">
-                    <Col md={7} className="form-box px-0">
-
-                        <Row className="pb-3">
-                            <Col md={12}><Form.Control name="desc" type="text" value={reviewTitle} placeholder={`Title of review form...`} onChange={(e) => handleChangeReviewTitle(e)} />
-                            </Col>
-                        </Row>
-                        <Row>
-                            {currentStep === 2 && <CreateReviewForm
-                                questions={binaryQuestions} setQuestions={(questions) => setBinaryQuestions(questions)}
-                                textfields={textFieldQuestions} setTextfields={(textfields) => setTextfieldQuestions(textfields)} />}
-                        </Row>
-                    </Col>
-
-                    <Col md={5}>
-                        <PreviewForm reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} errorMessage={formErrorMessage} />
-                    </Col>
+                <Row>
+                  {pageData[currentPageIndex].currentStep === 2 && (
+                    <CreateReviewForm
+                      questions={pageData[currentPageIndex].binaryQuestions}
+                      setQuestions={(questions) =>
+                        setBinaryQuestions(questions)
+                      }
+                      textfields={pageData[currentPageIndex].textFieldQuestions}
+                      setTextfields={(textfields) =>
+                        setTextfieldQuestions(textfields)
+                      }
+                    />
+                  )}
                 </Row>
-            }
+              </Col>
 
-            {currentStep === 3 &&
-                <Row className="code-row">
-                    <Col className="code-preview" md={9}><CodePreviewPage urls={urls} cachedFiles={cachedFiles} updateCachedFiles={updateCachedFiles} /></Col>
-                    <Col md={3} className="p-0">
-                        <PreviewFormSidebar submitReview={(e) => submitReview(e)} reviewTitle={reviewTitle} questions={binaryQuestions} textfields={textFieldQuestions} previousStep={() => previousStep()}/>
-                    </Col>
-                </Row>
-            }
-            {currentStep !== 3 &&
-                <Row className="first-step second-step">
-                    <Col md={4} id="navButtons" className="my-4 d-flex justify-content-start px-0">
-                        {currentStep === 1 && <Button size="lg" variant="danger" onClick={() => previousStep()}>Exit</Button>}
-                        {currentStep !== 1 && <Button size="lg" variant="light" onClick={() => previousStep()}>Back</Button>}
+              <Col md={5}>
+                <PreviewForm
+                  reviewTitle={pageData[currentPageIndex].reviewTitle}
+                  questions={pageData[currentPageIndex].binaryQuestions}
+                  textfields={pageData[currentPageIndex].textFieldQuestions}
+                  errorMessage={pageData[currentPageIndex].formErrorMessage}
+                />
+              </Col>
+            </Row>
+          )}
 
-                        {currentStep !== amountSteps && <Button size="lg" variant="light" onClick={() => nextStep()}>Continue</Button>}
-                    </Col>
-                </Row>
-            }
-        </Container>
-    );
+          {pageData[currentPageIndex].currentStep === 3 && (
+            <Row className="code-row">
+              <Col className="code-preview" md={9}>
+                <CodePreviewPage
+                  urls={pageData[currentPageIndex].urls}
+                  cachedFiles={pageData[currentPageIndex].cachedFiles}
+                  updateCachedFiles={updateCachedFiles}
+                />
+              </Col>
+              <Col md={3} className="p-0">
+                <PreviewFormSidebar
+                  submitReview={(e) => submitReview()}
+                  addNewPage={(e) => addNewPage()}
+                  reviewTitle={pageData[currentPageIndex].reviewTitle}
+                  questions={pageData[currentPageIndex].binaryQuestions}
+                  textfields={pageData[currentPageIndex].textFieldQuestions}
+                  previousStep={() => previousStep()}
+                />
+              </Col>
+            </Row>
+          )}
+          {pageData[currentPageIndex].currentStep !== 3 && (
+            <Row className="first-step second-step">
+              <Col
+                md={4}
+                id="navButtons"
+                className="my-4 d-flex justify-content-start px-0"
+              >
+                {pageData[currentPageIndex].currentStep === 1 && (
+                  <Button
+                    size="lg"
+                    variant="danger"
+                    onClick={() => previousStep()}
+                  >
+                    Exit
+                  </Button>
+                )}
+                {pageData[currentPageIndex].currentStep !== 1 && (
+                  <Button
+                    size="lg"
+                    variant="light"
+                    onClick={() => previousStep()}
+                  >
+                    Back
+                  </Button>
+                )}
+
+                {pageData[currentPageIndex].currentStep !== amountSteps && (
+                  <Button size="lg" variant="light" onClick={() => nextStep()}>
+                    Continue
+                  </Button>
+                )}
+              </Col>
+            </Row>
+          )}
+    </Container>
+  );
 }
 
 export default CreateReview;
