@@ -81,7 +81,6 @@ function CreateReview() {
 
         await axios.post('http://localhost:8080/review', {
             "name": "temporaryName",
-            "createdBy": "username",
             "pages": [{
                 "formName": reviewTitle,
                 "codeSegments": codeSegments,

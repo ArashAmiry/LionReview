@@ -9,10 +9,7 @@ import Badge from "react-bootstrap/esm/Badge";
 import ToggleButtonGroup from "react-bootstrap/esm/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/esm/ToggleButton";
 import axios from "axios";
-
-interface MyReviewsProps {
-  username: string;
-}
+import { IReview } from "../interfaces/IReview";
 
 type Review = {
   name: string;
@@ -28,7 +25,7 @@ enum ReviewStatusFilter {
   Completed = "Completed",
 }
 
-const MyReviews = ({ username }: MyReviewsProps) => {
+const MyReviews = ({ username }: { username: string }) => {
   const [myReviews, setMyReviews] = useState<Review[]>([{
     name: "Example Review 1",
     id: 69,
@@ -46,29 +43,46 @@ const MyReviews = ({ username }: MyReviewsProps) => {
     id: 71,
     status: "Completed",
     created: "March 8, 2024, 10:00 AM",
+  },
+  {
+    name: "Example Review 4",
+    id: 72,
+    status: "Completed",
+    created: "March 8, 2024, 10:00 AM",
+  },
+  {
+    name: "Example Review 5",
+    id: 73,
+    status: "Completed",
+    created: "March 8, 2024, 10:00 AM",
   }]);
-  
+
+  const [userReviews, setUserReviews] = useState<IReview[]>([]);
+
   const [statusFilter, setStatusFilter] = useState<ReviewStatusFilter>(
     ReviewStatusFilter.All
   );
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const response = await axios.get(`http://localhost:8080/review/${username}`)
-      .catch(function (error) {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-        
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
-      });
-      console.log(response);
+      const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
+        .then(function (response) {
+          setUserReviews(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
 
+            console.log(error.request);
+          } else {
+            console.log('Error', error.message);
+          }
+          console.log("error: " + error);
+        });
     };
 
     fetchReviews();
@@ -77,7 +91,7 @@ const MyReviews = ({ username }: MyReviewsProps) => {
   const handleChange = (status: ReviewStatusFilter) => {
     setStatusFilter(status);
   }
-  const filterReviews = (reviews : Review[], filter : ReviewStatusFilter) : Review[] => {
+  const filterReviews = (reviews: Review[], filter: ReviewStatusFilter): Review[] => {
     return reviews.filter(review => {
       return filter === ReviewStatusFilter.All || review.status.replace(/\s/g, '') === filter.replace(/\s/g, '');
     })
@@ -114,15 +128,17 @@ const MyReviews = ({ username }: MyReviewsProps) => {
       <Row>
         <Container className="card-container">
           <Row>
-            <ReviewCardList reviews={filterReviews(myReviews, statusFilter)} />
+            <Col xl={2} className="px-0" />
+            <ReviewCardList reviews={userReviews} />
+            <Col xl={2} className="px-0" />
           </Row>
         </Container>
       </Row>
     </Container>
   );
 };
- 
-const ReviewCardList= ({ reviews } : { reviews: Review[] }) => {
+
+const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
   const getBadgeVariant = (status: string) => {
     switch (status) {
       case "Draft":
@@ -150,39 +166,41 @@ const ReviewCardList= ({ reviews } : { reviews: Review[] }) => {
   };
 
   return (
-    <>
-    {reviews.map((review) => (
-      <Col key={review.id} xl={3} className="mt-4">
-        <Card style={{ width: "18rem" }}>
-          <Card.Body>
-            <Card.Title>{review.name}</Card.Title>
-            <Card.Text>
-              <Badge
-                text={
-                  getBadgeVariant(review.status) === "warning"
-                    ? "dark"
-                    : "white"
-                }
-                className="badge-text"
-                bg={getBadgeVariant(review.status)}
-              >
-                {getBadgeText(review.status)}
-              </Badge>
-            </Card.Text>
-            {review.status !== "Draft" && (
-              <Button variant="primary">View Responses</Button>
-            )}
-            {review.status === "Draft" && (
-              <Button variant="secondary">Edit</Button>
-            )}
-            <Button variant="danger" className="mx-2">
-              Delete
-            </Button>
-          </Card.Body>
-        </Card>
-      </Col>
-    ))}
-    </>
+    <Col md={8}>
+      <Row>
+        {reviews.map((review, index) => (
+          <Col key={index} md={3} className="mt-4">
+            <Card className="review">
+              <Card.Body>
+                <Card.Title>{review.name}</Card.Title>
+                <Card.Text>
+                  <Badge
+                    text={
+                      getBadgeVariant("Completed") === "warning"
+                        ? "dark"
+                        : "white"
+                    }
+                    className="badge-text"
+                    bg={getBadgeVariant("Completed")}
+                  >
+                    {getBadgeText("Completed")}
+                  </Badge>
+                </Card.Text>
+                {review.name !== "Draft" && (
+                  <Button variant="primary">View Responses</Button>
+                )}
+                {review.name === "Draft" && (
+                  <Button variant="secondary">Edit</Button>
+                )}
+                <Button variant="danger" className="mx-2">
+                  Delete
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Col>
   )
 }
 

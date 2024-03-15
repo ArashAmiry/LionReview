@@ -23,7 +23,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        <Background>
+        
           <div className="content">
             <Routes>
               <Route path="/" element={<StartPage />} />
@@ -38,7 +38,7 @@ function App() {
             </Routes>
 
           </div>
-        </Background>
+        
       </div>
 
     </Router>

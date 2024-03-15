@@ -7,24 +7,32 @@ const reviewService = new ReviewService();
 export const reviewRouter = express.Router();
 
 reviewRouter.post("/", async (
-    req: Request<{}, {}, IReview>,
+    req: Request<{}, {}, Omit<IReview, 'createdBy'>>,
     res: Response<String>
 ) => {
     try {
-        await reviewService.createReview(req.body);
-        res.status(200).send("Review created successfully.");
+        if (req.session.user !== undefined) {
+            await reviewService.createReview(req.body, req.session.user);
+            res.status(200).send("Review created successfully.");
+        }
     } catch (e: any) {
         res.status(500).send(e.message);
     }
 });
 
-reviewRouter.get("/:username", async (
-    req: Request<{username : string}, {}, {}>,
-    res: Response<IReview[]>
+reviewRouter.get("/", async (
+    req: Request<{}, {}, {}>,
+    res: Response<IReview[] | string>
 ) => {
     try {
-        const reviews = await reviewService.getReviews(req.params.username);
-        res.status(200).send(reviews);
+        if (req.session.user !== undefined) {
+            console.log(req.session.user);
+            const reviews = await reviewService.getReviews(req.session.user);
+            res.status(200).send(reviews);
+        } else {
+            res.status(400).send("You are not logged in.");
+        }
+
     } catch (e: any) {
         res.status(500).send(e.message);
     }
@@ -44,7 +52,7 @@ reviewRouter.get("/single/:reviewId", async (
 })
 
 reviewRouter.post("/answer", async (
-    req: Request<{}, {}, {questionId: string, answer: string}>,
+    req: Request<{}, {}, { questionId: string, answer: string }>,
     res: Response<String>
 ) => {
     try {

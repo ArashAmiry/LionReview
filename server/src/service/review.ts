@@ -3,10 +3,10 @@ import { reviewModel } from "../db/review";
 import { IReview } from "../model/IReview";
 
 export class ReviewService {
-    async createReview(review: IReview) {
+    async createReview(review: Omit<IReview, 'createdBy'>, createdBy: string) {
         reviewModel.create({
             name: review.name,
-            createdBy: review.createdBy,
+            createdBy: createdBy,
             pages: review.pages
         });
     }
