@@ -207,7 +207,7 @@ function CreateReview() {
       };
     });
     console.log(reviewPages);
-    await axios.post("http://localhost:8080/review/create", {
+    await axios.post("http://localhost:8080/review/", {
       name: "temporaryName",
       createdBy: "username",
       pages: reviewPages,
