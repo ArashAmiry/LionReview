@@ -12,6 +12,8 @@ import CodePreviewPage from "./CodePreview";
 import { CodeFile } from "./CodePreview";
 import axios from "axios";
 import PreviewFormSidebar from "./PreviewFormSidebar";
+import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 type Page = {
   currentStep: number;
@@ -87,6 +89,10 @@ function CreateReview() {
       return updatedPageData; // Return the updated array of page states
     });
   };
+
+  const getCurrentStep = () => {
+    return pageData[currentPageIndex].currentStep;
+  }
 
   const nextStep = () => {
     if (pageData[currentPageIndex].currentStep === 1) {
@@ -208,117 +214,139 @@ function CreateReview() {
     });
   };
 
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Function to toggle the collapse state
+  const toggleSidebar = () => setCollapsed(!collapsed);
+
   return (
     <Container fluid className="m-0 p-0">
-          {pageData[currentPageIndex].currentStep === 1 && (
-            <Row className="first-step">
-              <AddCodeLink
-                urls={pageData[currentPageIndex].urls}
-                setUrls={(urls: string[]) => setUrls(urls)}
-                setInvalidURLExists={setInvalidURLExists}
-                triedToSubmit={pageData[currentPageIndex].triedToSubmit}
-                invalidURLExists={pageData[currentPageIndex].invalidURLExists}
-              />
-            </Row>
-          )}
-          {pageData[currentPageIndex].currentStep === 2 && (
-            <Row className="second-step">
-              <Col md={7} className="form-box px-0">
-                <Row className="pb-3">
-                  <Col md={12}>
-                    <Form.Control
-                      name="desc"
-                      type="text"
-                      value={pageData[currentPageIndex].reviewTitle}
-                      placeholder={`Title of review form...`}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        handleChangeReviewTitle(e)
-                      }
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  {pageData[currentPageIndex].currentStep === 2 && (
-                    <CreateReviewForm
-                      questions={pageData[currentPageIndex].binaryQuestions}
-                      setQuestions={(questions) =>
-                        setBinaryQuestions(questions)
-                      }
-                      textfields={pageData[currentPageIndex].textFieldQuestions}
-                      setTextfields={(textfields) =>
-                        setTextfieldQuestions(textfields)
-                      }
-                    />
-                  )}
-                </Row>
-              </Col>
+      <Row className="mx-0">
+        <Col className="sidebar-col" md={2}>
+          <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">
+               <Menu>
+              <MenuItem onClick={() => toggleSidebar()} icon={<MenuOutlinedIcon />} className="d-flex justify-content-center align-items-center"></MenuItem>
+              {!collapsed && pageData.map((page, index) => {
+                
+                return <MenuItem onClick={() => {
+                  setCurrentPageIndex(index);
+                  setCurrentStep(getCurrentStep());
+                }}> {page.reviewTitle} </MenuItem>
+              })}
+            </Menu>
+          </Sidebar>;
+        </Col>
 
-              <Col md={5}>
-                <PreviewForm
-                  reviewTitle={pageData[currentPageIndex].reviewTitle}
-                  questions={pageData[currentPageIndex].binaryQuestions}
-                  textfields={pageData[currentPageIndex].textFieldQuestions}
-                  errorMessage={pageData[currentPageIndex].formErrorMessage}
+        {pageData[currentPageIndex].currentStep === 1 && (
+          <Col md={12} className="first-step">
+            <AddCodeLink
+              urls={pageData[currentPageIndex].urls}
+              setUrls={(urls: string[]) => setUrls(urls)}
+              setInvalidURLExists={setInvalidURLExists}
+              triedToSubmit={pageData[currentPageIndex].triedToSubmit}
+              invalidURLExists={pageData[currentPageIndex].invalidURLExists}
+            />
+          </Col>
+        )}
+      </Row>
+      {pageData[currentPageIndex].currentStep === 2 && (
+        <Row className="second-step">
+          <Col md={7} className="form-box px-0">
+            <Row className="pb-3">
+              <Col md={12}>
+                <Form.Control
+                  name="desc"
+                  type="text"
+                  value={pageData[currentPageIndex].reviewTitle}
+                  placeholder={`Title of review form...`}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    handleChangeReviewTitle(e)
+                  }
                 />
               </Col>
             </Row>
-          )}
+            <Row>
+              {pageData[currentPageIndex].currentStep === 2 && (
+                <CreateReviewForm
+                  questions={pageData[currentPageIndex].binaryQuestions}
+                  setQuestions={(questions) =>
+                    setBinaryQuestions(questions)
+                  }
+                  textfields={pageData[currentPageIndex].textFieldQuestions}
+                  setTextfields={(textfields) =>
+                    setTextfieldQuestions(textfields)
+                  }
+                />
+              )}
+            </Row>
+          </Col>
 
-          {pageData[currentPageIndex].currentStep === 3 && (
-            <Row className="code-row">
-              <Col className="code-preview" md={9}>
-                <CodePreviewPage
-                  urls={pageData[currentPageIndex].urls}
-                  cachedFiles={pageData[currentPageIndex].cachedFiles}
-                  updateCachedFiles={updateCachedFiles}
-                />
-              </Col>
-              <Col md={3} className="p-0">
-                <PreviewFormSidebar
-                  submitReview={(e) => submitReview()}
-                  addNewPage={(e) => addNewPage()}
-                  reviewTitle={pageData[currentPageIndex].reviewTitle}
-                  questions={pageData[currentPageIndex].binaryQuestions}
-                  textfields={pageData[currentPageIndex].textFieldQuestions}
-                  previousStep={() => previousStep()}
-                />
-              </Col>
-            </Row>
-          )}
-          {pageData[currentPageIndex].currentStep !== 3 && (
-            <Row className="first-step second-step">
-              <Col
-                md={4}
-                id="navButtons"
-                className="my-4 d-flex justify-content-start px-0"
+          <Col md={5}>
+            <PreviewForm
+              reviewTitle={pageData[currentPageIndex].reviewTitle}
+              questions={pageData[currentPageIndex].binaryQuestions}
+              textfields={pageData[currentPageIndex].textFieldQuestions}
+              errorMessage={pageData[currentPageIndex].formErrorMessage}
+            />
+          </Col>
+        </Row>
+      )}
+
+      {pageData[currentPageIndex].currentStep === 3 && (
+        <Row className="code-row ">
+          <Col className="code-preview" md={9}>
+            <CodePreviewPage
+              urls={pageData[currentPageIndex].urls}
+              cachedFiles={pageData[currentPageIndex].cachedFiles}
+              updateCachedFiles={updateCachedFiles}
+            />
+          </Col>
+          <Col md={3} className="p-0">
+            <PreviewFormSidebar
+              submitReview={(e) => submitReview()}
+              addNewPage={(e) => addNewPage()}
+              reviewTitle={pageData[currentPageIndex].reviewTitle}
+              questions={pageData[currentPageIndex].binaryQuestions}
+              textfields={pageData[currentPageIndex].textFieldQuestions}
+              previousStep={() => previousStep()}
+            />
+          </Col>
+        </Row>
+      )}
+      {pageData[currentPageIndex].currentStep !== 3 && (
+        <Row className="first-step second-step">
+          <Col
+            md={4}
+            id="navButtons"
+            className="my-4 d-flex justify-content-start px-0"
+          >
+            {pageData[currentPageIndex].currentStep === 1 && (
+              <Button
+                size="lg"
+                variant="danger"
+                onClick={() => previousStep()}
               >
-                {pageData[currentPageIndex].currentStep === 1 && (
-                  <Button
-                    size="lg"
-                    variant="danger"
-                    onClick={() => previousStep()}
-                  >
-                    Exit
-                  </Button>
-                )}
-                {pageData[currentPageIndex].currentStep !== 1 && (
-                  <Button
-                    size="lg"
-                    variant="light"
-                    onClick={() => previousStep()}
-                  >
-                    Back
-                  </Button>
-                )}
+                Exit
+              </Button>
+            )}
+            {pageData[currentPageIndex].currentStep !== 1 && (
+              <Button
+                size="lg"
+                variant="light"
+                onClick={() => previousStep()}
+              >
+                Back
+              </Button>
+            )}
 
-                {pageData[currentPageIndex].currentStep !== amountSteps && (
-                  <Button size="lg" variant="light" onClick={() => nextStep()}>
-                    Continue
-                  </Button>
-                )}
-              </Col>
-            </Row>
-          )}
+            {pageData[currentPageIndex].currentStep !== amountSteps && (
+              <Button size="lg" variant="light" onClick={() => nextStep()}>
+                Continue
+              </Button>
+            )}
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }

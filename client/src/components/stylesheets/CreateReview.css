@@ -11,7 +11,7 @@
     border-radius: 7px;
 }
 
-.first-step, .second-step{
+.second-step{
     margin-left: 20%;
     margin-right: 20%;
 }
@@ -23,4 +23,19 @@
 .code-row{
     height: 90vh;
     margin-right: 0px;
+    margin-left: 80px;
 }
+
+.sidebar-col {
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    height: 90vh;
+    z-index: 1000; /* Ensure it overlays the content */
+    padding-left: 0;
+  }
+  
+  .first-step {
+    padding-left: 25%; /* Match the default collapsed sidebar width */
+    padding-right: 5%;
+  }
