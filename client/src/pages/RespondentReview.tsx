@@ -1,7 +1,7 @@
-import CodeReview from "./CodeReview";
+import CodeReview from "../components/CodeReview";
 import { Container, Row, Col } from "react-bootstrap";
 import { useParams } from 'react-router-dom';
-import ReviewFormSidebar from "./ReviewFormSidebar";
+import ReviewFormSidebar from "../components/ReviewFormSidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";

@@ -2,7 +2,7 @@ import './stylesheets/SignUpPage.css'
 import { NavLink } from "react-router-dom";
 import { Col, Container, Nav, Row } from "react-bootstrap";
 import React, { ReactNode } from 'react';
-import SignupSquare from './SignupSquare';
+import SignupSquare from '../components/SignupSquare';
 
 const SignupPage: React.FC = () => {
 

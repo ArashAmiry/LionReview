@@ -1,17 +1,17 @@
-import CreateReviewForm from "./CreateReviewForm";
+import CreateReviewForm from "../components/CreateReviewForm";
 import Container from "react-bootstrap/esm/Container";
 import { ChangeEvent, useState } from "react";
 import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 import "./stylesheets/CreateReview.css";
-import PreviewForm from "./PreviewForm";
+import PreviewForm from "../components/PreviewForm";
 import { Form, Row } from "react-bootstrap";
-import AddCodeLink from "./AddCodeLink";
-import CodePreviewPage from "./CodePreview";
-import { CodeFile } from "./CodePreview";
+import AddCodeLink from "../components/AddCodeLink";
+import CodePreviewPage from "../components/CodePreview";
+import { CodeFile } from "../components/CodePreview";
 import axios from "axios";
-import PreviewFormSidebar from "./PreviewFormSidebar";
+import PreviewFormSidebar from "../components/PreviewFormSidebar";
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 

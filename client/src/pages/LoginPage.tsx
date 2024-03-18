@@ -2,7 +2,7 @@ import './stylesheets/LoginPage.css'
 import { NavLink } from "react-router-dom";
 import { Col, Container, Nav, Row } from "react-bootstrap";
 import React, { ReactNode } from 'react';
-import LoginSquare from './LoginSquare';
+import LoginSquare from '../components/LoginSquare';
 
 const LoginPage: React.FC = () => {
 

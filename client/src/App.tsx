@@ -1,19 +1,12 @@
-import React from "react";
-import logo from "./logo.svg";
-import { Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import CreateReview from "./components/CreateReview";
+import CreateReview from "./pages/CreateReview";
 import Header from "./components/Header";
-import LoginSquare from "./components/LoginSquare";
-import StartPage from "./components/StartPage";
-import LoginPage from "./components/LoginPage";
-import Background from "./components/Background";
-import FormsStartPage from "./components/MyReviews";
-import PopulateForms from "./components/PopulateForms";
-import MyReviews from "./components/MyReviews";
-import RespondentReview from './components/RespondentReview';
-import SignupPage from './components/SignUpPage';
+import StartPage from "./pages/StartPage";
+import LoginPage from "./pages/LoginPage";
+import MyReviews from "./pages/MyReviews";
+import RespondentReview from './pages/RespondentReview';
+import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
