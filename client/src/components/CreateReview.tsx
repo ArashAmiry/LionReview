@@ -230,7 +230,6 @@ function CreateReview() {
                 
                 return <MenuItem onClick={() => {
                   setCurrentPageIndex(index);
-                  setCurrentStep(getCurrentStep());
                 }}> {page.reviewTitle} </MenuItem>
               })}
             </Menu>
