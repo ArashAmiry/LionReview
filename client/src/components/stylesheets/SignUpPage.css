@@ -1,3 +1,7 @@
+.signup-container {
+  height: 90vh;
+}
+
 .login-text-container {
     position: relative;
     display: flex;

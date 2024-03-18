@@ -1,6 +1,5 @@
-.start-page-container {
-  display: flex;
-  flex-direction: row;
+.login-container {
+  height: 90vh;
 }
 
 .login-text-container {

@@ -220,7 +220,7 @@ function CreateReview() {
   const toggleSidebar = () => setCollapsed(!collapsed);
 
   return (
-    <Container fluid className="m-0 p-0">
+    <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
           <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">

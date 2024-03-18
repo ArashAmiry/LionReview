@@ -7,7 +7,7 @@ import SignupSquare from './SignupSquare';
 const SignupPage: React.FC = () => {
 
   return (
-    <Container>
+    <Container className="signup-container d-flex flex-column justify-content-center">
       <Row>
         <Col sm={7} className="d-flex flex-column justify-content-center">
           <Container className='text-container'>

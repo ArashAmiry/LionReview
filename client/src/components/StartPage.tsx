@@ -5,7 +5,7 @@ const StaticTextComponent: React.FC = () => {
   const appName = "ReviewTool";
 
   return (
-    <div className='title-container'>
+    <div className='title-container d-flex flex-column justify-content-center'>
       <p className='app-name'>{appName}</p>
     </div>
   );

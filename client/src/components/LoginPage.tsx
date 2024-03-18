@@ -7,7 +7,7 @@ import LoginSquare from './LoginSquare';
 const LoginPage: React.FC = () => {
 
   return (
-    <Container>
+    <Container className="login-container d-flex flex-column justify-content-center">
       <Row>
         <Col sm={7} className="d-flex flex-column justify-content-center">
           <Container className='text-container'>
