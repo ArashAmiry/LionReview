@@ -35,7 +35,7 @@ const SignupSquare: React.FC = () => {
         console.log(error);
       });
     console.log(res)
-    navigate("/logIn");
+    navigate("/emailSent");
   };
 
   return (
