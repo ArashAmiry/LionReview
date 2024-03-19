@@ -67,7 +67,7 @@ authenticationRouter.post("/logIn", async (
     }
 });
 
-authenticationRouter.post("/:token", async (
+authenticationRouter.get("/:token", async (
     req: Request<{token : string}, {}, {}>,
     res: Response
 ) => {
@@ -80,7 +80,7 @@ authenticationRouter.post("/:token", async (
         const tokenHandler = new TokenHandler();
         const decodedUsername = tokenHandler.decodeToken(tok);
         await accountModel.findOneAndUpdate({ username: decodedUsername }, { active: true });
-        return res.send('Account activated successfully');
+        return res.redirect('http://localhost:3000/login');
     } catch (error) {
         console.error(error);
         return res.status(500).send('Error activating account');
