@@ -15,7 +15,7 @@ import PreviewFormSidebar from "../components/PreviewFormSidebar";
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
-type Page = {
+type CreateReviewPage = {
   currentStep: number;
   binaryQuestions: { questionType: string; question: string }[];
   textFieldQuestions: { questionType: string; question: string }[];
@@ -27,7 +27,7 @@ type Page = {
   formErrorMessage: string;
 };
 
-const initialPagesState: Page[] = [
+const initialPagesState: CreateReviewPage[] = [
   {
     currentStep: 1,
     binaryQuestions: [{ questionType: "binary", question: "" }],
@@ -43,20 +43,20 @@ const initialPagesState: Page[] = [
 
 function CreateReview() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [pageData, setPageData] = useState<Page[]>(initialPagesState);
+  const [pagesData, setPagesData] = useState<CreateReviewPage[]>(initialPagesState);
   const amountSteps = 3;
   const navigate = useNavigate();
 
-  const updateCachedFiles = (url: string, fileData: CodeFile) => {
-    setPageData((prevPageData) => {
-      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-      const currentPage = updatedPageData[currentPageIndex]; // Get the current page state
+  const updateCachedFiles = (url: string, fileData: CodeFile) => { ///////////////////////////////////////////////////////////////
+    setPagesData((prevPagesData) => {
+      const updatedPagesData = [...prevPagesData]; // Create a copy of the array of page states
+      const currentPage = updatedPagesData[currentPageIndex]; // Get the current page state
       const updatedCurrentPage = {
         ...currentPage,
         cachedFiles: { ...currentPage.cachedFiles, [url]: fileData },
       }; // Update the cachedFiles of the current page
-      updatedPageData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
-      return updatedPageData; // Return the updated array of page states
+      updatedPagesData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
+      return updatedPagesData; // Return the updated array of page states
     });
   };
 
@@ -67,7 +67,7 @@ function CreateReview() {
   };
 
   const setTriedToSubmit = (value: boolean) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData];
       updatedPageData[currentPageIndex].triedToSubmit = value;
       return updatedPageData;
@@ -75,7 +75,7 @@ function CreateReview() {
   };
 
   const setFormErrorMessage = (message: string) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData];
       updatedPageData[currentPageIndex].formErrorMessage = message;
       return updatedPageData;
@@ -83,7 +83,7 @@ function CreateReview() {
   };
 
   const setCurrentStep = (step: number) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
       updatedPageData[currentPageIndex].currentStep = step; // Update current step of the current page
       return updatedPageData; // Return the updated array of page states
@@ -91,20 +91,20 @@ function CreateReview() {
   };
 
   const getCurrentStep = () => {
-    return pageData[currentPageIndex].currentStep;
+    return pagesData[currentPageIndex].currentStep;
   }
 
   const nextStep = () => {
-    if (pageData[currentPageIndex].currentStep === 1) {
+    if (pagesData[currentPageIndex].currentStep === 1) {
       setTriedToSubmit(true);
-      if (pageData[currentPageIndex].invalidURLExists) {
+      if (pagesData[currentPageIndex].invalidURLExists) {
         return;
       }
-    } else if (pageData[currentPageIndex].currentStep === 2) {
+    } else if (pagesData[currentPageIndex].currentStep === 2) {
       if (
         getNonEmptyQuestions([
-          ...pageData[currentPageIndex].binaryQuestions,
-          ...pageData[currentPageIndex].textFieldQuestions,
+          ...pagesData[currentPageIndex].binaryQuestions,
+          ...pagesData[currentPageIndex].textFieldQuestions,
         ]).length === 0
       ) {
         setFormErrorMessage("At least one question is required to continue.");
@@ -113,19 +113,19 @@ function CreateReview() {
         setFormErrorMessage("");
       }
     }
-    setCurrentStep(pageData[currentPageIndex].currentStep + 1);
+    setCurrentStep(pagesData[currentPageIndex].currentStep + 1);
   };
 
   const previousStep = () => {
-    if (pageData[currentPageIndex].currentStep === 1) {
+    if (pagesData[currentPageIndex].currentStep === 1) {
       navigate("/");
     }
-    setCurrentStep(pageData[currentPageIndex].currentStep - 1);
+    setCurrentStep(pagesData[currentPageIndex].currentStep - 1);
   };
 
   const handleChangeReviewTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
       const currentPage = updatedPageData[currentPageIndex]; // Get the current page state
       currentPage.reviewTitle = value; // Update the reviewTitle of the currentPage
@@ -136,7 +136,7 @@ function CreateReview() {
   const setBinaryQuestions = (
     questions: { questionType: string; question: string }[]
   ) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
       updatedPageData[currentPageIndex].binaryQuestions = questions; // Update binaryQuestions of the current page
       return updatedPageData; // Return the updated array of page states
@@ -146,7 +146,7 @@ function CreateReview() {
   const setTextfieldQuestions = (
     questions: { questionType: string; question: string }[]
   ) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
       updatedPageData[currentPageIndex].textFieldQuestions = questions; // Update textFieldQuestions of the current page
       return updatedPageData; // Return the updated array of page states
@@ -154,7 +154,7 @@ function CreateReview() {
   };
 
   const setInvalidURLExists = (value: boolean) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
       updatedPageData[currentPageIndex].invalidURLExists = value; // Update invalidURLExists of the current page
       return updatedPageData; // Return the updated array of page states
@@ -162,7 +162,7 @@ function CreateReview() {
   };
 
   const setUrls = (urls: string[]) => {
-    setPageData((prevPageData) => {
+    setPagesData((prevPageData) => {
       const updatedPageData = [...prevPageData];
       updatedPageData[currentPageIndex].urls = urls;
       return updatedPageData;
@@ -170,7 +170,7 @@ function CreateReview() {
   };
 
   const addNewPage = () => {
-    setPageData((prevPageData) => [
+    setPagesData((prevPageData) => [
       ...prevPageData,
       {
         currentStep: 1,
@@ -188,7 +188,7 @@ function CreateReview() {
   };
 
   const submitReview = async () => {
-    const reviewPages = pageData.map((pageData) => {
+    const reviewPages = pagesData.map((pageData) => {
       const codeSegments: { filename: string; content: string }[] = [];
       Object.entries(pageData.cachedFiles).forEach((record) => {
         codeSegments.push({
@@ -224,10 +224,10 @@ function CreateReview() {
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
           <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">
-               <Menu>
+            <Menu>
               <MenuItem onClick={() => toggleSidebar()} icon={<MenuOutlinedIcon />} className="d-flex justify-content-center align-items-center"></MenuItem>
-              {!collapsed && pageData.map((page, index) => {
-                
+              {!collapsed && pagesData.map((page, index) => {
+
                 return <MenuItem onClick={() => {
                   setCurrentPageIndex(index);
                 }}> {page.reviewTitle} </MenuItem>
@@ -236,27 +236,28 @@ function CreateReview() {
           </Sidebar>;
         </Col>
 
-        {pageData[currentPageIndex].currentStep === 1 && (
+        {pagesData[currentPageIndex].currentStep === 1 && (
           <Col md={12} className="first-step">
             <AddCodeLink
-              urls={pageData[currentPageIndex].urls}
+              urls={pagesData[currentPageIndex].urls}
               setUrls={(urls: string[]) => setUrls(urls)}
               setInvalidURLExists={setInvalidURLExists}
-              triedToSubmit={pageData[currentPageIndex].triedToSubmit}
-              invalidURLExists={pageData[currentPageIndex].invalidURLExists}
+              triedToSubmit={pagesData[currentPageIndex].triedToSubmit}
+              invalidURLExists={pagesData[currentPageIndex].invalidURLExists}
             />
           </Col>
         )}
-      </Row>
-      {pageData[currentPageIndex].currentStep === 2 && (
-        <Row className="second-step">
-          <Col md={7} className="form-box px-0">
+      
+      {pagesData[currentPageIndex].currentStep === 2 && (
+        <Col className="second-step">
+          <Row className="form-row">
+          <Col md={7} className="form-box">
             <Row className="pb-3">
               <Col md={12}>
                 <Form.Control
                   name="desc"
                   type="text"
-                  value={pageData[currentPageIndex].reviewTitle}
+                  value={pagesData[currentPageIndex].reviewTitle}
                   placeholder={`Title of review form...`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     handleChangeReviewTitle(e)
@@ -265,38 +266,37 @@ function CreateReview() {
               </Col>
             </Row>
             <Row>
-              {pageData[currentPageIndex].currentStep === 2 && (
-                <CreateReviewForm
-                  questions={pageData[currentPageIndex].binaryQuestions}
-                  setQuestions={(questions) =>
-                    setBinaryQuestions(questions)
-                  }
-                  textfields={pageData[currentPageIndex].textFieldQuestions}
-                  setTextfields={(textfields) =>
-                    setTextfieldQuestions(textfields)
-                  }
-                />
-              )}
+              <CreateReviewForm
+                questions={pagesData[currentPageIndex].binaryQuestions}
+                setQuestions={(questions) =>
+                  setBinaryQuestions(questions)
+                }
+                textfields={pagesData[currentPageIndex].textFieldQuestions}
+                setTextfields={(textfields) =>
+                  setTextfieldQuestions(textfields)
+                }
+              />
             </Row>
           </Col>
 
           <Col md={5}>
             <PreviewForm
-              reviewTitle={pageData[currentPageIndex].reviewTitle}
-              questions={pageData[currentPageIndex].binaryQuestions}
-              textfields={pageData[currentPageIndex].textFieldQuestions}
-              errorMessage={pageData[currentPageIndex].formErrorMessage}
+              reviewTitle={pagesData[currentPageIndex].reviewTitle}
+              questions={pagesData[currentPageIndex].binaryQuestions}
+              textfields={pagesData[currentPageIndex].textFieldQuestions}
+              errorMessage={pagesData[currentPageIndex].formErrorMessage}
             />
           </Col>
-        </Row>
+          </Row>
+        </Col>
       )}
 
-      {pageData[currentPageIndex].currentStep === 3 && (
-        <Row className="code-row ">
+      {pagesData[currentPageIndex].currentStep === 3 && (
+        <Row className="code-row">
           <Col className="code-preview" md={9}>
             <CodePreviewPage
-              urls={pageData[currentPageIndex].urls}
-              cachedFiles={pageData[currentPageIndex].cachedFiles}
+              urls={pagesData[currentPageIndex].urls}
+              cachedFiles={pagesData[currentPageIndex].cachedFiles}
               updateCachedFiles={updateCachedFiles}
             />
           </Col>
@@ -304,22 +304,23 @@ function CreateReview() {
             <PreviewFormSidebar
               submitReview={(e) => submitReview()}
               addNewPage={(e) => addNewPage()}
-              reviewTitle={pageData[currentPageIndex].reviewTitle}
-              questions={pageData[currentPageIndex].binaryQuestions}
-              textfields={pageData[currentPageIndex].textFieldQuestions}
+              reviewTitle={pagesData[currentPageIndex].reviewTitle}
+              questions={pagesData[currentPageIndex].binaryQuestions}
+              textfields={pagesData[currentPageIndex].textFieldQuestions}
               previousStep={() => previousStep()}
             />
           </Col>
         </Row>
       )}
-      {pageData[currentPageIndex].currentStep !== 3 && (
-        <Row className="first-step second-step">
+      
+      {pagesData[currentPageIndex].currentStep !== 3 && (
+        <Row className="first-step">
           <Col
             md={4}
             id="navButtons"
             className="my-4 d-flex justify-content-start px-0"
           >
-            {pageData[currentPageIndex].currentStep === 1 && (
+            {pagesData[currentPageIndex].currentStep === 1 && (
               <Button
                 size="lg"
                 variant="danger"
@@ -328,7 +329,7 @@ function CreateReview() {
                 Exit
               </Button>
             )}
-            {pageData[currentPageIndex].currentStep !== 1 && (
+            {pagesData[currentPageIndex].currentStep !== 1 && (
               <Button
                 size="lg"
                 variant="light"
@@ -338,7 +339,7 @@ function CreateReview() {
               </Button>
             )}
 
-            {pageData[currentPageIndex].currentStep !== amountSteps && (
+            {pagesData[currentPageIndex].currentStep !== amountSteps && (
               <Button size="lg" variant="light" onClick={() => nextStep()}>
                 Continue
               </Button>
@@ -346,6 +347,7 @@ function CreateReview() {
           </Col>
         </Row>
       )}
+      </Row>
     </Container>
   );
 }
