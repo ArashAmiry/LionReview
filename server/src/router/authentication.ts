@@ -67,6 +67,24 @@ authenticationRouter.post("/logIn", async (
     }
 });
 
+
+authenticationRouter.delete("/logOut", async (
+    req: Request<{}, {}, {}>,
+    res: Response
+) => {
+    if (req.session) {
+        req.session.destroy(err => {
+          if (err) {
+            res.status(400).send('Unable to log out')
+          } else {
+            res.send('Logout successful')
+          }
+        });
+      } else {
+        res.end()
+      }
+});
+
 authenticationRouter.get("/:token", async (
     req: Request<{token : string}, {}, {}>,
     res: Response
