@@ -8,9 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const logOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
-    await axios.delete('http://localhost:8080/auth/logOut', {
-      
-    })
+    await axios.delete('http://localhost:8080/auth/logOut')
       .catch(function (error) {
         console.log(error);
       });
