@@ -5,11 +5,13 @@ import './stylesheets/LoginSquare.css';
 import axios from 'axios';
 import { error } from 'console';
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import { useAuthContext } from '../AuthContext';
 
 const LoginSquare: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const { setIsLoggedIn } = useAuthContext();
   const navigate = useNavigate();
 
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +31,8 @@ const LoginSquare: React.FC = () => {
       .catch(function (error) {
         console.log(error);
       });
+
+    setIsLoggedIn(true);
     navigate('/')
   };
 
