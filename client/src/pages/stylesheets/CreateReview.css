@@ -38,7 +38,7 @@
 }
 
 .sidebar-col {
-    position: fixed;
+    position: absolute;
     top: 10vh;
     left: 0;
     height: 90vh;
