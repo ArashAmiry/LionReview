@@ -1,16 +1,36 @@
 import { Form, Col, Container, Row, Image, Button } from "react-bootstrap";
 import './stylesheets/AddCodeLink.css';
 import img from '../images/github-logo.png';
+import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 
 interface AddCodeLinkProps {
-    urls: string[],
-    setUrls: (array : string[]) => void
-    triedToSubmit: boolean
-    invalidURLExists: boolean
-    setInvalidURLExists: (exists: boolean) => void
+    currentPageIndex: number;
+    pagesData: CreateReviewPage[]; 
+    setPagesData: React.Dispatch<React.SetStateAction<CreateReviewPage[]>>;
+    setTriedToSubmit: (triedToSubmit: boolean) => void;
 }
 
-const AddCodeLink = ({urls, setUrls, invalidURLExists, setInvalidURLExists, triedToSubmit}: AddCodeLinkProps) => {
+const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmit}: AddCodeLinkProps) => {
+    const urls = pagesData[currentPageIndex].urls;
+    const triedToSubmit = pagesData[currentPageIndex].triedToSubmit;
+    const invalidURLExists = pagesData[currentPageIndex].invalidURLExists;
+
+    const setInvalidURLExists = (value: boolean) => {
+        setPagesData((prevPageData) => {
+          const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+          updatedPageData[currentPageIndex].invalidURLExists = value; // Update invalidURLExists of the current page
+          return updatedPageData; // Return the updated array of page states
+        });
+      };
+    
+      const setUrls = (urls: string[]) => {
+        setPagesData((prevPageData) => {
+          const updatedPageData = [...prevPageData];
+          updatedPageData[currentPageIndex].urls = urls;
+          return updatedPageData;
+        });
+      };
+
     const validateUrls = (list : string[]) => {
         let hasInvalidURL = false;
         list.forEach(item => {
@@ -20,10 +40,13 @@ const AddCodeLink = ({urls, setUrls, invalidURLExists, setInvalidURLExists, trie
             }
         });
         setInvalidURLExists(hasInvalidURL);
+        if (!hasInvalidURL) {
+            setTriedToSubmit(false);
+        }
     }
     
     const addLink = () => {
-        setUrls([...urls, ""])
+        setUrls([...urls, ""]);
         setInvalidURLExists(true);
     }
 
