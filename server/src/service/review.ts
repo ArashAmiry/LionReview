@@ -56,7 +56,7 @@ export class ReviewService {
         }
     }
 
-    private async getAnswers(questionId: string): Promise<string[] | undefined> {
+    async getAnswers(questionId: string): Promise<string[] | undefined> {
         try {
             const result = await answerModel.findOne({ questionId: questionId }).exec();
 

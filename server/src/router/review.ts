@@ -62,3 +62,15 @@ reviewRouter.post("/answer", async (
         res.status(500).send(e.message);
     }
 });
+
+reviewRouter.get("/answer/:questionID", async (
+    req: Request<{ questionID: string }, {}, {}>,
+    res: Response<String[]>
+) => {
+    try {
+        const response = await reviewService.getAnswers(req.params.questionID);
+        res.status(200).send(response);
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
