@@ -1,17 +1,12 @@
-import AddFormQuestions from "../components/CreateReviewForm";
 import Container from "react-bootstrap/esm/Container";
 import { ChangeEvent, useState } from "react";
 import Col from "react-bootstrap/esm/Col";
-import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 import "./stylesheets/CreateReview.css";
-import PreviewForm from "../components/PreviewForm";
-import { Form, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import AddCodeLink from "../components/AddCodeLink";
-import CodePreviewPage from "../components/CodePreview";
 import { CodeFile } from "../components/CodePreview";
 import axios from "axios";
-import PreviewFormSidebar from "../components/PreviewFormSidebar";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
@@ -41,7 +36,6 @@ function CreateReview() {
   const navigate = useNavigate();
 
   const updateCachedFiles = (url: string, fileData: CodeFile) => {
-    ///////////////////////////////////////////////////////////////
     setPagesData((prevPagesData) => {
       const updatedPagesData = [...prevPagesData]; // Create a copy of the array of page states
       const currentPage = updatedPagesData[currentPageIndex]; // Get the current page state
@@ -54,9 +48,7 @@ function CreateReview() {
     });
   };
 
-  const getNonEmptyQuestions = (
-    questions: { questionType: string; question: string }[]
-  ) => {
+  const getNonEmptyQuestions = (questions: { questionType: string; question: string }[]) => {
     return questions.filter((question) => question.question.trim() !== "");
   };
 
@@ -84,23 +76,14 @@ function CreateReview() {
     });
   };
 
-  const getCurrentStep = () => {
-    return pagesData[currentPageIndex].currentStep;
-  };
-
   const nextStep = () => {
     if (pagesData[currentPageIndex].currentStep === 1) {
-      setTriedToSubmit(true);
+      setTriedToSubmit(true); // Kom på nytt variabelnamn
       if (pagesData[currentPageIndex].invalidURLExists) {
         return;
       }
     } else if (pagesData[currentPageIndex].currentStep === 2) {
-      if (
-        getNonEmptyQuestions([
-          ...pagesData[currentPageIndex].binaryQuestions,
-          ...pagesData[currentPageIndex].textFieldQuestions,
-        ]).length === 0
-      ) {
+      if (getNonEmptyQuestions([...pagesData[currentPageIndex].binaryQuestions, ...pagesData[currentPageIndex].textFieldQuestions]).length === 0) {
         setFormErrorMessage("At least one question is required to continue.");
         return;
       } else {
@@ -117,51 +100,7 @@ function CreateReview() {
     setCurrentStep(pagesData[currentPageIndex].currentStep - 1);
   };
 
-  const handleChangeReviewTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setPagesData((prevPageData) => {
-      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-      const currentPage = updatedPageData[currentPageIndex]; // Get the current page state
-      currentPage.reviewTitle = value; // Update the reviewTitle of the currentPage
-      return updatedPageData; // Return the updated page data array
-    });
-  };
 
-  const setBinaryQuestions = (
-    questions: { questionType: string; question: string }[]
-  ) => {
-    setPagesData((prevPageData) => {
-      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-      updatedPageData[currentPageIndex].binaryQuestions = questions; // Update binaryQuestions of the current page
-      return updatedPageData; // Return the updated array of page states
-    });
-  };
-
-  const setTextfieldQuestions = (
-    questions: { questionType: string; question: string }[]
-  ) => {
-    setPagesData((prevPageData) => {
-      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-      updatedPageData[currentPageIndex].textFieldQuestions = questions; // Update textFieldQuestions of the current page
-      return updatedPageData; // Return the updated array of page states
-    });
-  };
-
-  const setInvalidURLExists = (value: boolean) => {
-    setPagesData((prevPageData) => {
-      const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-      updatedPageData[currentPageIndex].invalidURLExists = value; // Update invalidURLExists of the current page
-      return updatedPageData; // Return the updated array of page states
-    });
-  };
-
-  const setUrls = (urls: string[]) => {
-    setPagesData((prevPageData) => {
-      const updatedPageData = [...prevPageData];
-      updatedPageData[currentPageIndex].urls = urls;
-      return updatedPageData;
-    });
-  };
 
   const addNewPage = () => {
     setPagesData((prevPageData) => [
@@ -217,27 +156,18 @@ function CreateReview() {
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
-          <Sidebar
-            className="sidebar"
-            collapsed={collapsed}
-            backgroundColor="rgb(242, 242, 242, 1)"
-          >
+          <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">
             <Menu>
               <MenuItem
                 onClick={() => toggleSidebar()}
                 icon={<MenuOutlinedIcon />}
                 className="d-flex justify-content-center align-items-center"
-              ></MenuItem>
+              />
               {!collapsed &&
                 pagesData.map((page, index) => {
                   return (
-                    <MenuItem
-                      onClick={() => {
-                        setCurrentPageIndex(index);
-                      }}
-                    >
-                      {" "}
-                      {page.reviewTitle}{" "}
+                    <MenuItem onClick={() => setCurrentPageIndex(index)}>
+                      {page.reviewTitle}
                     </MenuItem>
                   );
                 })}
@@ -249,11 +179,10 @@ function CreateReview() {
         {pagesData[currentPageIndex].currentStep === 1 && (
           <Col md={12} className="first-step">
             <AddCodeLink
-              urls={pagesData[currentPageIndex].urls}
-              setUrls={(urls: string[]) => setUrls(urls)}
-              setInvalidURLExists={setInvalidURLExists}
-              triedToSubmit={pagesData[currentPageIndex].triedToSubmit}
-              invalidURLExists={pagesData[currentPageIndex].invalidURLExists}
+               currentPageIndex={currentPageIndex}
+               pagesData={pagesData}
+               setPagesData={(e) => setPagesData(e)}
+               setTriedToSubmit={(e) => setTriedToSubmit(e)}
             />
           </Col>
         )}
@@ -263,11 +192,7 @@ function CreateReview() {
             <ReviewFormEditor
               currentPageIndex={currentPageIndex}
               pagesData={pagesData}
-              setBinaryQuestions={(questions) => setBinaryQuestions(questions)}
-              setTextfieldQuestions={(questions) =>
-                setTextfieldQuestions(questions)
-              }
-              handleChangeReviewTitle={(e) => handleChangeReviewTitle(e)}
+              setPagesData={(e) => setPagesData(e)}
             />
           </Col>
         )}

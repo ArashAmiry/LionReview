@@ -9,14 +9,39 @@ import { ChangeEvent } from "react";
 interface ReviewFormEditorProps {
     currentPageIndex: number;
     pagesData: CreateReviewPage[]; 
-    setBinaryQuestions: (questions: {questionType: string, question: string}[]) => void;
-    setTextfieldQuestions: (textfields: {questionType: string, question: string}[]) => void;
-    handleChangeReviewTitle: (e: ChangeEvent<HTMLInputElement>) => void;
+    setPagesData: React.Dispatch<React.SetStateAction<CreateReviewPage[]>>;
 }
   
 
-function ReviewFormEditor({currentPageIndex, pagesData, setBinaryQuestions, setTextfieldQuestions, handleChangeReviewTitle} : ReviewFormEditorProps) {
-  return (
+function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFormEditorProps) {
+   
+    const setBinaryQuestions = (questions: { questionType: string; question: string }[]) => {
+        setPagesData((prevPageData) => {
+          const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+          updatedPageData[currentPageIndex].binaryQuestions = questions; // Update binaryQuestions of the current page
+          return updatedPageData; // Return the updated array of page states
+        });
+      };
+    
+    const setTextfieldQuestions = (questions: { questionType: string; question: string }[]) => {
+        setPagesData((prevPageData) => {
+          const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+          updatedPageData[currentPageIndex].textFieldQuestions = questions; // Update textFieldQuestions of the current page
+          return updatedPageData; // Return the updated array of page states
+        });
+      };
+
+    const handleChangeReviewTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setPagesData((prevPageData) => {
+          const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+          const currentPage = updatedPageData[currentPageIndex]; // Get the current page state
+          currentPage.reviewTitle = value; // Update the reviewTitle of the currentPage
+          return updatedPageData; // Return the updated page data array
+        });
+      };
+
+    return (
     <Row className="form-row">
       <Col md={7} className="form-box">
         <Row className="pb-3">
@@ -26,9 +51,7 @@ function ReviewFormEditor({currentPageIndex, pagesData, setBinaryQuestions, setT
               type="text"
               value={pagesData[currentPageIndex].reviewTitle}
               placeholder={`Title of review form...`}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChangeReviewTitle(e)
-              }
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeReviewTitle(e)}
             />
           </Col>
         </Row>
