@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import "./stylesheets/CreateReview.css";
 import { Row } from "react-bootstrap";
 import AddCodeLink from "../components/AddCodeLink";
-import { CodeFile } from "../components/CodePreview";
 import axios from "axios";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -13,6 +12,7 @@ import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
+import PagesSidebar from "../components/PagesSidebar";
 
 const initialPagesState: CreateReviewPage[] = [
   {
@@ -118,33 +118,11 @@ function CreateReview() {
     });
   };
 
-  const [collapsed, setCollapsed] = useState(false);
-
-  // Function to toggle the collapse state
-  const toggleSidebar = () => setCollapsed(!collapsed);
-
   return (
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
-          <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">
-            <Menu>
-              <MenuItem
-                onClick={() => toggleSidebar()}
-                icon={<MenuOutlinedIcon />}
-                className="d-flex justify-content-center align-items-center"
-              />
-              {!collapsed &&
-                pagesData.map((page, index) => {
-                  return (
-                    <MenuItem onClick={() => setCurrentPageIndex(index)}>
-                      {page.reviewTitle}
-                    </MenuItem>
-                  );
-                })}
-            </Menu>
-          </Sidebar>
-          ;
+          <PagesSidebar pagesData={pagesData} setCurrentPageIndex={(index) => setCurrentPageIndex(index)}/>
         </Col>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
