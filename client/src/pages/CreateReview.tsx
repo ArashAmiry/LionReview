@@ -16,7 +16,8 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 import ReviewFormEditor from "../components/ReviewFormEditor";
-
+import ReviewPreview from "../components/ReviewPreview";
+import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
 
 const initialPagesState: CreateReviewPage[] = [
   {
@@ -213,10 +214,7 @@ function CreateReview() {
   const toggleSidebar = () => setCollapsed(!collapsed);
 
   return (
-    <Container
-      fluid
-      className="container-create m-0 p-0 d-flex flex-column justify-content-center"
-    >
+    <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
           <Sidebar
@@ -261,71 +259,41 @@ function CreateReview() {
         )}
 
         {pagesData[currentPageIndex].currentStep === 2 && (
-          <Col className="second-step">
-           <ReviewFormEditor 
-           currentPageIndex={currentPageIndex}
-           pagesData={pagesData}
-           setBinaryQuestions={(questions) => setBinaryQuestions(questions)}
-           setTextfieldQuestions={(questions) => setTextfieldQuestions(questions)}
-           handleChangeReviewTitle={(e) => handleChangeReviewTitle(e)}
-           />
+          <Col md={7} className="second-step">
+            <ReviewFormEditor
+              currentPageIndex={currentPageIndex}
+              pagesData={pagesData}
+              setBinaryQuestions={(questions) => setBinaryQuestions(questions)}
+              setTextfieldQuestions={(questions) =>
+                setTextfieldQuestions(questions)
+              }
+              handleChangeReviewTitle={(e) => handleChangeReviewTitle(e)}
+            />
           </Col>
         )}
 
         {pagesData[currentPageIndex].currentStep === 3 && (
-          <Row className="code-row">
-            <Col className="code-preview" md={9}>
-              <CodePreviewPage
-                urls={pagesData[currentPageIndex].urls}
-                cachedFiles={pagesData[currentPageIndex].cachedFiles}
-                updateCachedFiles={updateCachedFiles}
-              />
-            </Col>
-            <Col md={3} className="p-0">
-              <PreviewFormSidebar
-                submitReview={(e) => submitReview()}
-                addNewPage={(e) => addNewPage()}
-                reviewTitle={pagesData[currentPageIndex].reviewTitle}
-                questions={pagesData[currentPageIndex].binaryQuestions}
-                textfields={pagesData[currentPageIndex].textFieldQuestions}
-                previousStep={() => previousStep()}
-              />
-            </Col>
-          </Row>
+          <Col md={12} className="px-0">
+            <ReviewPreview 
+            pagesData={pagesData} 
+            currentPageIndex={currentPageIndex} 
+            updateCachedFiles={updateCachedFiles}
+            submitReview={() => submitReview()}
+            addNewPage={() => addNewPage()}
+            previousStep={() => previousStep()}
+            />
+          </Col>
         )}
 
         {pagesData[currentPageIndex].currentStep !== 3 && (
           <Row className="first-step">
-            <Col
-              md={4}
-              id="navButtons"
-              className="my-4 d-flex justify-content-start px-0"
-            >
-              {pagesData[currentPageIndex].currentStep === 1 && (
-                <Button
-                  size="lg"
-                  variant="danger"
-                  onClick={() => previousStep()}
-                >
-                  Exit
-                </Button>
-              )}
-              {pagesData[currentPageIndex].currentStep !== 1 && (
-                <Button
-                  size="lg"
-                  variant="light"
-                  onClick={() => previousStep()}
-                >
-                  Back
-                </Button>
-              )}
-
-              {pagesData[currentPageIndex].currentStep !== amountSteps && (
-                <Button size="lg" variant="light" onClick={() => nextStep()}>
-                  Continue
-                </Button>
-              )}
-            </Col>
+           <CreateReviewWizardButtons 
+            pagesData={pagesData}
+            currentPageIndex={currentPageIndex}
+            amountSteps={amountSteps}
+            previousStep={() => previousStep()}
+            nextStep={() => nextStep()}
+           />
           </Row>
         )}
       </Row>
