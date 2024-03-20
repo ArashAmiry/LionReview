@@ -1,0 +1,9 @@
+.divider {
+    border-width: 2px;
+    margin: 10px 0;
+}
+
+.textfield-container {
+    background-color: white;
+    width: 100%;
+}

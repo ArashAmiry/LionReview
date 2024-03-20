@@ -1,0 +1,9 @@
+.pie-chart {
+    align-self: center;
+}
+
+.pie-chart-container {
+    height: 90%;
+    margin: 0;
+    padding: 0;
+}

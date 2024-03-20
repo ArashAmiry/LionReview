@@ -1,0 +1,9 @@
+.card-body {
+    height: 410px;
+    width: 100%;
+}
+
+.card {
+    align-items: center;
+    height: fit-content;
+}
