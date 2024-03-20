@@ -63,7 +63,7 @@ const LoginSquare: React.FC = () => {
             Log In
           </Button>
 
-          <Link className="mt-2 forgot-password" to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
+          {/* <Link className="mt-2 forgot-password" to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
           <hr className='divider' />
           <p className='create-new-text'>Don't have an account?</p>
           <Button variant="primary" className="create-new-account">
