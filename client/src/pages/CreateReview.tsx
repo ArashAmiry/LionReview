@@ -30,23 +30,9 @@ const initialPagesState: CreateReviewPage[] = [
 
 function CreateReview() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [pagesData, setPagesData] =
-    useState<CreateReviewPage[]>(initialPagesState);
+  const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
   const amountSteps = 3;
   const navigate = useNavigate();
-
-  const updateCachedFiles = (url: string, fileData: CodeFile) => {
-    setPagesData((prevPagesData) => {
-      const updatedPagesData = [...prevPagesData]; // Create a copy of the array of page states
-      const currentPage = updatedPagesData[currentPageIndex]; // Get the current page state
-      const updatedCurrentPage = {
-        ...currentPage,
-        cachedFiles: { ...currentPage.cachedFiles, [url]: fileData },
-      }; // Update the cachedFiles of the current page
-      updatedPagesData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
-      return updatedPagesData; // Return the updated array of page states
-    });
-  };
 
   const getNonEmptyQuestions = (questions: { questionType: string; question: string }[]) => {
     return questions.filter((question) => question.question.trim() !== "");
@@ -100,23 +86,8 @@ function CreateReview() {
     setCurrentStep(pagesData[currentPageIndex].currentStep - 1);
   };
 
-
-
   const addNewPage = () => {
-    setPagesData((prevPageData) => [
-      ...prevPageData,
-      {
-        currentStep: 1,
-        binaryQuestions: [{ questionType: "binary", question: "" }],
-        textFieldQuestions: [{ questionType: "text", question: "" }],
-        reviewTitle: "",
-        urls: [""],
-        cachedFiles: {},
-        triedToSubmit: false,
-        invalidURLExists: false,
-        formErrorMessage: "",
-      },
-    ]);
+    setPagesData((prevPageData) => [...prevPageData, JSON.parse(JSON.stringify(initialPagesState[0]))]);
     setCurrentPageIndex((currentPageIndex) => currentPageIndex + 1);
   };
 
@@ -202,7 +173,7 @@ function CreateReview() {
             <ReviewPreview 
             pagesData={pagesData} 
             currentPageIndex={currentPageIndex} 
-            updateCachedFiles={updateCachedFiles}
+            setPagesData={(e) => setPagesData(e)}
             submitReview={() => submitReview()}
             addNewPage={() => addNewPage()}
             previousStep={() => previousStep()}

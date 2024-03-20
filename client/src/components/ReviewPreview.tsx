@@ -7,15 +7,27 @@ import PreviewFormSidebar from "./PreviewFormSidebar";
 type ReviewPreviewProps = {
     pagesData: CreateReviewPage[],
     currentPageIndex: number,
-    updateCachedFiles: (url: string, fileData: CodeFile) => void,
+    setPagesData: React.Dispatch<React.SetStateAction<CreateReviewPage[]>>;
     submitReview: () => void,
     addNewPage: () => void,
     previousStep: () => void
 }
 
+function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, previousStep} : ReviewPreviewProps) {
 
+    const updateCachedFiles = (url: string, fileData: CodeFile) => {
+        setPagesData((prevPagesData) => {
+          const updatedPagesData = [...prevPagesData]; // Create a copy of the array of page states
+          const currentPage = updatedPagesData[currentPageIndex]; // Get the current page state
+          const updatedCurrentPage = {
+            ...currentPage,
+            cachedFiles: { ...currentPage.cachedFiles, [url]: fileData },
+          }; // Update the cachedFiles of the current page
+          updatedPagesData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
+          return updatedPagesData; // Return the updated array of page states
+        });
+      };
 
-function ReviewPreview ({pagesData, currentPageIndex, updateCachedFiles, submitReview, addNewPage, previousStep} : ReviewPreviewProps) {
     return (
         <Row className="code-row">
             <Col className="code-preview" md={9}>
