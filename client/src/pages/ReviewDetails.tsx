@@ -96,6 +96,7 @@ const ReviewDetails = () => {
                     <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
                 </Col>
             <h1 className="review-name">{reviewName}</h1>
+            <h3 className="review-page">The {showCode ? "code" : "answers"} for "{reviewPages[currentPageIndex].formName}"</h3>
             <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
             {showCode ?
                 <Container className="container-details mt-2">
@@ -104,7 +105,8 @@ const ReviewDetails = () => {
                     />
                 </Container>
                 :
-                <Container className="container-statistics">
+                <Container className="container-statistics mt-2">
+                    
                     <Row>
                         {reviewPages[currentPageIndex].questions
                             .filter(question => question.questionType === "binary")
