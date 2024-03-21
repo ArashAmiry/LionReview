@@ -1,9 +1,8 @@
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useState } from "react";
-import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 
-function PagesSidebar({ pagesData, setCurrentPageIndex }: { pagesData: CreateReviewPage[], setCurrentPageIndex: (index: number) => void }) {
+function PagesSidebar({ pagesTitles, setCurrentPageIndex }: { pagesTitles: string[], setCurrentPageIndex: (index: number) => void }) {
     const [collapsed, setCollapsed] = useState(false);
 
     // Function to toggle the collapse state
@@ -18,8 +17,8 @@ function PagesSidebar({ pagesData, setCurrentPageIndex }: { pagesData: CreateRev
                     className="d-flex justify-content-center align-items-center"
                 />
                 {!collapsed &&
-                    pagesData.map((page, index) => {
-                        const title = page.reviewTitle || `Page ${index + 1}`;
+                    pagesTitles.map((pageTitle, index) => {
+                        const title = pageTitle || `Page ${index + 1}`;
                         return (
                             <MenuItem onClick={() => setCurrentPageIndex(index)}>
                                 {title}

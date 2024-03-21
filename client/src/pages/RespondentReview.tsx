@@ -5,8 +5,12 @@ import ReviewFormSidebar from "../components/ReviewFormSidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
+import PagesSidebar from "../components/PagesSidebar";
+import "./stylesheets/RespondentReview.css";
 
 function RespondentReview() {
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    const [review, setReview] = useState<IReview>();
 
     const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
     const [questions, setQuestions] = useState<{ id: string, question: string, answer: string }[]>();
@@ -22,47 +26,69 @@ function RespondentReview() {
         }
     }
 
+    const updatePage = (review: IReview) => {
+        setFiles(review.pages[currentPageIndex].codeSegments.map(segment => ({
+            name: segment.filename,
+            content: segment.content
+        })));
+
+        setQuestions(review.pages[currentPageIndex].questions
+            .filter(question => question.questionType === "binary")
+            .map(filteredQuestion => ({
+                id: filteredQuestion._id,
+                question: filteredQuestion.question,
+                answer: ""
+            })));
+
+        setTextfields(review.pages[currentPageIndex].questions
+            .filter(question => question.questionType === "text")
+            .map(filteredQuestion => ({
+                id: filteredQuestion._id,
+                question: filteredQuestion.question,
+                answer: ""
+            })))
+    }
+
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
-                setFiles(response.pages[0].codeSegments.map(segment => ({
-                    name: segment.filename,
-                    content: segment.content
-                })));
-
-                setQuestions(response.pages[0].questions
-                    .filter(question => question.questionType === "binary")
-                    .map(filteredQuestion => ({
-                        id: filteredQuestion._id,
-                        question: filteredQuestion.question,
-                        answer: ""
-                    })));
-
-                setTextfields(response.pages[0].questions
-                    .filter(question => question.questionType === "text")
-                    .map(filteredQuestion => ({
-                        id: filteredQuestion._id,
-                        question: filteredQuestion.question,
-                        answer: ""
-                    })))
+                setReview(response);
+                updatePage(response);
             }
         });
     }, [reviewId]); // This effect runs when `reviewId` changes
+
+    useEffect(() => {
+        if (review) {
+            updatePage(review);
+        }
+
+    }, [currentPageIndex])
 
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
         return <div>No review ID provided</div>;
     }
 
-    if (!files || !questions || !textfields) {
+    if (!files || !questions || !textfields || !review) {
         return <div>Loading...</div>
     }
 
     return (
-        <Container fluid className="px-0">
+        <Container fluid className="answer-container px-0">
             <Row className="code-row">
+                <Col className="sidebar-col" md={2}>
+                    <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+                </Col>
                 <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
                 <Col md={3} className="p-0">
-                    <ReviewFormSidebar textfields={textfields} questions={questions} />
+                    <ReviewFormSidebar
+                        pageTitle={review.pages[currentPageIndex].formName}
+                        currentPageIndex={currentPageIndex}
+                        amountPages={review.pages.length - 1}
+                        textfields={textfields}
+                        questions={questions}
+                        setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
+                    />
                 </Col>
             </Row>
         </Container>

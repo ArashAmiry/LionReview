@@ -4,8 +4,8 @@ import QuestionListReview from "./QuestionListReview";
 import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
 
-function ReviewFormSidebar({ textfields, questions }: { textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[] }) {
-    const reviewTitle = "Title";
+function ReviewFormSidebar({ pageTitle, currentPageIndex, amountPages, textfields, questions, setCurrentPageIndex }: { pageTitle: string, currentPageIndex : number, amountPages : number, textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[], setCurrentPageIndex: (index: number) => void }) {
+    const reviewTitle = pageTitle;
 
     const submitReview = async (textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[]) => {
 
@@ -42,6 +42,9 @@ function ReviewFormSidebar({ textfields, questions }: { textfields: { id: string
                 <TextfieldListReview textfields={textfields} />
             </Card.Body>
 
+            {currentPageIndex !== amountPages && (
+                <Button size="lg" variant="light" onClick={() => setCurrentPageIndex(currentPageIndex + 1)}>Continue</Button>
+            )}
             <Button onClick={() => submitReview(textfields, questions)} size="lg" variant="success">Submit Review</Button>
         </Card>
     )
