@@ -7,7 +7,7 @@ import PresetQuestions from "./PresetQuestions";
 import Textfields from "./Textfields";
 
 
-function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }:
+function AddFormQuestions({ questions, setQuestions, textfields, setTextfields }:
   {
     questions: { questionType: string, question: string }[], setQuestions: (questions: { questionType: string, question: string }[]) => void,
     textfields: { questionType: string, question: string }[], setTextfields: (textfields: { questionType: string, question: string }[]) => void
@@ -66,4 +66,4 @@ function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }
   );
 }
 
-export default CreateReviewForm;
+export default AddFormQuestions;
