@@ -4,14 +4,15 @@ import { useParams } from "react-router-dom";
 import "./stylesheets/ReviewDetails.css";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
-import { Col, Row } from "react-bootstrap";
-import BinaryQuestionDetailsCard from "../components/BinaryQuestionDetailsCard";
-import TextfieldQuestionDetails from "../components/TextfieldQuestionDetails";
+import { Button, Col, Row } from "react-bootstrap";
+import BinaryQuestionDetailsCard from "../components/review_details/BinaryQuestionDetailsCard";
+import TextfieldQuestionDetails from "../components/review_details/TextfieldQuestionDetails";
+import CodeDisplay from "../components/review_details/CodeDisplay";
 
 type DetailsPage = {
     formName: string;
     codeSegments: {
-        filename: string;
+        name: string;
         content: string;
     }[];
     questions: {
@@ -26,8 +27,9 @@ const ReviewDetails = () => {
     const [reviewPages, setReviewPages] = useState<DetailsPage[]>()
     const [questionsAnswers, setQuestionsAnswers] = useState<{ questionId: string, answers: string[] }[]>()
     const { reviewId } = useParams<{ reviewId: string }>();
-/*     const [loading, setLoading] = useState(true);
-    const [currentPageIndex, setCurrentPageIndex] = useState(0) */
+    /*     const [loading, setLoading] = useState(true);
+        const [currentPageIndex, setCurrentPageIndex] = useState(0) */
+    const [showCode, setShowCode] = useState(false);
 
     const fetchReview = async (): Promise<IReview | undefined> => {
         try {
@@ -44,7 +46,10 @@ const ReviewDetails = () => {
             if (response) {
                 setReviewName(response.name);
                 setReviewPages(response.pages.map((page) => ({
-                    codeSegments: page.codeSegments,
+                    codeSegments: page.codeSegments.map((file) => ({
+                        name: file.filename,
+                        content: file.content
+                    })),
                     formName: page.formName,
                     questions: page.questions
                 })));
@@ -85,32 +90,40 @@ const ReviewDetails = () => {
     }
 
     return (
-        <Container fluid className="container-details d-flex flex-column justify-content-center">
+        <Container fluid className="page-container d-flex flex-column">
             <h1 className="review-name">{reviewName}</h1>
-            <Container className="container-statistics">
-                <Row>
-                {reviewPages[0].questions
-                .filter(question => question.questionType === "binary")
-                .map((question) => (
-                    <Col key={question._id} lg={3} className='my-2'>
-                        <BinaryQuestionDetailsCard
-                            question={question}
-                            answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                        />
-                    </Col>
-                ))}
-                
-            </Row>
-            {reviewPages && reviewPages[0].questions
-                .filter(question => question.questionType === "text")
-                .map((question) => (
-                        <TextfieldQuestionDetails
-                            question={question}
-                            answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                        />
-                ))}
-            </Container>
-            
+            <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
+            {showCode ?
+                <Container className="container-details mt-2">
+                    <CodeDisplay
+                        files={reviewPages[0].codeSegments}
+                    />
+                </Container>
+                :
+                <Container className="container-statistics">
+                    <Row>
+                        {reviewPages[0].questions
+                            .filter(question => question.questionType === "binary")
+                            .map((question) => (
+                                <Col key={question._id} lg={3} className='my-2'>
+                                    <BinaryQuestionDetailsCard
+                                        question={question}
+                                        answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                    />
+                                </Col>
+                            ))}
+
+                    </Row>
+                    {reviewPages && reviewPages[0].questions
+                        .filter(question => question.questionType === "text")
+                        .map((question) => (
+                            <TextfieldQuestionDetails
+                                question={question}
+                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                            />
+                        ))}
+                </Container>
+            }
         </Container>
     );
 }

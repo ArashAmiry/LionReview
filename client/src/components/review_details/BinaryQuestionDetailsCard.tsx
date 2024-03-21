@@ -1,6 +1,6 @@
 import { Card, Container } from "react-bootstrap";
 import BinaryQuestionStatistics from "./BinaryQuestionStatistics";
-import './stylesheets/BinaryQuestionDetailsCard.css'
+import '../stylesheets/review_details/BinaryQuestionDetailsCard.css'
 
 
 interface BinaryQuestionDetailsCardProps {

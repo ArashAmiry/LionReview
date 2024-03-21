@@ -1,10 +1,25 @@
-.container-details {
-    width: 60%;
+.page-container {
     height: 90vh;
 }
 
+.container-details {
+    width: 80%;
+    height: 100%;
+    padding: 0;
+}
+
 .container-statistics {
+    background-color: white;
+    border-radius: 10px;
+    width: 60%;
     overflow-y: scroll;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.toggle-code-answers {
+    width: 20%;
+    align-self: center;
 }
 
 .review-name {

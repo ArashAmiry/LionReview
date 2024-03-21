@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import './stylesheets/TextfieldAnswer.css'
+import '../stylesheets/review_details/TextfieldAnswer.css'
 
 const TextfieldAnswer = ({ answer }: { answer: string }) => {
     return (

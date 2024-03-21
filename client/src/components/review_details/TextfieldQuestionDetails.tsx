@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap"
-import './stylesheets/TextfieldQuestionDetails.css'
+import '../stylesheets/review_details/TextfieldQuestionDetails.css'
 import TextfieldAnswer from "./TextfieldAnswer";
 
 interface TextfieldQuestionDetailsProps {
