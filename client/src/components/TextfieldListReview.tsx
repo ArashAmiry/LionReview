@@ -1,10 +1,12 @@
 import { Form } from "react-bootstrap";
 
-function TextfieldListReview({ textfields }: { textfields: {id: string, question: string, answer: string}[] }) {
+function TextfieldListReview({ textfields, setTextfields}: { textfields: {id: string, question: string, answer: string}[], setTextfields: (textfields: { id: string, question: string, answer: string }[]) => void}) {
 
     const handleTextfieldChange = (answer: string, id: string) => {
         const textfieldIndex = textfields.findIndex(q => q.id === id);
-        textfields[textfieldIndex].answer = answer;
+        const newtextfields = [...textfields];
+        newtextfields[textfieldIndex].answer = answer;
+        setTextfields(newtextfields);
       };
 
     return (

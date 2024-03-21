@@ -4,7 +4,7 @@ import QuestionListReview from "./QuestionListReview";
 import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
 
-function ReviewFormSidebar({ pageTitle, currentPageIndex, amountPages, textfields, questions, setCurrentPageIndex }: { pageTitle: string, currentPageIndex : number, amountPages : number, textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[], setCurrentPageIndex: (index: number) => void }) {
+function ReviewFormSidebar({ pageTitle, currentPageIndex, amountPages, textfields, questions, setCurrentPageIndex, setTextfields }: { pageTitle: string, currentPageIndex : number, amountPages : number, textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[], setCurrentPageIndex: (index: number) => void , setTextfields: (textfields: { id: string, question: string, answer: string }[]) => void}) {
     const reviewTitle = pageTitle;
 
     const submitReview = async (textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[]) => {
@@ -39,7 +39,7 @@ function ReviewFormSidebar({ pageTitle, currentPageIndex, amountPages, textfield
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
                 <QuestionListReview questions={questions} />
-                <TextfieldListReview textfields={textfields} />
+                <TextfieldListReview textfields={textfields} setTextfields={setTextfields} />
             </Card.Body>
 
             {currentPageIndex !== amountPages && (

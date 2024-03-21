@@ -86,6 +86,7 @@ function RespondentReview() {
                         currentPageIndex={currentPageIndex}
                         amountPages={review.pages.length - 1}
                         textfields={textfields}
+                        setTextfields={setTextfields}
                         questions={questions}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
                     />
