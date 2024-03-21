@@ -10,10 +10,11 @@ type ReviewPreviewProps = {
     setPagesData: React.Dispatch<React.SetStateAction<CreateReviewPage[]>>;
     submitReview: () => void,
     addNewPage: () => void,
+    setReviewName: (name: string) => void,
     previousStep: () => void
 }
 
-function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, previousStep} : ReviewPreviewProps) {
+function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep} : ReviewPreviewProps) {
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setPagesData((prevPagesData) => {
@@ -41,6 +42,7 @@ function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview
             <PreviewFormSidebar
                 submitReview={(e) => submitReview()}
                 addNewPage={(e) => addNewPage()}
+                setReviewName={(name) => setReviewName(name)}
                 reviewTitle={pagesData[currentPageIndex].reviewTitle}
                 questions={pagesData[currentPageIndex].binaryQuestions}
                 textfields={pagesData[currentPageIndex].textFieldQuestions}

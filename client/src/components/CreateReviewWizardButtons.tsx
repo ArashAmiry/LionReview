@@ -11,15 +11,17 @@ type CreateReviewWizardButtonsProps = {
 }
 
 function CreateReviewWizardButtons({pagesData, currentPageIndex, amountSteps, previousStep, nextStep} : CreateReviewWizardButtonsProps) {
+    const currentStep = pagesData[currentPageIndex].currentStep;
+
     return (
         <Col md={4} id="navButtons" className="my-4 d-flex justify-content-start px-0">
-        {pagesData[currentPageIndex].currentStep === 1 && (
+        {currentStep === 1 && (
           <Button size="lg" variant="danger"onClick={() => previousStep()}>Exit</Button>
         )}
-        {pagesData[currentPageIndex].currentStep !== 1 && (
+        {currentStep !== 1 && (
           <Button size="lg" variant="light" onClick={() => previousStep()}>Back</Button>
         )}
-        {pagesData[currentPageIndex].currentStep !== amountSteps && (
+        {currentStep !== amountSteps && (
           <Button size="lg" variant="light" onClick={() => nextStep()}>Continue</Button>
         )}
       </Col>

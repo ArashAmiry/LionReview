@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import "./stylesheets/CreateReview.css";
 import { Row } from "react-bootstrap";
 import AddCodeLink from "../components/AddCodeLink";
-import { CodeFile } from "../components/CodePreview";
 import axios from "axios";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -19,7 +18,7 @@ const initialPagesState: CreateReviewPage[] = [
     currentStep: 1,
     binaryQuestions: [{ questionType: "binary", question: "" }],
     textFieldQuestions: [{ questionType: "text", question: "" }],
-    reviewTitle: "",
+    reviewTitle: "Page 1",
     urls: [""],
     cachedFiles: {},
     triedToSubmit: false,
@@ -31,6 +30,7 @@ const initialPagesState: CreateReviewPage[] = [
 function CreateReview() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
+  const [reviewName, setReviewName] = useState("");
   const amountSteps = 3;
   const navigate = useNavigate();
 
@@ -87,10 +87,12 @@ function CreateReview() {
   };
 
   const addNewPage = () => {
-    setPagesData((prevPageData) => [...prevPageData, JSON.parse(JSON.stringify(initialPagesState[0]))]);
+    const newPage : CreateReviewPage = JSON.parse(JSON.stringify(initialPagesState[0]));
+    newPage.reviewTitle = "Page " + (pagesData.length + 1);
+    setPagesData((prevPageData) => [...prevPageData, newPage]);
     setCurrentPageIndex((currentPageIndex) => currentPageIndex + 1);
   };
-
+  
   const submitReview = async () => {
     const reviewPages = pagesData.map((pageData) => {
       const codeSegments: { filename: string; content: string }[] = [];
@@ -112,7 +114,7 @@ function CreateReview() {
     });
     console.log(reviewPages);
     await axios.post("http://localhost:8080/review/", {
-      name: "temporaryName",
+      name: reviewName,
       createdBy: "username",
       pages: reviewPages,
     });
@@ -137,7 +139,7 @@ function CreateReview() {
               {!collapsed &&
                 pagesData.map((page, index) => {
                   return (
-                    <MenuItem onClick={() => setCurrentPageIndex(index)}>
+                    <MenuItem key={index} onClick={() => setCurrentPageIndex(index)}>
                       {page.reviewTitle}
                     </MenuItem>
                   );
@@ -176,6 +178,7 @@ function CreateReview() {
             setPagesData={(e) => setPagesData(e)}
             submitReview={() => submitReview()}
             addNewPage={() => addNewPage()}
+            setReviewName={(name) => setReviewName(name)}
             previousStep={() => previousStep()}
             />
           </Col>
