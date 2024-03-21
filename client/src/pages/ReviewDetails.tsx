@@ -8,6 +8,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import BinaryQuestionDetailsCard from "../components/review_details/BinaryQuestionDetailsCard";
 import TextfieldQuestionDetails from "../components/review_details/TextfieldQuestionDetails";
 import CodeDisplay from "../components/review_details/CodeDisplay";
+import PagesSidebar from "../components/PagesSidebar";
 
 type DetailsPage = {
     formName: string;
@@ -27,8 +28,8 @@ const ReviewDetails = () => {
     const [reviewPages, setReviewPages] = useState<DetailsPage[]>()
     const [questionsAnswers, setQuestionsAnswers] = useState<{ questionId: string, answers: string[] }[]>()
     const { reviewId } = useParams<{ reviewId: string }>();
-    /*     const [loading, setLoading] = useState(true);
-        const [currentPageIndex, setCurrentPageIndex] = useState(0) */
+    /*     const [loading, setLoading] = useState(true); */
+        const [currentPageIndex, setCurrentPageIndex] = useState(0)
     const [showCode, setShowCode] = useState(false);
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -91,18 +92,21 @@ const ReviewDetails = () => {
 
     return (
         <Container fluid className="page-container d-flex flex-column">
+            <Col className="sidebar-col" md={2}>
+                    <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+                </Col>
             <h1 className="review-name">{reviewName}</h1>
             <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
             {showCode ?
                 <Container className="container-details mt-2">
                     <CodeDisplay
-                        files={reviewPages[0].codeSegments}
+                        files={reviewPages[currentPageIndex].codeSegments}
                     />
                 </Container>
                 :
                 <Container className="container-statistics">
                     <Row>
-                        {reviewPages[0].questions
+                        {reviewPages[currentPageIndex].questions
                             .filter(question => question.questionType === "binary")
                             .map((question) => (
                                 <Col key={question._id} lg={3} className='my-2'>
@@ -114,7 +118,7 @@ const ReviewDetails = () => {
                             ))}
 
                     </Row>
-                    {reviewPages && reviewPages[0].questions
+                    {reviewPages[currentPageIndex].questions
                         .filter(question => question.questionType === "text")
                         .map((question) => (
                             <TextfieldQuestionDetails
