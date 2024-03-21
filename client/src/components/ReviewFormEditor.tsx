@@ -31,6 +31,14 @@ function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFo
         });
       };
 
+    const setRangeQuestions = (questions: { questionType: string; question: string }[]) => {
+      setPagesData((prevPageData) => {
+        const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
+        updatedPageData[currentPageIndex].rangeQuestions = questions; // rangeQuestions of the current page
+        return updatedPageData; // Return the updated array of page states
+      });
+    }
+
     const handleChangeReviewTitle = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setPagesData((prevPageData) => {
@@ -61,6 +69,8 @@ function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFo
             setQuestions={(questions) => setBinaryQuestions(questions)}
             textfields={pagesData[currentPageIndex].textFieldQuestions}
             setTextfields={(textfields) => setTextfieldQuestions(textfields)}
+            rangeQuestions={pagesData[currentPageIndex].rangeQuestions}
+            setRangeQuestions={(rangeQuestions) => setRangeQuestions(rangeQuestions)}
           />
         </Row>
       </Col>
@@ -70,6 +80,7 @@ function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFo
           reviewTitle={pagesData[currentPageIndex].reviewTitle}
           questions={pagesData[currentPageIndex].binaryQuestions}
           textfields={pagesData[currentPageIndex].textFieldQuestions}
+          rangeQuestions={pagesData[currentPageIndex].rangeQuestions}
           errorMessage={pagesData[currentPageIndex].formErrorMessage}
         />
       </Col>

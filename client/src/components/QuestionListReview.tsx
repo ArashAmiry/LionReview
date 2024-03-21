@@ -1,5 +1,5 @@
 import { Col, Form, FormLabel, Row } from "react-bootstrap";
-import './stylesheets/QuestionListReview.css'
+import './stylesheets/PreviewForm.css'
 
 function QuestionListReview({ questions }: { questions: { id: string, question: string, answer: string }[] }) {
 
@@ -13,7 +13,7 @@ function QuestionListReview({ questions }: { questions: { id: string, question: 
             {questions
                 .filter(question => question.question !== "")
                 .map((question, index) => (
-                    <Form className="binary-row p-3 mb-3">
+                    <Form className="question p-3 mb-3">
                         <Row>
                             <Col md={12}>
                                 <FormLabel><p>{question.question}</p></FormLabel>
