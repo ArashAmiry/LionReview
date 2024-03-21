@@ -10,6 +10,7 @@ const Header = () => {
           <Nav className="me-auto">
             <Nav.Link as={NavLink} to="/create">Create Review Session</Nav.Link>
             <Nav.Link as={NavLink} to="/myReviews">My Reviews</Nav.Link>
+            <Nav.Link as={NavLink} to="/Templates">Templates</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link as={NavLink} to="/logIn" className="mx-2">Log In</Nav.Link>

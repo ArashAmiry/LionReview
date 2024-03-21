@@ -8,6 +8,7 @@ import MyReviews from "./pages/MyReviews";
 import RespondentReview from './pages/RespondentReview';
 import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
+import TemplatePage from "./pages/TemplatePage";
 
 axios.defaults.withCredentials = true;
 
@@ -26,6 +27,7 @@ function App() {
                 path="/myReviews"
                 element={<MyReviews username={"username"} />}
               />
+              <Route path='/Templates' element={<TemplatePage></TemplatePage>}></Route>
             </Routes>
 
           </div>
