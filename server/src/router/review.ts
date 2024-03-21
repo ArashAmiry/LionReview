@@ -43,7 +43,6 @@ reviewRouter.get("/single/:reviewId", async (
     res: Response<IReview>
 ) => {
     try {
-        console.log("Hello")
         const review = await reviewService.getReview(req.params.reviewId);
         res.status(200).send(review);
     } catch (e: any) {
