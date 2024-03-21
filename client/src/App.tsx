@@ -11,6 +11,7 @@ import axios from 'axios';
 import AfterActivation from "./pages/AfterActivation";
 import EmailSent from "./pages/EmailSent";
 import { AuthProvider } from "./AuthContext";
+import PrivateRoutes from "./PrivateRoutes";
 
 axios.defaults.withCredentials = true;
 
@@ -24,7 +25,12 @@ function App() {
             <Route path="/" element={<StartPage />} />
             <Route path="/logIn" element={<LoginPage />} />
             <Route path="/signUp" element={<SignupPage />} />
-            <Route path="/create" element={<CreateReview />} />
+            <Route path="/create" element={
+              <PrivateRoutes>
+                <CreateReview />
+              </PrivateRoutes>
+            }
+            />
             <Route path="/activated" element={<AfterActivation />} />
             <Route path="/emailSent" element={<EmailSent />} />
             <Route path="/answer/:reviewId" element={<RespondentReview />} />

@@ -26,8 +26,9 @@ const Header = () => {
       <Container>
         <Navbar.Brand as={NavLink} to="/"><Image src={img} /></Navbar.Brand>
         <Nav className="me-auto">
+        {isLoggedIn && (<>
           <Nav.Link as={NavLink} to="/create">Create Review Session</Nav.Link>
-          <Nav.Link as={NavLink} to="/myReviews">My Reviews</Nav.Link>
+          <Nav.Link as={NavLink} to="/myReviews">My Reviews</Nav.Link></>)}
         </Nav>
         <Nav>
           {isLoggedIn ?
