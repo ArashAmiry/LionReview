@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Pie } from 'react-chartjs-2';
-import { Chart, ArcElement } from 'chart.js'
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Container } from "react-bootstrap";
 import './stylesheets/BinaryQuestionStatistics.css'
-Chart.register(ArcElement);
+Chart.register(ArcElement, Tooltip, Legend);
 
 
 interface QuestionStatisticsProps {
@@ -30,28 +30,29 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
             values: answerValues
         };
     }
-    
-const data = generateChartData(answers)
 
-//TODO: Change colors to something else
-const chartData = {
-    labels: data.labels,
-    datasets: [
-        {
-            data: data.values,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.6)',
-                'rgba(54, 162, 235, 0.6)'
-            ]
-        }
-    ]
-};
+    const data = generateChartData(answers)
 
-return (
-    <Container className="pie-chart-container d-flex flex-column justify-content-center">
-        <Pie className="pie-chart" data={chartData} />
-    </Container>
-);
+    //TODO: Change colors to something else
+    const chartData = {
+        labels: data.labels,
+        datasets: [
+            {
+                data: data.values,
+                backgroundColor: [
+                    'red',
+                    'blue'
+                ]
+            }
+        ]
+    };
+
+    return (
+        <Container className="pie-chart-container d-flex flex-column justify-content-center">
+            <p className="mb-0">svar: {answers.length}</p>
+            <Pie className="pie-chart" data={chartData} />
+        </Container>
+    );
 };
 
 export default BinaryQuestionStatistics;

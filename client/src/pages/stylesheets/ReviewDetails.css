@@ -1,4 +1,12 @@
 .container-details {
-    width: 70%;
+    width: 60%;
+    height: 90vh;
 }
 
+.container-statistics {
+    overflow-y: scroll;
+}
+
+.review-name {
+    color: white;
+}

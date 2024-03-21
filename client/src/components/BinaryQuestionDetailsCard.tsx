@@ -11,7 +11,7 @@ interface BinaryQuestionDetailsCardProps {
 const BinaryQuestionDetailsCard = ({ question, answers }:BinaryQuestionDetailsCardProps) => {
     return (
         <Card id={question._id} className='card'>
-            <Card.Body className='card-body justify-content-center'>
+            <Card.Body className='binary-card justify-content-center'>
                 <Card.Title className="two-line-name">{question.question}</Card.Title>
                 {answers && <BinaryQuestionStatistics answers={answers} />}
             </Card.Body>

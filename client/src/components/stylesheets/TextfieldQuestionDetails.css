@@ -3,7 +3,14 @@
     margin: 10px 0;
 }
 
+.number-responses {
+    text-align: left;
+    padding: 5px 10px;
+}
+
 .textfield-container {
     background-color: white;
+    border-radius: 10px;
     width: 100%;
+    padding: 10px;
 }

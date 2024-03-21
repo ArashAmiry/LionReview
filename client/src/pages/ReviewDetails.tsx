@@ -80,23 +80,19 @@ const ReviewDetails = () => {
         updateAnswers();
     }, [reviewPages]);
 
-    /* useEffect(() => {
-        if (questionsAnswers !== undefined && questionsAnswers.length !== 0)
-            setLoading(false);
-    }, [questionsAnswers]); */
-
-    if (!questionsAnswers) {
+    if (!questionsAnswers || !reviewPages) {
         return <div>Loading</div>;
     }
 
     return (
         <Container fluid className="container-details d-flex flex-column justify-content-center">
-            <h1>{reviewName}</h1>
-            <Row>
-                {reviewPages && reviewPages[0].questions
+            <h1 className="review-name">{reviewName}</h1>
+            <Container className="container-statistics">
+                <Row>
+                {reviewPages[0].questions
                 .filter(question => question.questionType === "binary")
                 .map((question) => (
-                    <Col key={question._id} xl={3} className='mt-4 px-4'>
+                    <Col key={question._id} lg={3} className='my-2'>
                         <BinaryQuestionDetailsCard
                             question={question}
                             answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
@@ -113,6 +109,8 @@ const ReviewDetails = () => {
                             answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
                         />
                 ))}
+            </Container>
+            
         </Container>
     );
 }
