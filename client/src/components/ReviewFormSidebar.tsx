@@ -3,9 +3,10 @@ import "./stylesheets/PreviewFormSidebar.css";
 import QuestionListReview from "./QuestionListReview";
 import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
+import { AnswerPage } from "../pages/RespondentReview";
 
-function ReviewFormSidebar({ pageTitle, currentPageIndex, amountPages, textfields, questions, setCurrentPageIndex, setTextfields }: { pageTitle: string, currentPageIndex : number, amountPages : number, textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[], setCurrentPageIndex: (index: number) => void , setTextfields: (textfields: { id: string, question: string, answer: string }[]) => void}) {
-    const reviewTitle = pageTitle;
+function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages }: { currentPageIndex : number, setCurrentPageIndex: (index: number) => void, answerPages: AnswerPage[], setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>> }) {
+    const reviewTitle = answerPages[currentPageIndex].formName;
 
     const submitReview = async (textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[]) => {
 
@@ -38,14 +39,14 @@ function ReviewFormSidebar({ pageTitle, currentPageIndex, amountPages, textfield
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionListReview questions={questions} />
-                <TextfieldListReview textfields={textfields} setTextfields={setTextfields} />
+                {/* <QuestionListReview questions={questions} /> */}
+                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
             </Card.Body>
 
-            {currentPageIndex !== amountPages && (
+            {currentPageIndex !== answerPages.length && (
                 <Button size="lg" variant="light" onClick={() => setCurrentPageIndex(currentPageIndex + 1)}>Continue</Button>
             )}
-            <Button onClick={() => submitReview(textfields, questions)} size="lg" variant="success">Submit Review</Button>
+            {/* <Button onClick={() => submitReview(textfields, questions)} size="lg" variant="success">Submit Review</Button> */}
         </Card>
     )
 }
