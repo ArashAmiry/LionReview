@@ -3,13 +3,21 @@ import "./stylesheets/PreviewFormSidebar.css";
 import QuestionListReview from "./QuestionListReview";
 import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
+import RangeQuestionListReview from "./RangeQuestionListReview";
 
-function ReviewFormSidebar({ textfields, questions }: { textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[] }) {
+type ReviewFormSidebarProps = {
+    binaryQuestions: { id: string, question: string, answer: string }[],
+    textfieldQuestions: { id: string, question: string, answer: string }[],
+    rangeQuestions: {id: string, question: string, answer: string}[],
+    setRangeQuestions: (rangeQuestions : {id: string, question: string, answer: string}[]) => void
+}
+
+function ReviewFormSidebar({ binaryQuestions, textfieldQuestions, rangeQuestions, setRangeQuestions}: ReviewFormSidebarProps) {
     const reviewTitle = "Title";
 
-    const submitReview = async (textfields: { id: string, question: string, answer: string }[], questions: { id: string, question: string, answer: string }[]) => {
+    const submitReview = async () => {
 
-        questions.map(async (question) => {
+        binaryQuestions.map(async (question) => {
             try {
                 await axios.post('http://localhost:8080/review/answer', {
                     "questionId": question.id,
@@ -20,16 +28,29 @@ function ReviewFormSidebar({ textfields, questions }: { textfields: { id: string
             }
         })
 
-        textfields.map(async (textfield) => {
+        textfieldQuestions.map(async (question) => {
             try {
                 await axios.post('http://localhost:8080/review/answer', {
-                    "questionId": textfield.id,
-                    "answer": textfield.answer
+                    "questionId": question.id,
+                    "answer": question.answer
                 });
             } catch (error) {
                 console.log("Error occured when updating database: ", error)
             }
         })
+
+        rangeQuestions.map(async (question) => {
+            try {
+                await axios.post('http://localhost:8080/review/answer', {
+                    "questionId": question.id,
+                    "answer": question.answer
+                });
+            } catch (error) {
+                console.log("Error occured when updating database: ", error)
+            }
+        })
+
+        
 
     }
 
@@ -38,11 +59,13 @@ function ReviewFormSidebar({ textfields, questions }: { textfields: { id: string
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionListReview questions={questions} />
-                <TextfieldListReview textfields={textfields} />
+                <QuestionListReview questions={binaryQuestions} />
+                <TextfieldListReview textfields={textfieldQuestions} />
+                <RangeQuestionListReview rangeQuestions={rangeQuestions} setRangeQuestions={setRangeQuestions} />
+                
             </Card.Body>
 
-            <Button onClick={() => submitReview(textfields, questions)} size="lg" variant="success">Submit Review</Button>
+            <Button onClick={() => submitReview()} size="lg" variant="success">Submit Review</Button>
         </Card>
     )
 }

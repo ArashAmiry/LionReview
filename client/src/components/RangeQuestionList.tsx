@@ -1,7 +1,7 @@
 import Slider from "@mui/material/Slider/Slider";
 import { Form } from "react-bootstrap";
 
-function RangeQuestionList({ rangeQuestions }: { rangeQuestions: {questionType: string, question: string}[] }) {
+function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questionType: string, question: string}[] }) {
     const maxValue = 5;
     
     function valuetext(value: number, max: number) {
@@ -36,4 +36,4 @@ function RangeQuestionList({ rangeQuestions }: { rangeQuestions: {questionType: 
     )
 }
 
-export default RangeQuestionList;
+export default RangeQuestionListPreview;

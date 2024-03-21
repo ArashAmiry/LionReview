@@ -1,4 +1,4 @@
-import { Button, Tab } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import QuestionRow from "./QuestionRow";
 import { ChangeEvent } from "react";
 

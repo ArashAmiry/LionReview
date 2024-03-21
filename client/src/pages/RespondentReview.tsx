@@ -9,8 +9,9 @@ import { IReview } from "../interfaces/IReview";
 function RespondentReview() {
 
     const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
-    const [questions, setQuestions] = useState<{ id: string, question: string, answer: string }[]>();
-    const [textfields, setTextfields] = useState<{ id: string, question: string, answer: string }[]>();
+    const [binaryQuestions, setBinaryQuestions] = useState<{ id: string, question: string, answer: string }[]>();
+    const [textfieldQuestions, setTextfieldQuestions] = useState<{ id: string, question: string, answer: string }[]>();
+    const [rangeQuestions, setRangeQuestions] = useState<{id: string, question: string, answer: string}[]>()
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -20,7 +21,7 @@ function RespondentReview() {
         } catch (e) {
             console.log(e);
         }
-    }
+    };
 
     useEffect(() => {
         fetchReview().then((response) => {
@@ -30,7 +31,7 @@ function RespondentReview() {
                     content: segment.content
                 })));
 
-                setQuestions(response.pages[0].questions
+                setBinaryQuestions(response.pages[0].questions
                     .filter(question => question.questionType === "binary")
                     .map(filteredQuestion => ({
                         id: filteredQuestion._id,
@@ -38,35 +39,47 @@ function RespondentReview() {
                         answer: ""
                     })));
 
-                setTextfields(response.pages[0].questions
+                setTextfieldQuestions(response.pages[0].questions
                     .filter(question => question.questionType === "text")
                     .map(filteredQuestion => ({
                         id: filteredQuestion._id,
                         question: filteredQuestion.question,
                         answer: ""
-                    })))
+                    })));
+
+                setRangeQuestions(response.pages[0].questions
+                    .filter(question => question.questionType === "range")
+                    .map(filteredQuestion => ({
+                        id: filteredQuestion._id,
+                        question: filteredQuestion.question,
+                        answer: "3"
+                })));
+
+
+    
+
             }
         });
     }, [reviewId]); // This effect runs when `reviewId` changes
 
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
         return <div>No review ID provided</div>;
-    }
+    };
 
-    if (!files || !questions || !textfields) {
+    if (!files || !binaryQuestions || !textfieldQuestions || !rangeQuestions) {
         return <div>Loading...</div>
-    }
+    };
 
     return (
         <Container fluid className="px-0">
             <Row className="code-row">
                 <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
                 <Col md={3} className="p-0">
-                    <ReviewFormSidebar textfields={textfields} questions={questions} />
+                    <ReviewFormSidebar binaryQuestions={binaryQuestions} textfieldQuestions={textfieldQuestions} rangeQuestions={rangeQuestions} setRangeQuestions={setRangeQuestions}/>
                 </Col>
             </Row>
         </Container>
-    )
+    );
 }
 
 export default RespondentReview;

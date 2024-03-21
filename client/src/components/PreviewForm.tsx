@@ -2,7 +2,7 @@ import { Card, Form } from "react-bootstrap";
 import './stylesheets/PreviewForm.css';
 import TextfieldList from "./TextfieldListPreview";
 import QuestionList from "./QuestionListPreview";
-import RangeQuestionList from "./RangeQuestionList";
+import RangeQuestionListPreview from "./RangeQuestionList";
 
 type PreviewFormProps = {
     reviewTitle: string,
@@ -18,7 +18,7 @@ function PreviewForm({reviewTitle, questions, textfields, rangeQuestions, errorM
             <Card.Body className="mx-5 mt-2">
                 <QuestionList questions={questions} />
                 <TextfieldList textfields={textfields}/>
-                <RangeQuestionList rangeQuestions={rangeQuestions }/>
+                <RangeQuestionListPreview rangeQuestions={rangeQuestions }/>
             </Card.Body>
             {errorMessage && (  
                 <Card.Text className="fs-5 fw-bold text-danger">{errorMessage}</Card.Text>
