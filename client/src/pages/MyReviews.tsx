@@ -10,6 +10,7 @@ import ToggleButtonGroup from "react-bootstrap/esm/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/esm/ToggleButton";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
+import { useNavigate } from "react-router-dom";
 
 type Review = {
   name: string;
@@ -139,6 +140,7 @@ const MyReviews = ({ username }: { username: string }) => {
 };
 
 const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
+  const navigate = useNavigate();
   const getBadgeVariant = (status: string) => {
     switch (status) {
       case "Draft":
@@ -165,6 +167,10 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
     }
   };
 
+  const goToReviewDetails = (review: IReview) => {
+    navigate(`/myreviews/${review._id}`)
+  }
+
   return (
     <Col md={8}>
       <Row>
@@ -187,7 +193,7 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
                   </Badge>
                 </Card.Text>
                 {review.name !== "Draft" && (
-                  <Button variant="primary">View Responses</Button>
+                  <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
                 )}
                 {review.name === "Draft" && (
                   <Button variant="secondary">Edit</Button>

@@ -68,7 +68,12 @@ reviewRouter.get("/answer/:questionID", async (
 ) => {
     try {
         const response = await reviewService.getAnswers(req.params.questionID);
-        res.status(200).send(response);
+        if(response) {
+            res.status(200).send(response);
+        } else {
+            res.status(404).send(["This question has not been answered yet"])
+        }
+        
     } catch (e: any) {
         res.status(500).send(e.message);
     }

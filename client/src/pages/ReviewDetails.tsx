@@ -29,7 +29,8 @@ const ReviewDetails = () => {
     const [questionsAnswers, setQuestionsAnswers] = useState<{ questionId: string, answers: string[] }[]>()
     const { reviewId } = useParams<{ reviewId: string }>();
     /*     const [loading, setLoading] = useState(true); */
-        const [currentPageIndex, setCurrentPageIndex] = useState(0)
+    const [currentPageIndex, setCurrentPageIndex] = useState(0)
+    const [isThereQuestionsForThisPage, setIsThereQuestionsForThisPage] = useState(false);
     const [showCode, setShowCode] = useState(false);
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -64,21 +65,28 @@ const ReviewDetails = () => {
                 const questionsID = reviewPages.flatMap((page) => (
                     page.questions.map((question) => question._id)
                 ));
-                //console.log(questionsID);
-                const responses = await Promise.all(
-                    questionsID.map(async (questionID) => {
-                        const response = await axios.get(`http://localhost:8080/review/answer/${questionID}`);
-                        return { questionId: questionID, answers: response.data }
-                    })
-                )
-                /*
-                If questionsAnswers array is defined, update if the questionID is not already in the array
-                If questionsAnswers is not defined, a new list is set to that state.
-                */
-                if (questionsAnswers) {
-                    setQuestionsAnswers(questionsAnswers.concat(responses.filter(response => !questionsAnswers.some(answer => answer.questionId === response.questionId))));
-                } else {
-                    setQuestionsAnswers(responses);
+                try {
+                    const responses = await Promise.all(
+                        questionsID.map(async (questionID) => {
+                            try {
+                                const response = await axios.get(`http://localhost:8080/review/answer/${questionID}`);
+                                console.log("ska int efinnas något här: " + response.data.length);
+                                return { questionId: questionID, answers: response.data };
+                            } catch (error) {
+                                console.error(`Error fetching answers for question ${questionID}:`, error);
+                                return { questionId: questionID, answers: undefined }; // Return empty answers if an error occurs
+                            }
+                        })
+                    );
+
+                    if (questionsAnswers) {
+                        console.log("svarrrrr: " + questionsAnswers);
+                        setQuestionsAnswers(questionsAnswers.concat(responses.filter(response => !questionsAnswers.some(answer => answer.questionId === response.questionId))));
+                    } else {
+                        setQuestionsAnswers(responses);
+                    }
+                } catch (error) {
+                    console.error("Error fetching answers:", error);
                 }
             }
         };
@@ -86,15 +94,34 @@ const ReviewDetails = () => {
         updateAnswers();
     }, [reviewPages]);
 
+    useEffect(() => {
+        if (reviewPages && questionsAnswers) {
+            setIsThereQuestionsForThisPage(
+                reviewPages[currentPageIndex].questions.some(question =>
+                    questionsAnswers.some(answer => answer.questionId === question._id && answer.answers !== undefined)
+                )
+            );
+        }
+    }, [currentPageIndex, reviewPages, questionsAnswers]);
+
     if (!questionsAnswers || !reviewPages) {
+        console.log("r" + reviewPages)
+        console.log("q" + questionsAnswers)
+        console.log("i" + isThereQuestionsForThisPage)
         return <div>Loading</div>;
     }
+
+    /* if (!reviewPages) {
+        return <div>Loading</div>;
+    } */
+
+
 
     return (
         <Container fluid className="page-container d-flex flex-column">
             <Col className="sidebar-col" md={2}>
-                    <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
-                </Col>
+                <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+            </Col>
             <h1 className="review-name">{reviewName}</h1>
             <h3 className="review-page">The {showCode ? "code" : "answers"} for "{reviewPages[currentPageIndex].formName}"</h3>
             <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
@@ -105,30 +132,38 @@ const ReviewDetails = () => {
                     />
                 </Container>
                 :
-                <Container className="container-statistics mt-2">
-                    
-                    <Row>
-                        {reviewPages[currentPageIndex].questions
-                            .filter(question => question.questionType === "binary")
-                            .map((question) => (
-                                <Col key={question._id} lg={3} className='my-2'>
-                                    <BinaryQuestionDetailsCard
+                <>
+                    {isThereQuestionsForThisPage ? (
+                        <Container className="container-statistics mt-2">
+                            <Row>
+                                {reviewPages[currentPageIndex].questions
+                                    .filter(question => question.questionType === "binary")
+                                    .map((question) => (
+                                        <Col key={question._id} lg={3} className='my-2'>
+                                            <BinaryQuestionDetailsCard
+                                                question={question}
+                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                            />
+                                        </Col>
+                                    ))}
+                            </Row>
+                            {reviewPages[currentPageIndex].questions
+                                .filter(question => question.questionType === "text")
+                                .map((question) => (
+                                    <TextfieldQuestionDetails
+                                        key={question._id}
                                         question={question}
                                         answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
                                     />
-                                </Col>
-                            ))}
+                                ))}
+                        </Container>
+                    ) : (
+                        <Container style={{ height: "65vh" }} className="d-flex flex-column justify-content-center align-items-center">
+                            <h1 className="no-answers">Oh no, there are no answers submitted for this page.</h1>
+                        </Container>
+                    )}
+                </>
 
-                    </Row>
-                    {reviewPages[currentPageIndex].questions
-                        .filter(question => question.questionType === "text")
-                        .map((question) => (
-                            <TextfieldQuestionDetails
-                                question={question}
-                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                            />
-                        ))}
-                </Container>
             }
         </Container>
     );
