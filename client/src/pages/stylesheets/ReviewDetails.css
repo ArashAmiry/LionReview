@@ -1,0 +1,31 @@
+.page-container {
+    height: 90vh;
+}
+
+.container-details {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+.container-statistics {
+    background-color: white;
+    border-radius: 10px;
+    width: 60%;
+    overflow-y: auto;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.toggle-code-answers {
+    width: 20%;
+    align-self: center;
+}
+
+.review-name, .review-page{
+    color: white;
+}
+
+.no-answers {
+    color: white;
+}

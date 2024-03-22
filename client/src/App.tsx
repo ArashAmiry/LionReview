@@ -10,6 +10,7 @@ import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
 import AfterActivation from "./pages/AfterActivation";
 import EmailSent from "./pages/EmailSent";
+import ReviewDetails from "./pages/ReviewDetails";
 
 axios.defaults.withCredentials = true;
 
@@ -26,8 +27,8 @@ function App() {
               <Route path="/activated" element={<AfterActivation />} />
               <Route path="/emailSent" element={<EmailSent />} />
               <Route path="/answer/:reviewId" element={<RespondentReview />} />
-              <Route path="/myReviews" element={<MyReviews username={"username"} />}
-              />
+              <Route path="/myReviews" element={<MyReviews username={"username"} />} />
+              <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
             </Routes>
 
           </div>

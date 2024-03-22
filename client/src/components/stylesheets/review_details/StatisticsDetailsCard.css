@@ -1,0 +1,10 @@
+.binary-card {
+    width: 100%;
+    padding: 10px;
+}
+
+.card {
+    align-items: center;
+    height: fit-content;
+    height: 100%;
+}
