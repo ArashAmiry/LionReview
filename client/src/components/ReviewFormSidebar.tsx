@@ -18,19 +18,12 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
     const reviewTitle = answerPages[currentPageIndex].formName;
 
     const submitReview = async () => {
-        const reviewAnswers = answerPages.map((answerPage) => {
-            const answers: { questionId: string, answer: string }[] = [];
-
-            [answerPage.binaryQuestions, answerPage.textfieldQuestions, answerPage.rangeQuestions].forEach(questionArray => {
-                questionArray.forEach(question => {
-                    answers.push({ questionId: question.id, answer: question.answer });
-                });
-            });
-      
-            return {
-              answers: answers
-            };
-          });
+        const reviewAnswers = answerPages.flatMap(answerPage => {
+                return [...answerPage.binaryQuestions, ...answerPage.textfieldQuestions, ...answerPage.rangeQuestions].map(question => ({         
+                    "questionId": question.id,
+                    "answer": question.answer
+                }));
+            })
         try {
             await axios.post('http://localhost:8080/review/answer', {
                 "reviewId": reviewId,
