@@ -8,13 +8,27 @@ import { IReview } from "../interfaces/IReview";
 import PagesSidebar from "../components/PagesSidebar";
 import "./stylesheets/RespondentReview.css";
 
+export interface QuestionAnswer {
+    id: string,
+    question: string,
+    answer: string
+}
+
+export interface AnswerPage {
+    formName: string,
+    binaryQuestions: QuestionAnswer[],
+    textfieldQuestions: QuestionAnswer[],
+    rangeQuestions: QuestionAnswer[],
+    files: {
+        name: string,
+        content: string
+    }[]
+}
+
 function RespondentReview() {
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [review, setReview] = useState<IReview>();
-
-    const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
-    const [questions, setQuestions] = useState<{ id: string, question: string, answer: string }[]>();
-    const [textfields, setTextfields] = useState<{ id: string, question: string, answer: string }[]>();
+    const [answerPages, setAnswerPages] = useState<AnswerPage[]>([])
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -24,54 +38,54 @@ function RespondentReview() {
         } catch (e) {
             console.log(e);
         }
-    }
-
-    const updatePage = (review: IReview) => {
-        setFiles(review.pages[currentPageIndex].codeSegments.map(segment => ({
-            name: segment.filename,
-            content: segment.content
-        })));
-
-        setQuestions(review.pages[currentPageIndex].questions
-            .filter(question => question.questionType === "binary")
-            .map(filteredQuestion => ({
-                id: filteredQuestion._id,
-                question: filteredQuestion.question,
-                answer: ""
-            })));
-
-        setTextfields(review.pages[currentPageIndex].questions
-            .filter(question => question.questionType === "text")
-            .map(filteredQuestion => ({
-                id: filteredQuestion._id,
-                question: filteredQuestion.question,
-                answer: ""
-            })))
-    }
+    };
 
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
                 setReview(response);
-                updatePage(response);
+                
+                const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
+                    formName: page.formName,
+                    binaryQuestions: page.questions
+                        .filter(question => question.questionType === 'binary')
+                        .map(({ _id, question }) => ({
+                            id: _id,
+                            question,
+                            answer: ''
+                        })),
+                    textfieldQuestions: page.questions
+                        .filter(question => question.questionType === 'text')
+                        .map(({ _id, question }) => ({
+                            id: _id,
+                            question,
+                            answer: ''
+                        })),
+                    rangeQuestions: page.questions
+                        .filter(question => question.questionType === 'range')
+                        .map(({ _id, question }) => ({
+                            id: _id,
+                            question,
+                            answer: ''
+                        })),
+                    files: page.codeSegments.map(segment => ({
+                        name: segment.filename,
+                        content: segment.content
+                    }))
+                }));
+
+                setAnswerPages(newAnswerPages);
             }
         });
     }, [reviewId]); // This effect runs when `reviewId` changes
 
-    useEffect(() => {
-        if (review) {
-            updatePage(review);
-        }
-
-    }, [currentPageIndex])
-
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
         return <div>No review ID provided</div>;
-    }
+    };
 
-    if (!files || !questions || !textfields || !review) {
+    if (!answerPages || !review) {
         return <div>Loading...</div>
-    }
+    };
 
     return (
         <Container fluid className="answer-container px-0">
@@ -79,20 +93,20 @@ function RespondentReview() {
                 <Col className="sidebar-col" md={2}>
                     <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
                 </Col>
-                <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
+                <Col className="code-preview" md={9}><CodeReview files={answerPages[currentPageIndex].files} /></Col>
                 <Col md={3} className="p-0">
                     <ReviewFormSidebar
-                        pageTitle={review.pages[currentPageIndex].formName}
+                        // pageTitle={review.pages[currentPageIndex].formName}
+                        // amountPages={review.pages.length - 1}
+                        answerPages={answerPages}
+                        setAnswerPages={(e) => setAnswerPages(e)}
                         currentPageIndex={currentPageIndex}
-                        amountPages={review.pages.length - 1}
-                        textfields={textfields}
-                        questions={questions}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
                     />
                 </Col>
             </Row>
         </Container>
-    )
+    );
 }
 
 export default RespondentReview;

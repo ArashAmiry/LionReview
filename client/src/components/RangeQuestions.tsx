@@ -2,16 +2,16 @@ import { Button } from "react-bootstrap";
 import QuestionRow from "./QuestionRow";
 import { ChangeEvent } from "react";
 
-function Question({questions, setQuestions}: {questions: {questionType: string, question: string}[], setQuestions: (questions: {questionType: string, question: string}[]) => void}) {
+function RangeQuestions({questions, setQuestions}: {questions: {questionType: string, question: string}[], setQuestions: (questions: {questionType: string, question: string}[]) => void}) {
     const addQuestion = () => {
-        setQuestions([...questions, {questionType: "binary", question: ""}]);
+        setQuestions([...questions, {questionType: "range", question: ""}]);
       }
     
       const deleteQuestion = (index: number) => {
         const updatedList = [...questions];
         updatedList.splice(index, 1);
         if (updatedList.length === 0) {
-          setQuestions([{questionType: "binary", question: ""}]);
+          setQuestions([{questionType: "range", question: ""}]);
         }
         else {
           setQuestions(updatedList);
@@ -37,4 +37,4 @@ function Question({questions, setQuestions}: {questions: {questionType: string, 
     )
 }
 
-export default Question;
+export default RangeQuestions;

@@ -1,13 +1,11 @@
 import Container from "react-bootstrap/esm/Container";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Col from "react-bootstrap/esm/Col";
 import { useNavigate } from "react-router-dom";
 import "./stylesheets/CreateReview.css";
 import { Row } from "react-bootstrap";
 import AddCodeLink from "../components/AddCodeLink";
 import axios from "axios";
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
@@ -19,7 +17,8 @@ const initialPagesState: CreateReviewPage[] = [
     currentStep: 1,
     binaryQuestions: [{ questionType: "binary", question: "" }],
     textFieldQuestions: [{ questionType: "text", question: "" }],
-    reviewTitle: "",
+    rangeQuestions: [{ questionType: "range", question: ""}],
+    reviewTitle: "Page 1",
     urls: [""],
     cachedFiles: {},
     triedToSubmit: false,
@@ -31,11 +30,14 @@ const initialPagesState: CreateReviewPage[] = [
 function CreateReview() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
+  const [reviewName, setReviewName] = useState("");
   const amountSteps = 3;
   const navigate = useNavigate();
 
-  const getNonEmptyQuestions = (questions: { questionType: string; question: string }[]) => {
-    return questions.filter((question) => question.question.trim() !== "");
+  const getAllNonEmptyQuestions = () => {
+    const currentPage = pagesData[currentPageIndex];
+    const allQuestions = [...currentPage.binaryQuestions, ...currentPage.textFieldQuestions, ...currentPage.rangeQuestions];
+    return allQuestions.filter((question) => question.question.trim() !== "");
   };
 
   const setTriedToSubmit = (value: boolean) => {
@@ -69,7 +71,7 @@ function CreateReview() {
         return;
       }
     } else if (pagesData[currentPageIndex].currentStep === 2) {
-      if (getNonEmptyQuestions([...pagesData[currentPageIndex].binaryQuestions, ...pagesData[currentPageIndex].textFieldQuestions]).length === 0) {
+      if (getAllNonEmptyQuestions().length === 0) {
         setFormErrorMessage("At least one question is required to continue.");
         return;
       } else {
@@ -87,10 +89,12 @@ function CreateReview() {
   };
 
   const addNewPage = () => {
-    setPagesData((prevPageData) => [...prevPageData, JSON.parse(JSON.stringify(initialPagesState[0]))]);
+    const newPage : CreateReviewPage = JSON.parse(JSON.stringify(initialPagesState[0]));
+    newPage.reviewTitle = "Page " + (pagesData.length + 1);
+    setPagesData((prevPageData) => [...prevPageData, newPage]);
     setCurrentPageIndex((currentPageIndex) => currentPageIndex + 1);
   };
-
+  
   const submitReview = async () => {
     const reviewPages = pagesData.map((pageData) => {
       const codeSegments: { filename: string; content: string }[] = [];
@@ -104,15 +108,12 @@ function CreateReview() {
       return {
         formName: pageData.reviewTitle,
         codeSegments: codeSegments,
-        questions: [
-          ...getNonEmptyQuestions(pageData.binaryQuestions),
-          ...getNonEmptyQuestions(pageData.textFieldQuestions),
-        ],
+        questions: getAllNonEmptyQuestions(),
       };
     });
     console.log(reviewPages);
     await axios.post("http://localhost:8080/review/", {
-      name: "temporaryName",
+      name: reviewName,
       createdBy: "username",
       pages: reviewPages,
     });
@@ -154,6 +155,7 @@ function CreateReview() {
             setPagesData={(e) => setPagesData(e)}
             submitReview={() => submitReview()}
             addNewPage={() => addNewPage()}
+            setReviewName={(name) => setReviewName(name)}
             previousStep={() => previousStep()}
             />
           </Col>

@@ -5,22 +5,29 @@ import { Col } from 'react-bootstrap';
 import Question from "./Question";
 import PresetQuestions from "./PresetQuestions";
 import Textfields from "./Textfields";
+import RangeQuestions from "./RangeQuestions";
+
+type AddFormQuestionsProps = {
+  questions: { questionType: string, question: string }[], 
+  setQuestions: (questions: { questionType: string, question: string }[]) => void,
+  textfields: { questionType: string, question: string }[], 
+  setTextfields: (textfields: { questionType: string, question: string }[]) => void,
+  rangeQuestions: { questionType: string, question: string }[],
+  setRangeQuestions: (rangeQuestions: { questionType: string, question: string}[]) => void
+}
 
 
-function AddFormQuestions({ questions, setQuestions, textfields, setTextfields }:
-  {
-    questions: { questionType: string, question: string }[], setQuestions: (questions: { questionType: string, question: string }[]) => void,
-    textfields: { questionType: string, question: string }[], setTextfields: (textfields: { questionType: string, question: string }[]) => void
-  }) {
+function AddFormQuestions({ questions, setQuestions, textfields, setTextfields, rangeQuestions, setRangeQuestions}: AddFormQuestionsProps) {
   return (
     <Col md={12} className="box rounded">
       <Tabs
-        defaultActiveKey="home"
+        defaultActiveKey="binaryQuestions"
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        <Tab eventKey="home" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
-        <Tab eventKey="profile" title="Textfields"><Textfields textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} /></Tab>
+        <Tab eventKey="binaryQuestions" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
+        <Tab eventKey="textQuestions" title="Textfields"><Textfields textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} /></Tab>
+        <Tab eventKey="rangeQuestions" title="Range" ><RangeQuestions questions={rangeQuestions} setQuestions={(rangeQuestions) => setRangeQuestions(rangeQuestions)} /></Tab>
         <Tab eventKey="contact" title="Templates">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis atque quis, ratione dignissimos quae, voluptatem ex esse cum similique culpa repellat dicta ipsam? Ipsum facilis nesciunt unde et quibusdam porro natus corporis dolore, ipsa totam pariatur laborum enim perspiciatis adipisci possimus perferendis placeat magnam molestiae non ullam qui consectetur! Obcaecati quae debitis harum inventore placeat corporis eveniet iste modi nam assumenda perspiciatis ad, fugit ut adipisci illo aspernatur, enim consequatur totam temporibus aliquam architecto quis culpa asperiores velit. Cupiditate quas modi aliquid tempora vitae maxime a natus molestias expedita repellendus nesciunt mollitia nulla, autem odio, sapiente omnis voluptatum debitis maiores.
         </Tab>

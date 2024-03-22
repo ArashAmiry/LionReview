@@ -6,10 +6,13 @@
     overflow-x: hidden;
 }
 
-.textfield-group {
-    text-align: left;
+.question {
     background-color: rgb(238, 238, 238);
     border-radius: 10px;
+}
+
+.textfield-group {
+    text-align: left;
 }
 
 .third-step {
