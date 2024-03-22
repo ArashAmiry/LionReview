@@ -1,5 +1,5 @@
 import { Container, Button, Image, Row, Col, Navbar, Nav } from "react-bootstrap";
-import img from "../images/logo.png";
+import img from "../images/logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import './stylesheets/Header.css';
 import axios from 'axios';
@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <Navbar bg="light" data-bs-theme="light" className="navbar">
       <Container>
-        <Navbar.Brand as={NavLink} to="/"><Image src={img} /></Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/"><Image width={50} src={img} /></Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link as={NavLink} to="/create">Create Review Session</Nav.Link>
           <Nav.Link as={NavLink} to="/myReviews">My Reviews</Nav.Link>
