@@ -9,6 +9,7 @@ import BinaryQuestionDetailsCard from "../components/review_details/BinaryQuesti
 import TextfieldQuestionDetails from "../components/review_details/TextfieldQuestionDetails";
 import CodeDisplay from "../components/review_details/CodeDisplay";
 import PagesSidebar from "../components/PagesSidebar";
+import RangeQuestionDetailsCard from "../components/review_details/RangeQuestionDetailsCard";
 
 type DetailsPage = {
     formName: string;
@@ -141,6 +142,18 @@ const ReviewDetails = () => {
                                     .map((question) => (
                                         <Col key={question._id} lg={3} className='my-2'>
                                             <BinaryQuestionDetailsCard
+                                                question={question}
+                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                            />
+                                        </Col>
+                                    ))}
+                            </Row>
+                            <Row>
+                                {reviewPages[currentPageIndex].questions
+                                    .filter(question => question.questionType === "range")
+                                    .map((question) => (
+                                        <Col key={question._id} lg={6} className='my-2'>
+                                            <RangeQuestionDetailsCard
                                                 question={question}
                                                 answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
                                             />
