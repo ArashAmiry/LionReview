@@ -8,18 +8,17 @@ import { IReview } from "../interfaces/IReview";
 import PagesSidebar from "../components/PagesSidebar";
 import "./stylesheets/RespondentReview.css";
 
+export interface QuestionAnswer {
+    id: string,
+    question: string,
+    answer: string
+}
+
 export interface AnswerPage {
     formName: string,
-    questions: {
-        id: string,
-        question: string,
-        answer: string
-    }[],
-    textfields: {
-        id: string,
-        question: string,
-        answer: string
-    }[],
+    binaryQuestions: QuestionAnswer[],
+    textfieldQuestions: QuestionAnswer[],
+    rangeQuestions: QuestionAnswer[],
     files: {
         name: string,
         content: string
@@ -48,15 +47,22 @@ function RespondentReview() {
                 
                 const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
                     formName: page.formName,
-                    questions: page.questions
+                    binaryQuestions: page.questions
                         .filter(question => question.questionType === 'binary')
                         .map(({ _id, question }) => ({
                             id: _id,
                             question,
                             answer: ''
                         })),
-                    textfields: page.questions
+                    textfieldQuestions: page.questions
                         .filter(question => question.questionType === 'text')
+                        .map(({ _id, question }) => ({
+                            id: _id,
+                            question,
+                            answer: ''
+                        })),
+                    rangeQuestions: page.questions
+                        .filter(question => question.questionType === 'range')
                         .map(({ _id, question }) => ({
                             id: _id,
                             question,

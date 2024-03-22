@@ -1,18 +1,26 @@
 import { Form } from "react-bootstrap";
 import { AnswerPage } from "../pages/RespondentReview";
 
-function TextfieldListReview({ currentPageIndex, answerPages, setAnswerPages }: { currentPageIndex: number, answerPages: AnswerPage[], setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>> }) {
+type TextFieldListReviewProps = {
+    currentPageIndex: number,
+    answerPages: AnswerPage[], 
+    setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>
+}
+
+
+
+function TextfieldListReview({ currentPageIndex, answerPages, setAnswerPages }: TextFieldListReviewProps) {
 
     const handleTextfieldChange = (answer: string, id: string) => {
         const textfieldIndex = textfields.findIndex(q => q.id === id);
         setAnswerPages((prevAnswerPage) => {
             const updatedAnswerPage = [...prevAnswerPage]; 
-            updatedAnswerPage[currentPageIndex].textfields[textfieldIndex].answer = answer; 
+            updatedAnswerPage[currentPageIndex].textfieldQuestions[textfieldIndex].answer = answer; 
             return updatedAnswerPage;
         })
     };
 
-    const textfields = answerPages[currentPageIndex].textfields;
+    const textfields = answerPages[currentPageIndex].textfieldQuestions;
 
     return (
         <>

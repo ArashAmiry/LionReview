@@ -1,13 +1,16 @@
 import Slider from "@mui/material/Slider/Slider";
-import { Form } from "react-bootstrap";
+import { AnswerPage } from "../pages/RespondentReview";
+import Form from "react-bootstrap/esm/Form";
 
 type RangeQuestionListReviewProps = {
-    rangeQuestions: {id: string, question: string, answer: string}[],
-    setRangeQuestions: (rangeQuestions : {id: string, question: string, answer: string}[]) => void
+    currentPageIndex: number,
+    answerPages: AnswerPage[], 
+    setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>
 }
 
-function RangeQuestionListReview({ rangeQuestions, setRangeQuestions }: RangeQuestionListReviewProps) {
+function RangeQuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: RangeQuestionListReviewProps) {
     const maxValue = 5;
+    const rangeQuestions = answerPages[currentPageIndex].rangeQuestions;
     
     function valuetext(value: number, max: number) {
         return `${value}/${max}`;
@@ -18,16 +21,17 @@ function RangeQuestionListReview({ rangeQuestions, setRangeQuestions }: RangeQue
         label: `${index + 1}`
     }));
 
-    const handleSliderChange = (event: Event, value: number, id: string) => {
-        const rangeQuestionIndex = rangeQuestions.findIndex(question => question.id === id);
-        const newRangeQuestions = [...rangeQuestions];
-        newRangeQuestions[rangeQuestionIndex].answer = value.toString();
-        setRangeQuestions(newRangeQuestions);
+    const handleSliderChange = (event: Event, answer: number, id: string) => {
+        const questionIndex = rangeQuestions.findIndex(q => q.id === id);
+        setAnswerPages((prevAnswerPage) => {
+            const updatedAnswerPage = [...prevAnswerPage]; 
+            updatedAnswerPage[currentPageIndex].rangeQuestions[questionIndex].answer = answer.toString(); 
+            return updatedAnswerPage;
+        })
     };
-
     return (
         <>
-            {rangeQuestions
+            {answerPages[currentPageIndex].rangeQuestions
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestion, index) => (
                     <Form.Group key={index} className="mb-3 question p-3" controlId={`step-${index}`}>

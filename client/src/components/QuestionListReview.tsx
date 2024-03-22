@@ -1,16 +1,28 @@
 import { Col, Form, FormLabel, Row } from "react-bootstrap";
 import './stylesheets/PreviewForm.css'
+import { AnswerPage } from "../pages/RespondentReview";
 
-function QuestionListReview({ questions }: { questions: { id: string, question: string, answer: string }[] }) {
+type QuestionListReviewProps = {
+    currentPageIndex: number,
+    answerPages: AnswerPage[], 
+    setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>
+}
+
+function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: QuestionListReviewProps) {
+    const binaryQuestions = answerPages[currentPageIndex].binaryQuestions;
 
     const handleRadioChange = (answer: string, id: string) => {
-        const questionIndex = questions.findIndex(q => q.id === id);
-        questions[questionIndex].answer = answer;
-      };
+        const questionIndex = binaryQuestions.findIndex(q => q.id === id);
+        setAnswerPages((prevAnswerPage) => {
+            const updatedAnswerPage = [...prevAnswerPage]; 
+            updatedAnswerPage[currentPageIndex].binaryQuestions[questionIndex].answer = answer; 
+            return updatedAnswerPage;
+        })
+    };
     
     return (
         <>
-            {questions
+            {binaryQuestions
                 .filter(question => question.question !== "")
                 .map((question, index) => (
                     <Form className="question p-3 mb-3">
@@ -29,6 +41,7 @@ function QuestionListReview({ questions }: { questions: { id: string, question: 
                                     type="radio"
                                     value="Yes"
                                     label={<p>Yes</p>}
+                                    checked={question.answer === "Yes"}
                                     className="text-start custom-checkbox"
                                     onChange={(e) => handleRadioChange(e.target.value, question.id)}
                                 />
@@ -42,6 +55,7 @@ function QuestionListReview({ questions }: { questions: { id: string, question: 
                                     type="radio"
                                     value="No"
                                     label={<p>No</p>}
+                                    checked={question.answer === "No"}
                                     className="text-start custom-checkbox"
                                     onChange={(e) => handleRadioChange(e.target.value, question.id)}
                                 />
