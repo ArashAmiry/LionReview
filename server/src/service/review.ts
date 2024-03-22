@@ -49,14 +49,17 @@ export class ReviewService {
 
     async getAnswers(questionId: string): Promise<string[] | undefined> {
         try {
-            const results = await answerModel.find({'answers.questionId': questionId }).exec();
+            const results = await answerModel.find({ 'answers.questionId': questionId }).exec();
 
-            if (results.length > 0) {
-                const answers: string[] = results.map(result => result.answers.map(answer => answer.answer)).flat();
-                return answers;
-            } else {
-                console.log("Could not find question with questionID: " + questionId);
-            }
+        if (results.length > 0) {
+            const answers: string[] = results.flatMap(result => result.answers
+                .filter(answer => answer.questionId.toString() === questionId)
+                .map(answer => answer.answer)
+            );
+            return answers;
+        } else {
+            console.log("Could not find question with questionID: " + questionId);
+        }
         } catch (error) {
             console.log("Error occured when fetching answers", error);
         }
