@@ -6,31 +6,40 @@ import axios from "axios";
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import RangeQuestionListReview from "./RangeQuestionListReview";
 
-function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages }: { currentPageIndex : number, setCurrentPageIndex: (index: number) => void, answerPages: AnswerPage[], setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>> }) {
+type ReviewFormSideBarProps = {
+    currentPageIndex : number,
+    setCurrentPageIndex: (index: number) => void,
+    answerPages: AnswerPage[],
+    setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>,
+    reviewId: string
+}
+
+function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId}: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
 
     const submitReview = async () => {
-        const postAnswer = async (question : QuestionAnswer) => {
-            try {
-                await axios.post('http://localhost:8080/review/answer', {
-                    "questionId": question.id,
-                    "answer": question.answer
+        const reviewAnswers = answerPages.map((answerPage) => {
+            const answers: { questionId: string, answer: string }[] = [];
+
+            [answerPage.binaryQuestions, answerPage.textfieldQuestions, answerPage.rangeQuestions].forEach(questionArray => {
+                questionArray.forEach(question => {
+                    answers.push({ questionId: question.id, answer: question.answer });
                 });
-            } catch (error) {
-                console.log("Error occurred when updating database: ", error)
-            }
-        };
-    
-        const submitQuestions = async (questions : QuestionAnswer[]) => {
-            for (const question of questions) {
-                await postAnswer(question);
-            }
-        };
-    
-        for (const page of answerPages) {
-            submitQuestions([...page.binaryQuestions, ...page.textfieldQuestions, ...page.rangeQuestions]);
+            });
+      
+            return {
+              answers: answers
+            };
+          });
+        try {
+            await axios.post('http://localhost:8080/review/answer', {
+                "reviewId": reviewId,
+                "answers": reviewAnswers
+            });
+        } catch (error) {
+            console.log("Error occurred when updating database: ", error)
         }
-    }
+    };
 
 
     return (

@@ -51,11 +51,11 @@ reviewRouter.get("/single/:reviewId", async (
 })
 
 reviewRouter.post("/answer", async (
-    req: Request<{}, {}, { questionId: string, answer: string }>,
+    req: Request<{}, {}, { reviewId: string, answers: {questionId: string, answer: string}[]}>,
     res: Response<String>
 ) => {
     try {
-        await reviewService.submitReview(req.body.questionId, req.body.answer);
+        await reviewService.submitReview(req.body.reviewId, req.body.answers);
         res.status(200).send("Answers to review successfully submitted.");
     } catch (e: any) {
         res.status(500).send(e.message);

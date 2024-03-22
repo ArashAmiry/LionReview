@@ -35,21 +35,12 @@ export class ReviewService {
         throw new Error("No review was found with id: " + reviewId);
     }
 
-    async submitReview(questionId: string, answer: string) {
+    async submitReview(reviewId : string, answers: {questionId: string, answer: string}[]) {
         try {
-            const answers = await this.getAnswers(questionId) ?? [];
-
-            const result = await answerModel.findOneAndUpdate(
-                { questionId: questionId },
-                {
-                    answers: [...answers, answer]
-                },
-                {
-                    upsert: true,
-                    new: true
-                }).exec();
-
-            console.log(result);
+            await answerModel.create({
+                reviewId: reviewId,
+                answers: answers
+            })
         } catch (error) {
             console.error('An error occured while updating the database: ', error);
             throw new Error('An error occured while updating the database: ' + error);
@@ -58,10 +49,11 @@ export class ReviewService {
 
     private async getAnswers(questionId: string): Promise<string[] | undefined> {
         try {
-            const result = await answerModel.findOne({ questionId: questionId }).exec();
+            const results = await answerModel.find({'answers.questionId': questionId }).exec();
 
-            if (result) {
-                return result.answers
+            if (results.length > 0) {
+                const answers: string[] = results.map(result => result.answers.map(answer => answer.answer)).flat();
+                return answers;
             } else {
                 console.log("Could not find question with questionID: " + questionId);
             }
