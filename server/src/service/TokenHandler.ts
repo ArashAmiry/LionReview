@@ -3,7 +3,7 @@ import TOKEN_KEY from './token_key';
 
 export class TokenHandler {
     generateToken(username: string): string {
-        return jwt.sign({ username }, TOKEN_KEY, { expiresIn: '1h' });
+        return jwt.sign({ username }, TOKEN_KEY, { expiresIn: "24h" });
     }
     
     decodeToken(token: string) {

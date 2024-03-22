@@ -3,17 +3,10 @@ import "./stylesheets/PreviewFormSidebar.css";
 import QuestionListReview from "./QuestionListReview";
 import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
-import RangeQuestionListReview from "./RangeQuestionListReview";
+import { AnswerPage } from "../pages/RespondentReview";
 
-type ReviewFormSidebarProps = {
-    binaryQuestions: { id: string, question: string, answer: string }[],
-    textfieldQuestions: { id: string, question: string, answer: string }[],
-    rangeQuestions: {id: string, question: string, answer: string}[],
-    setRangeQuestions: (rangeQuestions : {id: string, question: string, answer: string}[]) => void
-}
-
-function ReviewFormSidebar({ binaryQuestions, textfieldQuestions, rangeQuestions, setRangeQuestions}: ReviewFormSidebarProps) {
-    const reviewTitle = "Title";
+function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages }: { currentPageIndex : number, setCurrentPageIndex: (index: number) => void, answerPages: AnswerPage[], setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>> }) {
+    const reviewTitle = answerPages[currentPageIndex].formName;
 
     const submitReview = async () => {
 
@@ -59,13 +52,14 @@ function ReviewFormSidebar({ binaryQuestions, textfieldQuestions, rangeQuestions
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionListReview questions={binaryQuestions} />
-                <TextfieldListReview textfields={textfieldQuestions} />
-                <RangeQuestionListReview rangeQuestions={rangeQuestions} setRangeQuestions={setRangeQuestions} />
-                
+                {/* <QuestionListReview questions={questions} /> */}
+                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
             </Card.Body>
 
-            <Button onClick={() => submitReview()} size="lg" variant="success">Submit Review</Button>
+            {currentPageIndex !== answerPages.length && (
+                <Button size="lg" variant="light" onClick={() => setCurrentPageIndex(currentPageIndex + 1)}>Continue</Button>
+            )}
+            {/* <Button onClick={() => submitReview(textfields, questions)} size="lg" variant="success">Submit Review</Button> */}
         </Card>
     )
 }

@@ -5,13 +5,31 @@ import ReviewFormSidebar from "../components/ReviewFormSidebar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
+import PagesSidebar from "../components/PagesSidebar";
+import "./stylesheets/RespondentReview.css";
+
+export interface AnswerPage {
+    formName: string,
+    questions: {
+        id: string,
+        question: string,
+        answer: string
+    }[],
+    textfields: {
+        id: string,
+        question: string,
+        answer: string
+    }[],
+    files: {
+        name: string,
+        content: string
+    }[]
+}
 
 function RespondentReview() {
-
-    const [files, setFiles] = useState<{ name: string, content: string }[] | undefined>(undefined);
-    const [binaryQuestions, setBinaryQuestions] = useState<{ id: string, question: string, answer: string }[]>();
-    const [textfieldQuestions, setTextfieldQuestions] = useState<{ id: string, question: string, answer: string }[]>();
-    const [rangeQuestions, setRangeQuestions] = useState<{id: string, question: string, answer: string}[]>()
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+    const [review, setReview] = useState<IReview>();
+    const [answerPages, setAnswerPages] = useState<AnswerPage[]>([])
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -26,38 +44,31 @@ function RespondentReview() {
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
-                setFiles(response.pages[0].codeSegments.map(segment => ({
-                    name: segment.filename,
-                    content: segment.content
-                })));
+                setReview(response);
+                
+                const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
+                    formName: page.formName,
+                    questions: page.questions
+                        .filter(question => question.questionType === 'binary')
+                        .map(({ _id, question }) => ({
+                            id: _id,
+                            question,
+                            answer: ''
+                        })),
+                    textfields: page.questions
+                        .filter(question => question.questionType === 'text')
+                        .map(({ _id, question }) => ({
+                            id: _id,
+                            question,
+                            answer: ''
+                        })),
+                    files: page.codeSegments.map(segment => ({
+                        name: segment.filename,
+                        content: segment.content
+                    }))
+                }));
 
-                setBinaryQuestions(response.pages[0].questions
-                    .filter(question => question.questionType === "binary")
-                    .map(filteredQuestion => ({
-                        id: filteredQuestion._id,
-                        question: filteredQuestion.question,
-                        answer: ""
-                    })));
-
-                setTextfieldQuestions(response.pages[0].questions
-                    .filter(question => question.questionType === "text")
-                    .map(filteredQuestion => ({
-                        id: filteredQuestion._id,
-                        question: filteredQuestion.question,
-                        answer: ""
-                    })));
-
-                setRangeQuestions(response.pages[0].questions
-                    .filter(question => question.questionType === "range")
-                    .map(filteredQuestion => ({
-                        id: filteredQuestion._id,
-                        question: filteredQuestion.question,
-                        answer: "3"
-                })));
-
-
-    
-
+                setAnswerPages(newAnswerPages);
             }
         });
     }, [reviewId]); // This effect runs when `reviewId` changes
@@ -66,16 +77,26 @@ function RespondentReview() {
         return <div>No review ID provided</div>;
     };
 
-    if (!files || !binaryQuestions || !textfieldQuestions || !rangeQuestions) {
+    if (!answerPages || !review) {
         return <div>Loading...</div>
     };
 
     return (
-        <Container fluid className="px-0">
+        <Container fluid className="answer-container px-0">
             <Row className="code-row">
-                <Col className="code-preview" md={9}><CodeReview files={files} /></Col>
+                <Col className="sidebar-col" md={2}>
+                    <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+                </Col>
+                <Col className="code-preview" md={9}><CodeReview files={answerPages[currentPageIndex].files} /></Col>
                 <Col md={3} className="p-0">
-                    <ReviewFormSidebar binaryQuestions={binaryQuestions} textfieldQuestions={textfieldQuestions} rangeQuestions={rangeQuestions} setRangeQuestions={setRangeQuestions}/>
+                    <ReviewFormSidebar
+                        // pageTitle={review.pages[currentPageIndex].formName}
+                        // amountPages={review.pages.length - 1}
+                        answerPages={answerPages}
+                        setAnswerPages={(e) => setAnswerPages(e)}
+                        currentPageIndex={currentPageIndex}
+                        setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
+                    />
                 </Col>
             </Row>
         </Container>

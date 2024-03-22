@@ -1,11 +1,18 @@
 import { Form } from "react-bootstrap";
+import { AnswerPage } from "../pages/RespondentReview";
 
-function TextfieldListReview({ textfields }: { textfields: {id: string, question: string, answer: string}[] }) {
+function TextfieldListReview({ currentPageIndex, answerPages, setAnswerPages }: { currentPageIndex: number, answerPages: AnswerPage[], setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>> }) {
 
     const handleTextfieldChange = (answer: string, id: string) => {
         const textfieldIndex = textfields.findIndex(q => q.id === id);
-        textfields[textfieldIndex].answer = answer;
-      };
+        setAnswerPages((prevAnswerPage) => {
+            const updatedAnswerPage = [...prevAnswerPage]; 
+            updatedAnswerPage[currentPageIndex].textfields[textfieldIndex].answer = answer; 
+            return updatedAnswerPage;
+        })
+    };
+
+    const textfields = answerPages[currentPageIndex].textfields;
 
     return (
         <>
@@ -17,8 +24,9 @@ function TextfieldListReview({ textfields }: { textfields: {id: string, question
                         <Form.Control
                             type="text"
                             placeholder="Textfield answer..."
+                            value={textfield.answer}
                             onChange={(e) => handleTextfieldChange(e.target.value, textfield.id)}
-                             // or disabled, depending on your needs
+                        // or disabled, depending on your needs
                         />
                     </Form.Group>
                 ))}

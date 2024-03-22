@@ -67,6 +67,24 @@ authenticationRouter.post("/logIn", async (
     }
 });
 
+
+authenticationRouter.delete("/logOut", async (
+    req: Request<{}, {}, {}>,
+    res: Response
+) => {
+    if (req.session) {
+        req.session.destroy(err => {
+          if (err) {
+            res.status(400).send('Unable to log out')
+          } else {
+            res.send('Logout successful')
+          }
+        });
+      } else {
+        res.end()
+      }
+});
+
 authenticationRouter.get("/:token", async (
     req: Request<{token : string}, {}, {}>,
     res: Response
@@ -80,7 +98,7 @@ authenticationRouter.get("/:token", async (
         const tokenHandler = new TokenHandler();
         const decodedUsername = tokenHandler.decodeToken(tok);
         await accountModel.findOneAndUpdate({ username: decodedUsername }, { active: true });
-        return res.redirect('http://localhost:3000/login');
+        return res.redirect('http://localhost:3000/activated');
     } catch (error) {
         console.error(error);
         return res.status(500).send('Error activating account');
