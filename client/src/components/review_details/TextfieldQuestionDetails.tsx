@@ -13,8 +13,8 @@ const TextfieldQuestionDetails = ({ question, answers }:TextfieldQuestionDetails
             <h3>{question.question}</h3>
             <hr className='divider' />
             <p className="my-1 number-responses">{answers?.length} responses</p>
-            {answers && answers.map((answer) => (
-                    <TextfieldAnswer answer={answer}/>
+            {answers && answers.map((answer, index) => (
+                    <TextfieldAnswer key={index} answer={answer}/>
             ))}
         </Container>
      );

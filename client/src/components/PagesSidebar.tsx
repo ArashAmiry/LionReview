@@ -20,7 +20,7 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex }: { pagesTitles: strin
                     pagesTitles.map((pageTitle, index) => {
                         const title = pageTitle || `Page ${index + 1}`;
                         return (
-                            <MenuItem onClick={() => setCurrentPageIndex(index)}>
+                            <MenuItem key={index} onClick={() => setCurrentPageIndex(index)}>
                                 {title}
                             </MenuItem>
                         );

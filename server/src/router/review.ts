@@ -51,11 +51,11 @@ reviewRouter.get("/single/:reviewId", async (
 })
 
 reviewRouter.post("/answer", async (
-    req: Request<{}, {}, { questionId: string, answer: string }>,
+    req: Request<{}, {}, { reviewId: string, answers: {questionId: string, answer: string}[]}>,
     res: Response<String>
 ) => {
     try {
-        await reviewService.submitReview(req.body.questionId, req.body.answer);
+        await reviewService.submitReview(req.body.reviewId, req.body.answers);
         res.status(200).send("Answers to review successfully submitted.");
     } catch (e: any) {
         res.status(500).send(e.message);
@@ -68,7 +68,7 @@ reviewRouter.get("/answer/:questionID", async (
 ) => {
     try {
         const response = await reviewService.getAnswers(req.params.questionID);
-        if(response) {
+        if(response.length > 0) {
             res.status(200).send(response);
         } else {
             res.status(404).send(["This question has not been answered yet"])

@@ -35,39 +35,35 @@ export class ReviewService {
         throw new Error("No review was found with id: " + reviewId);
     }
 
-    async submitReview(questionId: string, answer: string) {
+    async submitReview(reviewId : string, answers: {questionId: string, answer: string}[]) {
         try {
-            const answers = await this.getAnswers(questionId) ?? [];
-
-            const result = await answerModel.findOneAndUpdate(
-                { questionId: questionId },
-                {
-                    answers: [...answers, answer]
-                },
-                {
-                    upsert: true,
-                    new: true
-                }).exec();
-
-            console.log(result);
+            await answerModel.create({
+                reviewId: reviewId,
+                answers: answers
+            })
         } catch (error) {
             console.error('An error occured while updating the database: ', error);
             throw new Error('An error occured while updating the database: ' + error);
         }
     }
 
-    async getAnswers(questionId: string): Promise<string[] | undefined> {
+    async getAnswers(questionId: string): Promise<string[]> {
         try {
-            const result = await answerModel.findOne({ questionId: questionId }).exec();
-
-            if (result) {
-                return result.answers
-            } else {
-                console.log("Could not find question with questionID: " + questionId);
-            }
+            const results = await answerModel.find({'answers.questionId': questionId }).exec();
+            
+        if (results.length > 0) {
+            const answers: string[] = results.flatMap(result => result.answers
+                .filter(answer => answer.questionId.toString() === questionId)
+                .map(answer => answer.answer)
+            );
+            return answers;
+        } else {
+            console.log("Could not find question with questionID: " + questionId);
+            return [];
+        }
         } catch (error) {
             console.log("Error occured when fetching answers", error);
+            throw error;
         }
-
     }
 }

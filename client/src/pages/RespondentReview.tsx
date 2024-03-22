@@ -102,6 +102,7 @@ function RespondentReview() {
                         setAnswerPages={(e) => setAnswerPages(e)}
                         currentPageIndex={currentPageIndex}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
+                        reviewId={reviewId}
                     />
                 </Col>
             </Row>
