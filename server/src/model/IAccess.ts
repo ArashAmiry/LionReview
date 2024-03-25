@@ -1,5 +1,5 @@
 export interface IAccessCode extends Document{
-    requestId: string;
+    reviewId: string;
     passcode: string;
     completed: boolean;
 }

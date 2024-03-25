@@ -1,6 +1,7 @@
 import { answerModel } from "../db/answer.db";
 import { reviewModel } from "../db/review";
 import { IReview } from "../model/IReview";
+import { AccessCode } from "../db/Access.db";
 
 export class ReviewService {
     async createReview(review: Omit<IReview, 'createdBy'>, createdBy: string) {
@@ -38,7 +39,7 @@ export class ReviewService {
     async submitReview(questionId: string, answer: string) {
         try {
             const answers = await this.getAnswers(questionId) ?? [];
-
+            
             const result = await answerModel.findOneAndUpdate(
                 { questionId: questionId },
                 {
@@ -50,6 +51,7 @@ export class ReviewService {
                 }).exec();
 
             console.log(result);
+            await AccessCode.findOneAndUpdate(/*ha ngt som kollar koden,*/{completed : true});
         } catch (error) {
             console.error('An error occured while updating the database: ', error);
             throw new Error('An error occured while updating the database: ' + error);

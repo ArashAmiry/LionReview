@@ -1,52 +1,49 @@
-import express , {Request,Response} from 'express';
+import express, {Request,Response} from 'express';
 import { IAccessCode } from '../model/IAccess';
+import { generateAccessCode, verifyAccessCode } from '../service/accessCodeService';
+import { AccessCode } from '../db/Access.db';
+export const authenticationRouter = express.Router();
 
-import { generateAccessCode } from '../service/accessCodeService';
-const user: IAccessCode = new ;
-const authenticationRouter =express.Router();
+
+// flytta till service
 authenticationRouter.post('/generateAccessCode', async (
     req: Request <{},{}, IAccessCode>, 
     res: Response<String>
     ) => {
     try {
-        const requestId= req.body.requestId;
-        const passcode=  await generateAccessCode(8);
-        const email = req.body.email;
+        const reviewId= req.body.reviewId;
+        const passcode = await generateAccessCode(8);
+        AccessCode.create({
+            reviewId: reviewId,
+            passcode: passcode,
+            completed: false
+        })
+        res.status(200).send('Access code generated and sent successfully');
+    }  
+    catch (e:any) {
 
-    // Code to send email with access code
-    res.json({ message: 'Access code generated and sent successfully' });
-    } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+        res.status(500).send('Internal server error');
     }
 });
 
 authenticationRouter.post('/verifyAccessCode', async (req, res) => {
     try {
-    const { requestId, email, accessCode } = req.body;
-    const validAccessCode = await getAccessCodeByEmailAndRequestId(email, requestId);
+    const { reviewId, accessCode } = req.body;
+    const validAccessCode = await verifyAccessCode(accessCode, reviewId);
     if (validAccessCode && validAccessCode.passcode === accessCode && !validAccessCode.completed) {
-      // Access code is valid, proceed with allowing access
-        res.json({ message: 'Access code verified successfully' });
+    
+        res.status(200).send('Access code verified successfully');
+        //fortsätt med att redirectas till given review
     } else {
-        res.status(403).json({ error: 'Invalid access code or already completed' });
+
+        res.status(403).send( 'Invalid access code or already completed');
     }
     } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+
+    res.status(500).send('Internal server error');
+
     }
 });
 
-router.post('/completeReview', async (req, res) => {
-    try {
-    const { requestId, email } = req.body;
-    const accessCode = await getAccessCodeByEmailAndRequestId(email, requestId);
-    if (accessCode && !accessCode.completed) {
-        await invalidateAccessCode(accessCode);
-        res.json({ message: 'Review completed successfully' });
-    } else {
-        res.status(403).json({ error: 'Access code not found or already completed' });
-    }
-    } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-    }
-});
+
 
