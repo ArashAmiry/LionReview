@@ -13,6 +13,7 @@ import RangeQuestionDetailsCard from "../components/review_details/RangeQuestion
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import QuestionListAnswers from "../components/QuestionListAnswers";
 
 type DetailsPage = {
     formName: string;
@@ -35,11 +36,22 @@ const ReviewDetails = () => {
     const [currentPageIndex, setCurrentPageIndex] = useState(0)
     const [isThereQuestionsForThisPage, setIsThereQuestionsForThisPage] = useState(false);
     const [showCode, setShowCode] = useState(false);
+    const [individualAnswers, setIndividualAnswers] = useState<{ questionId: string, answer: string }[][]>([[]]);
+    const [currentIndividualAnswer, setCurrentIndividualAnswer] = useState(0)
 
     const fetchReview = async (): Promise<IReview | undefined> => {
         try {
             const response = await axios.get(`http://localhost:8080/review/single/${reviewId}`);
             console.log(response.data)
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const fetchIndividualAnswers = async (): Promise<{questionId: string, answer:string}[][] | undefined> => {
+        try {
+            const response = await axios.get(`http://localhost:8080/review/answer/individual/${reviewId}`);
             return response.data;
         } catch (e) {
             console.log(e);
@@ -60,6 +72,13 @@ const ReviewDetails = () => {
                 })));
             }
         });
+
+        fetchIndividualAnswers()
+            .then((response) => {
+                if(response) {
+                    setIndividualAnswers(response);
+                }
+            })
     }, [reviewId]);
 
     useEffect(() => {
@@ -187,7 +206,21 @@ const ReviewDetails = () => {
                                     </Container>
                                 </TabPanel>
                                 <TabPanel value="2">
-                                    <div>HEEEEEEEEEEEEEEEE</div>
+                                    {reviewPages[currentPageIndex].questions
+                                        .filter(question => question.questionType === "binary" )
+                                        .map(question => {
+                                            // Flatten the array of arrays into a single array
+                                            const flatAnswers = individualAnswers.flatMap(a => a);
+                                            // Find the answer in the flattened array
+                                            const answerObject = flatAnswers.find(answer => answer.questionId === question._id);
+                                            return (
+                                              <QuestionListAnswers
+                                                binaryQuestion={question.question}
+                                                // Provide the answer or an empty string if not found
+                                                answer={answerObject ? answerObject.answer : ""}
+                                              />
+                                            );
+                                          })}
                                 </TabPanel>
 
                             </TabContext>

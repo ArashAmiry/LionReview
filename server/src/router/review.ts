@@ -78,3 +78,20 @@ reviewRouter.get("/answer/:questionID", async (
         res.status(500).send(e.message);
     }
 });
+
+reviewRouter.get("/answer/individual/:reviewID", async (
+    req: Request<{ reviewID: string }, {}, {}>,
+    res: Response<{questionId: string, answer: string}[][]>
+) => {
+    try {
+        const response = await reviewService.getIndividualAnswers(req.params.reviewID);
+        if(response) {
+            res.status(200).send(response);
+        } else {
+            res.status(404).send()
+        }
+        
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
