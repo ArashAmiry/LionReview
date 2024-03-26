@@ -3,7 +3,7 @@ import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
 import Row from "react-bootstrap/esm/Row";
 
-function QuestionListAnswers({ binaryQuestion, answer }: { binaryQuestion: string, answer: string }) {
+function QuestionListAnswer({ binaryQuestion, answer }: { binaryQuestion: string, answer: string }) {
 
     return (
         <>
@@ -42,4 +42,4 @@ function QuestionListAnswers({ binaryQuestion, answer }: { binaryQuestion: strin
     )
 }
 
-export default QuestionListAnswers
+export default QuestionListAnswer

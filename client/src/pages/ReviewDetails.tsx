@@ -13,7 +13,9 @@ import RangeQuestionDetailsCard from "../components/review_details/RangeQuestion
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import QuestionListAnswers from "../components/QuestionListAnswers";
+import QuestionListAnswer from "../components/QuestionListAnswer";
+import TextfieldListAnswer from "../components/TextfieldListAnswer";
+import RangeQuestionListAnswer from "../components/RangeQuestionListAnswer";
 
 type DetailsPage = {
     formName: string;
@@ -49,13 +51,26 @@ const ReviewDetails = () => {
         }
     }
 
-    const fetchIndividualAnswers = async (): Promise<{questionId: string, answer:string}[][] | undefined> => {
+    const fetchIndividualAnswers = async (): Promise<{ questionId: string, answer: string }[][] | undefined> => {
         try {
             const response = await axios.get(`http://localhost:8080/review/answer/individual/${reviewId}`);
             return response.data;
         } catch (e) {
             console.log(e);
         }
+    }
+
+    const previousIndividual = () => {
+        if (currentIndividualAnswer !== 0) {
+            setCurrentIndividualAnswer(currentIndividualAnswer - 1);
+        }
+
+    }
+
+    const nextIndividual = () => {
+        if (currentIndividualAnswer !== individualAnswers.length - 1){
+            setCurrentIndividualAnswer(currentIndividualAnswer + 1);
+        }    
     }
 
     useEffect(() => {
@@ -75,7 +90,7 @@ const ReviewDetails = () => {
 
         fetchIndividualAnswers()
             .then((response) => {
-                if(response) {
+                if (response) {
                     setIndividualAnswers(response);
                 }
             })
@@ -125,6 +140,10 @@ const ReviewDetails = () => {
             );
         }
     }, [currentPageIndex, reviewPages, questionsAnswers]);
+
+    useEffect(() => {
+
+    })
 
     const [value, setValue] = useState('1');
 
@@ -206,21 +225,48 @@ const ReviewDetails = () => {
                                     </Container>
                                 </TabPanel>
                                 <TabPanel value="2">
-                                    {reviewPages[currentPageIndex].questions
-                                        .filter(question => question.questionType === "binary" )
-                                        .map(question => {
-                                            // Flatten the array of arrays into a single array
-                                            const flatAnswers = individualAnswers.flatMap(a => a);
-                                            // Find the answer in the flattened array
-                                            const answerObject = flatAnswers.find(answer => answer.questionId === question._id);
-                                            return (
-                                              <QuestionListAnswers
-                                                binaryQuestion={question.question}
-                                                // Provide the answer or an empty string if not found
-                                                answer={answerObject ? answerObject.answer : ""}
-                                              />
-                                            );
-                                          })}
+                                    <Row className="pb-3">
+                                        <Col onClick={() => previousIndividual()} className="page-change"><strong>&lt;</strong></Col>
+                                        <Col className="page-change">{currentIndividualAnswer}</Col>
+                                        <Col onClick={() => nextIndividual()} className="page-change"><strong>&gt;</strong></Col>
+                                    </Row>
+                                    {individualAnswers[currentIndividualAnswer].map((a) => (
+                                        reviewPages[currentPageIndex].questions
+                                            .filter(question => question.questionType === "binary" && question._id === a.questionId)
+                                            .map(question => {
+                                                return (
+                                                    <QuestionListAnswer
+                                                        binaryQuestion={question.question}
+                                                        answer={a.answer}
+                                                    />
+                                                );
+                                            })
+                                    ))}
+                                    {individualAnswers[currentIndividualAnswer].map((a) => (
+                                        reviewPages[currentPageIndex].questions
+                                            .filter(question => question.questionType === "text" && question._id === a.questionId)
+                                            .map(question => {
+                                                return (
+                                                    <TextfieldListAnswer
+                                                        textfieldQuestion={question.question}
+                                                        answer={a.answer}
+                                                    />
+                                                );
+                                            })
+                                    ))}
+
+                                    {individualAnswers[currentIndividualAnswer].map((a) => (
+                                        reviewPages[currentPageIndex].questions
+                                            .filter(question => question.questionType === "range" && question._id === a.questionId)
+                                            .map(question => {
+                                                return (
+                                                    <RangeQuestionListAnswer
+                                                        rangeQuestion={question.question}
+                                                        answer={a.answer}
+                                                    />
+                                                );
+                                            })
+                                    ))}
                                 </TabPanel>
 
                             </TabContext>

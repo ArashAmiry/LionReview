@@ -43,3 +43,9 @@
     background-color: white;
     z-index: 1; /* Ensure the tab list appears above other content */
 }
+
+.page-change {
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
+    font-size: 20px;
+}
