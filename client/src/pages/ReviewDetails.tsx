@@ -16,6 +16,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import QuestionListAnswer from "../components/QuestionListAnswer";
 import TextfieldListAnswer from "../components/TextfieldListAnswer";
 import RangeQuestionListAnswer from "../components/RangeQuestionListAnswer";
+import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
 type DetailsPage = {
     formName: string;
@@ -226,9 +227,9 @@ const ReviewDetails = () => {
                                 </TabPanel>
                                 <TabPanel value="2">
                                     <Row className="pb-3">
-                                        <Col onClick={() => previousIndividual()} className="page-change"><strong>&lt;</strong></Col>
-                                        <Col className="page-change">{currentIndividualAnswer}</Col>
-                                        <Col onClick={() => nextIndividual()} className="page-change"><strong>&gt;</strong></Col>
+                                        <Col onClick={() => previousIndividual()} className="page-change"><AiFillCaretLeft /></Col>
+                                        <Col className="page-change">Individual {currentIndividualAnswer + 1}</Col>
+                                        <Col onClick={() => nextIndividual()} className="page-change"><AiFillCaretRight /></Col>
                                     </Row>
                                     {individualAnswers[currentIndividualAnswer].map((a) => (
                                         reviewPages[currentPageIndex].questions
