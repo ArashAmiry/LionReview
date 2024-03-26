@@ -20,11 +20,7 @@ const templateSchema: Schema = new Schema({
     type: String,
     required: true
   },
-  checkboxQuestions: [{
-    questionType: { type: String, required: true },
-    question: { type: String, required: true }
-  }],
-  textfieldQuestions: [{
+  questions: [{
     questionType: { type: String, required: true },
     question: { type: String, required: true }
   }]

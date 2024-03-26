@@ -35,13 +35,13 @@ templateRouter.post("/savedTemplates", async (
 });
 
 templateRouter.get("/getPresetTemplate", async (
-    req: Request<{category: "preset"}, {}, {}>,
+    req: Request<{}, {}, {}>,
     res: Response<ITemplate[] | string>
 ) => {
     try {
         if (req.session.user !== undefined) {
             console.log(req.session.user);
-            const reviews = await templateService.getTemplates(req.params.category);
+            const reviews = await templateService.getTemplates("preset");
             res.status(200).send(reviews);
         } else {
             res.status(400).send("You are not logged in.");
@@ -53,13 +53,13 @@ templateRouter.get("/getPresetTemplate", async (
 });
 
 templateRouter.get("/getSavedTemplate", async (
-    req: Request<{category: "saved"}, {}, {}>,
+    req: Request<{}, {}, {}>,
     res: Response<ITemplate[] | string>
 ) => {
     try {
         if (req.session.user !== undefined) {
             console.log(req.session.user);
-            const reviews = await templateService.getTemplates(req.params.category);
+            const reviews = await templateService.getTemplates("saved");
             res.status(200).send(reviews);
         } else {
             res.status(400).send("You are not logged in.");
