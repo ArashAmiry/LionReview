@@ -65,13 +65,13 @@ reviewRouter.post("/answer", async (
     }
 });
 
-
+//detta var en fullösning enligt grabben som jag frågade om hur man gör webquerys igår
 interface Foo {
     foo: string;
 }
 
 
-
+//denna kommer skicka vidare efter verify till review? 
 reviewRouter.post("/auth/verify", async (
     req: Request<{}, {}, {accessCode: string}, Foo>, res: Response) => {
     try {

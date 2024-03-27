@@ -48,16 +48,3 @@ export class AccessManager {
 
 
 
-/*
-async function terminateSession(requestId: string, passcode: string, completed:boolean): Promise<boolean> {
-  const answer: IAnswer | null = await Answer.findOne({ requestId });
-  if (answer) {
-  await AccessCode.updateOne({ requestId: requestId }, { completed: true });
-  return true;
-  }
-  return false;
-
-*/
-/*  export async function invalidateAccessCode(accessCode: IAccessCode): Promise<void> {
-    accessCode.completed = true;
-    await accessCode.save(); */

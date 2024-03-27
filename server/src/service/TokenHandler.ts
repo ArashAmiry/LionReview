@@ -10,6 +10,6 @@ export class TokenHandler {
         const decoded = jwt.verify(token, TOKEN_KEY)  as { username: string };
         return decoded.username;
     }
-    // behövs en metod för att generera tokens för reviewID
+    // behövs en metod för att generera tokens för reviewID? 
 }
 

@@ -26,7 +26,8 @@ export class ReviewService {
     async getReview(reviewId: string): Promise<IReview | undefined> {
         try {
             const review = await reviewModel.findOne({ _id: reviewId }).exec();
-            
+            //jag vet inte ifall den ska vara i routern men ska iaf va en query grej som länkar till rätt review 
+            //och den ska checkas någonstans här så man kan validera att användaren har rätt kod.
             if (review !== null) { // since findById returns null if no document is found
                 return review.toObject();
             }
@@ -54,6 +55,8 @@ export class ReviewService {
                 }).exec();
 
             console.log(result);
+            //behöver koppla en grej som uppdaterar boolean till false after submit här. 
+            //vet inte hur denna ska se ut. 
             await AccessCode.findOneAndUpdate(/*ha ngt som kollar koden,*/{completed : true});
         } catch (error) {
             console.error('An error occured while updating the database: ', error);

@@ -27,7 +27,9 @@ export class SendEmail {
 
     }
 
-
+//kommer skicka en accesscode med en querylink till användaren som ska reviewa, behövs en sån för att
+//databasen ska funka som jag tänkt med att man kan ha randomly genererade koder som kan va samma till flera reviews utan 
+//att man ska oroa sig till vilken man kommer.
     async sendAccessCode(email: string, accessCode: string, reviewIDLink: string) {
         const html = `
             <h1>Access Code</h1>

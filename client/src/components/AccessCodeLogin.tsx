@@ -70,24 +70,9 @@ const AccessCodeLogin: React.FC = () => {
                 </Button>
             </Row>
         </Container>
-      /* <div>
-      <h2>Enter Your Access Code</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={accessCode}
-          onChange={(e) => setAccessCode(e.target.value)}
-          placeholder="Enter your access code"
-        />
-        <button type="submit">Submit</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div> 
-
-    </Container>
-   */ 
   );
 };
+//kommer behöva se till så att knappen gör saker, typ routar vidare till review
 
 
 export default AccessCodeLogin;
