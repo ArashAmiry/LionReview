@@ -10,6 +10,8 @@ import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
 import AfterActivation from "./pages/AfterActivation";
 import EmailSent from "./pages/EmailSent";
+import { AuthProvider } from "./AuthContext";
+import PrivateRoutes from "./PrivateRoutes";
 import ReviewDetails from "./pages/ReviewDetails";
 
 axios.defaults.withCredentials = true;
@@ -17,22 +19,27 @@ axios.defaults.withCredentials = true;
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
-            <Routes>
-              <Route path="/" element={<StartPage />} />
-              <Route path="/logIn" element={<LoginPage />} />
-              <Route path="/signUp" element={<SignupPage />} />
-              <Route path="/create" element={<CreateReview />} />
-              <Route path="/activated" element={<AfterActivation />} />
-              <Route path="/emailSent" element={<EmailSent />} />
-              <Route path="/answer/:reviewId" element={<RespondentReview />} />
-              <Route path="/myReviews" element={<MyReviews username={"username"} />} />
-              <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
-            </Routes>
-
-          </div>
-
+      <AuthProvider>
+        <div className="App">
+          <Header />
+          <Routes>
+            <Route path="/" element={<StartPage />} />
+            <Route path="/logIn" element={<LoginPage />} />
+            <Route path="/signUp" element={<SignupPage />} />
+            <Route path="/create" element={
+              <PrivateRoutes>
+                <CreateReview />
+              </PrivateRoutes>
+            }
+            />
+            <Route path="/activated" element={<AfterActivation />} />
+            <Route path="/emailSent" element={<EmailSent />} />
+            <Route path="/answer/:reviewId" element={<RespondentReview />} />
+            <Route path="/myReviews" element={<MyReviews username={"username"} />} />
+            <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
+          </Routes>
+        </div>
+      </AuthProvider>
     </Router>
   );
 }
