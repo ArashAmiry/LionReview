@@ -35,7 +35,7 @@ export class ReviewService {
         throw new Error("No review was found with id: " + reviewId);
     }
 
-    async submitReview(reviewId : string, answers: {questionId: string, answer: string}[]) {
+    async submitReview(reviewId: string, answers: { questionId: string, answer: string }[]) {
         try {
             await answerModel.create({
                 reviewId: reviewId,
@@ -47,23 +47,40 @@ export class ReviewService {
         }
     }
 
-    async getAnswers(questionId: string): Promise<string[]> {
+    async getAnswers(questionId: string): Promise<string[] | undefined> {
         try {
-            const results = await answerModel.find({'answers.questionId': questionId }).exec();
-            
-        if (results.length > 0) {
-            const answers: string[] = results.flatMap(result => result.answers
-                .filter(answer => answer.questionId.toString() === questionId)
-                .map(answer => answer.answer)
-            );
-            return answers;
-        } else {
-            console.log("Could not find question with questionID: " + questionId);
-            return [];
-        }
+            const results = await answerModel.find({ 'answers.questionId': questionId }).exec();
+
+            if (results.length > 0) {
+                const answers: string[] = results.flatMap(result => result.answers
+                    .filter(answer => answer.questionId.toString() === questionId)
+                    .map(answer => answer.answer)
+                );
+                return answers;
+            } else {
+                console.log("Could not find question with questionID: " + questionId);
+            }
         } catch (error) {
             console.log("Error occured when fetching answers", error);
             throw error;
+        }
+    }
+
+    async getIndividualAnswers(reviewId: string) {
+        try {
+            const results = await answerModel.find({ 'reviewId': reviewId }).exec();
+
+            if (results.length > 0) {
+                const individualAnswers = results.map(result => 
+                    result.answers.map(answerObj => ({
+                        questionId: answerObj.questionId.toString(),
+                        answer: answerObj.answer
+                    }))
+                );
+                return individualAnswers;
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }

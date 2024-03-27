@@ -11,12 +11,10 @@
 .container-statistics {
     background-color: white;
     border-radius: 10px;
-    width: 60%;
-    overflow-y: auto;
-    height: 100%;
+    width: 100%;
     margin-bottom: 20px;
+    
 }
-
 .toggle-code-answers {
     width: 20%;
     align-self: center;
@@ -28,4 +26,26 @@
 
 .no-answers {
     color: white;
+}
+
+.big-container {
+    width: 60%;
+    background-color: white;
+    border-radius: 10px;
+    overflow-y: scroll; /* Hide overflow content */
+    margin-bottom: 12px;
+    height: calc(100% - 100px);
+}
+
+.tab-list-container {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1; /* Ensure the tab list appears above other content */
+}
+
+.page-change {
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
+    font-size: 20px;
 }
