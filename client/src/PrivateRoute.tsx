@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { useAuthContext } from "./AuthContext";
 import { Navigate } from "react-router-dom";
 
-function PrivateRoutes({ children }: { children: ReactNode }) {
+function PrivateRoute({ children }: { children: ReactNode }) {
     const { isLoggedIn } = useAuthContext();
     return (
         <>
@@ -10,4 +10,4 @@ function PrivateRoutes({ children }: { children: ReactNode }) {
         </>)
 }
 
-export default PrivateRoutes;
+export default PrivateRoute;
