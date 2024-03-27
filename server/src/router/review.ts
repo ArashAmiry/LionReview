@@ -1,8 +1,10 @@
 import express, { Request, Response } from "express";
 import { ReviewService } from "../service/review";
 import { IReview } from "../model/IReview";
+import { AccessCode } from "../service/accessCode";
 
 const reviewService = new ReviewService();
+const accessCodeService = new AccessCode();
 
 export const reviewRouter = express.Router();
 
@@ -55,8 +57,17 @@ reviewRouter.post("/answer", async (
     res: Response<String>
 ) => {
     try {
-        await reviewService.submitReview(req.body.reviewId, req.body.answers);
-        res.status(200).send("Answers to review successfully submitted.");
+        if(req.session.accessCode !== undefined) {
+            if(!await accessCodeService.checkCodeStatus(req.session.accessCode)) {
+                await reviewService.submitReview(req.body.reviewId, req.body.answers);
+                await accessCodeService.setCodeUsed(req.session.accessCode);
+                res.status(200).send("Answers to review successfully submitted.");
+            } else {
+                res.status(400).send("Could not submit answers");
+            }
+        } else {
+            res.status(400).send("Could not submit answers");
+        }
     } catch (e: any) {
         res.status(500).send(e.message);
     }

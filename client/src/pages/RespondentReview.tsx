@@ -1,5 +1,5 @@
 import CodeReview from "../components/CodeReview";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import ReviewFormSidebar from "../components/ReviewFormSidebar";
 import { useEffect, useState } from "react";
@@ -28,7 +28,10 @@ export interface AnswerPage {
 function RespondentReview() {
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [review, setReview] = useState<IReview>();
-    const [answerPages, setAnswerPages] = useState<AnswerPage[]>([])
+    const [answerPages, setAnswerPages] = useState<AnswerPage[]>([]);
+    const [authenticated, setAuthenticated] = useState<boolean>(false);
+    const [accessCode, setAccessCode] = useState("");
+    const [errorPage, setErrorPage] = useState(false);
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -40,11 +43,20 @@ function RespondentReview() {
         }
     };
 
+    const handleAccessSubmit = async () => {
+        const res = await axios.get(`http://localhost:8080/access/review`, {
+            params: {
+                accessCode: accessCode
+            }
+        });
+        setAuthenticated(res.data)
+    }
+
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
                 setReview(response);
-                
+
                 const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
                     formName: page.formName,
                     binaryQuestions: page.questions
@@ -87,6 +99,27 @@ function RespondentReview() {
         return <div>Loading...</div>
     };
 
+    if (!authenticated) {
+        return (
+            <Container className="access-container d-flex flex-column justify-content-center">
+                <Form className="access-form" onSubmit={() => handleAccessSubmit()}>
+                    <Form.Group className="access-input">
+                        <Form.Control
+                            className='mb-3'
+                            type="text"
+                            value={accessCode}
+                            onChange={(e) => setAccessCode(e.target.value)}
+                            placeholder="Enter your access code"
+                            required
+                        />
+                    </Form.Group>
+                    <Button variant="primary" type="submit" className="accessCode-button">
+                        Submit Code
+                    </Button>
+                </Form>
+            </Container>
+        );
+    }
     return (
         <Container fluid className="answer-container px-0">
             <Row className="code-row">
@@ -103,6 +136,7 @@ function RespondentReview() {
                         currentPageIndex={currentPageIndex}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
                         reviewId={reviewId}
+                        setErrorPage={(isError: boolean) => setErrorPage(isError)}
                     />
                 </Col>
             </Row>

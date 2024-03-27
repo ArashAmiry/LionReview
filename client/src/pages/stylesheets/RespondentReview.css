@@ -1,3 +1,7 @@
 .answer-container {
     padding-left: 80px !important;
 }
+
+.access-container {
+    height: 90vh;
+}

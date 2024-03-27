@@ -11,11 +11,13 @@ type ReviewFormSideBarProps = {
     setCurrentPageIndex: (index: number) => void,
     answerPages: AnswerPage[],
     setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>,
-    reviewId: string
+    reviewId: string,
+    setErrorPage: (isError: boolean) => void;
 }
 
-function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId}: ReviewFormSideBarProps) {
+function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage}: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
+    
 
     const submitReview = async () => {
         const reviewAnswers = answerPages.flatMap(answerPage => {
@@ -25,10 +27,13 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
                 }));
             })
         try {
-            await axios.post('http://localhost:8080/review/answer', {
+            const res = await axios.post('http://localhost:8080/review/answer', {
                 "reviewId": reviewId,
                 "answers": reviewAnswers
             });
+            if(res.status === 400) {
+                setErrorPage(true)
+            }
         } catch (error) {
             console.log("Error occurred when updating database: ", error)
         }
@@ -53,3 +58,7 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
 }
 
 export default ReviewFormSidebar;
+
+function useState(arg0: boolean): [any, any] {
+    throw new Error("Function not implemented.");
+}
