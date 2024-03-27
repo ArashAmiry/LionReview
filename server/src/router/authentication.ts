@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import { Account } from "../service/Account/Account";
 import { IAccount } from "../model/IAccount";
 import { IAccountService } from "../service/Account/IAccountService";
-import { SendEmail } from "../service/SendEmail";
 import { accountModel } from "../db/account.db";
 import { TokenHandler } from "../service/TokenHandler";
 

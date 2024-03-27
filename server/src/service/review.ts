@@ -1,7 +1,8 @@
 import { answerModel } from "../db/answer.db";
 import { reviewModel } from "../db/review";
 import { IReview } from "../model/IReview";
-import { AccessCode } from "../db/Access.db";
+import { AccessCode } from "../db/access.db";
+import { AccessManager } from "./accessCodeService";
 
 export class ReviewService {
     async createReview(review: Omit<IReview, 'createdBy'>, createdBy: string) {
@@ -11,7 +12,7 @@ export class ReviewService {
             pages: review.pages
         });
     }
-
+//se till att få in koden och checka här
     async getReviews(username: string) {
         try {
             const reviews = await reviewModel.find({ createdBy: username }).exec();
@@ -21,10 +22,11 @@ export class ReviewService {
             throw error;
         }
     }
-
+//distribute reviews.... använd denna (finns egentligen en router men denna används som )
     async getReview(reviewId: string): Promise<IReview | undefined> {
         try {
             const review = await reviewModel.findOne({ _id: reviewId }).exec();
+            
             if (review !== null) { // since findById returns null if no document is found
                 return review.toObject();
             }
@@ -36,6 +38,7 @@ export class ReviewService {
         throw new Error("No review was found with id: " + reviewId);
     }
 
+    ///uppdatera boolean 
     async submitReview(questionId: string, answer: string) {
         try {
             const answers = await this.getAnswers(questionId) ?? [];

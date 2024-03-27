@@ -3,13 +3,14 @@ import { IAccessCode } from '../model/IAccess';
 import { conn } from "./conn";
 
 const accessCodeSchema: Schema = new Schema({
-    rewiewId: { 
+    reviewId: { 
         type: String, 
-        required: true 
+        required: true
     },
     passcode: {
         type: String, 
-        required: true 
+        required: true,
+        unique: true
     },
     completed: { 
         type: Boolean, 

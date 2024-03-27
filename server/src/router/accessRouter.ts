@@ -1,7 +1,7 @@
 import express, {Request,Response} from 'express';
 import { IAccessCode } from '../model/IAccess';
 import { generateAccessCode, verifyAccessCode } from '../service/accessCodeService';
-import { AccessCode } from '../db/Access.db';
+import { AccessCode } from '../db/access.db';
 export const authenticationRouter = express.Router();
 
 

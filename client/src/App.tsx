@@ -10,6 +10,7 @@ import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
 import AfterActivation from "./pages/AfterActivation";
 import EmailSent from "./pages/EmailSent";
+import AccessCodeLogin from "./components/AccessCodeLogin";
 
 axios.defaults.withCredentials = true;
 
@@ -26,8 +27,8 @@ function App() {
               <Route path="/activated" element={<AfterActivation />} />
               <Route path="/emailSent" element={<EmailSent />} />
               <Route path="/answer/:reviewId" element={<RespondentReview />} />
-              <Route path="/myReviews" element={<MyReviews username={"username"} />}
-              />
+              <Route path="/myReviews" element={<MyReviews username={"username"} />} />
+              <Route path = "/authTempUser" element = {<AccessCodeLogin />} />
             </Routes>
 
           </div>

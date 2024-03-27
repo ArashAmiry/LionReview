@@ -28,6 +28,15 @@ export class SendEmail {
     }
 
 
+    async sendAccessCode(email: string, accessCode: string, reviewIDLink: string) {
+        const html = `
+            <h1>Access Code</h1>
+            <p>Your one-time access code is: ${accessCode}.
+            Click the following link to get to the website: ${reviewIDLink}</p>
+        `;
+        this.sendReviewEmail(email);
+    }
+
     /*
     Skicka en 
     */
