@@ -6,10 +6,11 @@ import TemplatePopupField from './TemplatePopupField';
 import { ITemplate } from '../interfaces/ITemplate';
 
 interface CardProps {
+  templateId: string
   template: ITemplate;
 }
 
-const TemplateCard: React.FC<CardProps> = ({template}) => {
+const TemplateCard: React.FC<CardProps> = ({templateId, template}) => {
   
   const [isHovered, setIsHovered] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -39,13 +40,13 @@ const TemplateCard: React.FC<CardProps> = ({template}) => {
       <h2 className='title'>{template.name}</h2>
       {!isHovered && (<h3 className='card-info'>{template.info}</h3>)}
       {isHovered && (
-        <div className="buttons" onClick={handlePreviewEditClick}>
+        <div className="button" onClick={handlePreviewEditClick}>
             <Button type="button" className="btn btn-primary">Preview and Edit</Button>
         </div>
       )}
       {isPopupOpen && (
         <div className='popup-container'>
-          <TemplatePopupField template={template} onClose={() => setIsPopupOpen(false)} />
+          <TemplatePopupField templateId={templateId} template={template} onClose={() => setIsPopupOpen(false)} />
         </div>
       )}
 
@@ -54,15 +55,5 @@ const TemplateCard: React.FC<CardProps> = ({template}) => {
   );
 };
 
-/*
-export const presetTemplateCardList: JSX.Element[] = [
-  <TemplateCard key={1} template={presetTemplates.securityTemplate}></TemplateCard>,
-  <TemplateCard key={2} template={presetTemplates.codeStructureTemplate}></TemplateCard>,
-  <TemplateCard key={3} template={presetTemplates.performanceTemplate}></TemplateCard>,
-  <TemplateCard key={4} template={presetTemplates.performanceTemplate}></TemplateCard>,
-  <TemplateCard key={5} template={presetTemplates.performanceTemplate}></TemplateCard>,
-  // Add more TemplateCard objects as needed
-];
-*/
 
 export default TemplateCard;

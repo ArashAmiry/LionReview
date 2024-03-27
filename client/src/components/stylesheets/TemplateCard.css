@@ -26,12 +26,12 @@
     padding-top: 0px;
   }
   
-  .buttons {
+  .button {
     visibility: hidden;
     transition: visibility 0.3s;
     height: 120px;
   }
-  .card.hovered .buttons {
+  .card.hovered .button {
     visibility: visible;
   }
 
@@ -41,7 +41,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.374); /* Semi-transparent overlay */
+    background-color: rgba(0, 0, 0, 0.59); /* Semi-transparent overlay */
     z-index: 99; /* Ensure the popup is displayed in front of other content */
     display: flex;
     justify-content: center;

@@ -83,7 +83,7 @@ templateRouter.get("/single/:reviewId", async (
     }
 })
 
-templateRouter.put('/editTemplate', async (req: Request, res: Response) => {
+templateRouter.put('/editTemplate/:id', async (req: Request, res: Response) => {
     const templateId = req.params.id;
     const updatedTemplateData = req.body; // Assuming the updated template data is sent in the request body
     try {

@@ -7,14 +7,6 @@
     height: 580px;
 }
 
-.edit{
-    overflow: auto;
-    background-color: white;
-    width: 480px;
-    height: 580px;
-    padding: 20px;
-}
-
 .sidebar{
     width: 480px;
     height: 580px;
@@ -22,9 +14,17 @@
     margin: 0px;
 }
 
+.preview{
+    overflow: auto;
+    background-color: white;
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+}
+
 .name-intro-cont{
     width: 440px;
-    height: 430px;
+    height: 420px;
 }
 
 .intro-name{
@@ -55,4 +55,35 @@
 .close-button {
   width: 420px; /* Subtract padding from width */
   border-radius: 0;
+}
+
+.editModeOn-container{
+    display: flex;
+    flex-direction: row;
+    background-color: aliceblue;
+    width: 960px;
+    height: 580px;
+}
+
+.edit-question-cont{
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+    margin: 0px;
+}
+
+.edit-name-info-cont{
+    background-color: white;
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+}
+
+.save-button {
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
+}
+.exit-button {
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
 }

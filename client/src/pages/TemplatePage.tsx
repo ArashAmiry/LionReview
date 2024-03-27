@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Template from '../components/Template';
-//import { presetTemplateCardList } from '../components/TemplateCard';
 import TemplateCard from '../components/TemplateCard';
 import './stylesheets/TemplatePage.css'
 import axios from "axios";
@@ -72,7 +70,7 @@ const TemplatePage: React.FC = () => {
         <Row>
           {savedTemplates.map((template) => (
             <Col key={template._id} xl={3} className='mt-4 px-4'>
-              <TemplateCard template={template}/>
+              <TemplateCard templateId={template._id} template={template}/>
             </Col>
           ))}
         </Row>
@@ -86,7 +84,8 @@ const TemplatePage: React.FC = () => {
         <Row>
           {presetTemplates.map((template) => (
             <Col key={template._id} xl={3} className='mt-4 px-4'>
-              <TemplateCard template={template}/>
+              console.log(template._id)
+              <TemplateCard templateId={template._id} template={template}/>
             </Col>
           ))}
         </Row>
