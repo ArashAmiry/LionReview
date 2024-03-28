@@ -161,10 +161,10 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
                     {getBadgeText(review.status)}
                   </Badge>
                 </Card.Text>
-                {review.name !== "Draft" && (
+                {review.status !== "Draft" && (
                   <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
                 )}
-                {review.name === "Draft" && (
+                {review.status === "Draft" && (
                   <Button variant="secondary">Edit</Button>
                 )}
                 <Button variant="danger" className="mx-2">
