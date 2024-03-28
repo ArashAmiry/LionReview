@@ -18,6 +18,13 @@ type ReviewFormSideBarProps = {
 function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage }: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
 
+    const handleContinue = () => {
+        console.log(currentPageIndex)
+        console.log(answerPages.length)
+        if(currentPageIndex !== answerPages.length) {
+            setCurrentPageIndex(currentPageIndex + 1)
+        }
+    }
 
     const submitReview = async () => {
         const reviewAnswers = answerPages.flatMap(answerPage => {
@@ -52,8 +59,8 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
                 <RangeQuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
             </Card.Body>
 
-            {currentPageIndex !== answerPages.length && (
-                <Button size="lg" variant="light" onClick={() => setCurrentPageIndex(currentPageIndex + 1)}>Continue</Button>
+            {(currentPageIndex + 1) !== answerPages.length && (
+                <Button size="lg" variant="light" onClick={handleContinue}>Continue</Button>
             )}
             {<Button onClick={() => submitReview()} size="lg" variant="success">Submit Review</Button>}
         </Card>
