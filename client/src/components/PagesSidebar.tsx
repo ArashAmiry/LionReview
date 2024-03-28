@@ -9,7 +9,7 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex }: { pagesTitles: strin
     const toggleSidebar = () => setCollapsed(!collapsed);
 
     return (
-        <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">
+        <Sidebar className="sidebar bg-body" collapsed={collapsed}>
             <Menu>
                 <MenuItem
                     onClick={() => toggleSidebar()}

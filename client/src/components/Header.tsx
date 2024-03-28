@@ -3,8 +3,14 @@ import img from "../images/logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import './stylesheets/Header.css';
 import axios from 'axios';
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 
-const Header = () => {
+type HeaderProps = {
+  isDarkMode: boolean,
+  toggleDarkMode: () => void
+}
+
+const Header = ({isDarkMode, toggleDarkMode} : HeaderProps) => {
   const navigate = useNavigate();
   const logOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
@@ -15,10 +21,11 @@ const Header = () => {
     navigate('/');
   };
 
+
   return (
-    <Navbar bg="light" data-bs-theme="light" className="navbar">
+    <Navbar className="navbar bg-body">
       <Container>
-        <Navbar.Brand as={NavLink} to="/"><Image width={50} src={img} /></Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/"><Image width={50} src={img} className={isDarkMode ? 'white-image' : ''} /></Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link as={NavLink} to="/create">Create Review Session</Nav.Link>
           <Nav.Link as={NavLink} to="/myReviews">My Reviews</Nav.Link>
@@ -27,6 +34,16 @@ const Header = () => {
           <Nav.Link as={NavLink} to="/logIn" className="mx-2">Log In</Nav.Link>
           <Nav.Link onClick={(e) => logOut(e)} className="mx-2">Log Out</Nav.Link>
         </Nav>
+        <Nav className="justify-content-end">
+          <Nav.Item>
+            <DarkModeSwitch
+              style={{}}
+              checked={isDarkMode}
+              onChange={toggleDarkMode}
+              size={40}
+              />
+          </Nav.Item>
+       </Nav>
       </Container>
     </Navbar>
   );

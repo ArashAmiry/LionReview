@@ -1,4 +1,4 @@
-import { Col, Form, FormLabel, Row } from "react-bootstrap";
+import { Col, Container, Form, FormLabel, Row } from "react-bootstrap";
 import './stylesheets/PreviewForm.css'
 import { AnswerPage } from "../pages/RespondentReview";
 
@@ -25,9 +25,10 @@ function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: Q
             {binaryQuestions
                 .filter(question => question.question !== "")
                 .map((question, index) => (
-                    <Form className="question p-3 mb-3">
+                    <Form className="questionBox p-3 mb-3">
+                        <Container>
                         <Row>
-                            <Col md={12}>
+                            <Col>
                                 <FormLabel><p>{question.question}</p></FormLabel>
                             </Col>
                         </Row>
@@ -61,6 +62,7 @@ function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: Q
                                 />
                             </Col>
                         </Row>
+                    </Container>
                     </Form>
                 ))
             }

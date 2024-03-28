@@ -1,3 +1,13 @@
 .navbar{
-    height: 10vh;
+    height: 10vh; 
 }
+
+.loginButton {
+    color: var(--text-color); 
+}
+
+.white-image {
+    filter: brightness(0) invert(1);
+  }
+  
+

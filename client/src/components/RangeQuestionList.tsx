@@ -1,5 +1,5 @@
 import Slider from "@mui/material/Slider/Slider";
-import { Form } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 
 function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questionType: string, question: string}[] }) {
     const maxValue = 5;
@@ -18,18 +18,26 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
             {rangeQuestions
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestions, index) => (
-                    <Form.Group key={index} className="mb-3 question p-3" controlId={`step-${index}`}>
-                        <Form.Label>{rangeQuestions.question}</Form.Label>
-                        <Slider
-                            aria-label="Rating"
-                            defaultValue={3}
-                            getAriaValueText={valuetext}
-                            shiftStep={1}
-                            step={1}
-                            marks={marks}
-                            min={1}
-                            max={maxValue}
-                        />
+                    <Form.Group key={index} className="mb-3 questionBox p-3" controlId={`step-${index}`}>
+                        <Container>
+                            <Row>
+                                <Col>
+                                <Form.Label>{rangeQuestions.question}</Form.Label>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Slider
+                                    aria-label="Rating"
+                                    defaultValue={3}
+                                    getAriaValueText={valuetext}
+                                    shiftStep={1}
+                                    step={1}
+                                    marks={marks}
+                                    min={1}
+                                    max={maxValue}
+                                />
+                            </Row>
+                        </Container>
                     </Form.Group>
                 ))}
         </>

@@ -27,7 +27,7 @@ const initialPagesState: CreateReviewPage[] = [
   },
 ];
 
-function CreateReview() {
+function CreateReview({isDarkMode} : {isDarkMode: boolean}) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
   const [reviewName, setReviewName] = useState("");
@@ -133,6 +133,7 @@ function CreateReview() {
                pagesData={pagesData}
                setPagesData={(e) => setPagesData(e)}
                setTriedToSubmit={(e) => setTriedToSubmit(e)}
+               isDarkMode={isDarkMode}
             />
           </Col>
         )}
@@ -157,6 +158,7 @@ function CreateReview() {
             addNewPage={() => addNewPage()}
             setReviewName={(name) => setReviewName(name)}
             previousStep={() => previousStep()}
+            isDarkMode={isDarkMode}
             />
           </Col>
         )}

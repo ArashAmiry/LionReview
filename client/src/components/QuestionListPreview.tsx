@@ -1,4 +1,4 @@
-import { Col, Form, FormLabel, Row } from "react-bootstrap";
+import { Col, Container, Form, FormLabel, Row } from "react-bootstrap";
 
 function QuestionListPreview({ questions }: { questions: {questionType: string, question: string}[] }) {
     return (
@@ -6,10 +6,11 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
             {questions
                 .filter(question => question.question !== "")
                 .map((question, index) => (
-                    <Form className="question p-3 mb-3">
+                    <Form className="questionBox p-3 mb-3">
+                        <Container>
                         <Row>
-                            <Col md={12}>
-                                <FormLabel><p>{question.question}</p></FormLabel>
+                            <Col>
+                                <FormLabel ><p>{question.question}</p></FormLabel>
                             </Col>
                         </Row>
                         <Row>
@@ -20,7 +21,7 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                     key={index}
                                     id={`step-${index}`} // Add a unique id for each checkbox
                                     type="radio"
-                                    label={<p>Ja</p>}
+                                    label={<p>Yes</p>}
                                     className="text-start custom-checkbox"
                                 />
                             </Col>
@@ -31,11 +32,12 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                     key={index}
                                     id={`step-${index}`} // Add a unique id for each checkbox
                                     type="radio"
-                                    label={<p>Nej</p>}
+                                    label={<p>No</p>}
                                     className="text-start custom-checkbox"
                                 />
                             </Col>
                         </Row>
+                        </Container>
                     </Form>
                 ))}
         </>

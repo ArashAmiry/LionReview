@@ -9,7 +9,7 @@ interface TextfieldQuestionDetailsProps {
 
 const TextfieldQuestionDetails = ({ question, answers }:TextfieldQuestionDetailsProps) => {
     return ( 
-        <Container className="textfield-container my-4">
+        <Container className="textfield-container my-4 bg-body">
             <h3>{question.question}</h3>
             <hr className='divider' />
             <p className="my-1 number-responses">{answers?.length} responses</p>

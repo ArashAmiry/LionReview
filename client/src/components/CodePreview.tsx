@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
 import { Col, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
+import 'highlight.js/styles/github.css';
+
 
 export interface CodeFile {
     url: string;
@@ -15,11 +16,20 @@ interface CodePreviewPageProps {
     urls: string[];
     cachedFiles: Record<string, CodeFile>; 
     updateCachedFiles: (url: string, fileData: CodeFile) => void;
+    isDarkMode: boolean;
 }
 
-const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPageProps) => {
+const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles, isDarkMode }: CodePreviewPageProps) => {
     const [files, setFiles] = useState<CodeFile[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (isDarkMode) {
+            require('highlight.js/styles/github-dark.css')
+        } else {
+            require('highlight.js/styles/github.css')
+        }
+    }, [isDarkMode]);
 
     useEffect(() => {
         const fetchCode = async (url: string): Promise<CodeFile> => {
@@ -54,22 +64,22 @@ const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPa
             const fetchedFiles = await Promise.all(filesPromises);
             setFiles(fetchedFiles);
             setLoading(false);
-
         };
 
         fetchAllFiles();
     }, [urls]);
 
     useEffect(() => {
-        // Highlight code when the 'files' state updates
+        // Highlight code when the 'files' state updates        
         files.forEach(({ content }) => {
             if (content) {
                 document.querySelectorAll('pre code').forEach((block) => {
+                    block.removeAttribute('data-highlighted');
                     hljs.highlightAll();
                 });
             }
         });
-    }, [files]);
+    }, [files, isDarkMode]);
 
     const extractFileName = (url: string): string => {
         const parts = url.split('/');
@@ -80,7 +90,8 @@ const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPa
         return <div>Loading...</div>;
     }
     return (
-        <Row className='code-container'>
+        
+        <Row className='code-container bg-body'>
             {files.length === 2 &&
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>

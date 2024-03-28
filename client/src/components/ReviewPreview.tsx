@@ -11,10 +11,11 @@ type ReviewPreviewProps = {
     submitReview: () => void,
     addNewPage: () => void,
     setReviewName: (name: string) => void,
-    previousStep: () => void
+    previousStep: () => void,
+    isDarkMode: boolean
 }
 
-function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep} : ReviewPreviewProps) {
+function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep, isDarkMode} : ReviewPreviewProps) {
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setPagesData((prevPagesData) => {
@@ -31,11 +32,12 @@ function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview
 
     return (
         <Row className="code-row">
-            <Col className="code-preview" md={9}>
+            <Col className="code-preview bg-body" md={9}>
             <CodePreviewPage
                 urls={pagesData[currentPageIndex].urls}
                 cachedFiles={pagesData[currentPageIndex].cachedFiles}
                 updateCachedFiles={updateCachedFiles}
+                isDarkMode={isDarkMode}
             />
             </Col>
             <Col md={3} className="p-0">

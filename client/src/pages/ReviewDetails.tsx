@@ -24,7 +24,7 @@ type DetailsPage = {
     }[];
 };
 
-const ReviewDetails = () => {
+const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
     const [reviewName, setReviewName] = useState<string>("")
     const [reviewPages, setReviewPages] = useState<DetailsPage[]>()
     const [questionsAnswers, setQuestionsAnswers] = useState<{ questionId: string, answers: string[] }[]>()
@@ -130,12 +130,13 @@ const ReviewDetails = () => {
                 <Container className="container-details mt-2">
                     <CodeDisplay
                         files={reviewPages[currentPageIndex].codeSegments}
+                        isDarkMode={isDarkMode}
                     />
                 </Container>
                 :
                 <>
                     {isThereQuestionsForThisPage ? (
-                        <Container className="container-statistics mt-2">
+                        <Container className="container-statistics mt-2 bg-body">
                             <Row>
                                 {reviewPages[currentPageIndex].questions
                                     .filter(question => question.questionType === "binary")

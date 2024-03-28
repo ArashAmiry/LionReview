@@ -13,7 +13,7 @@ type PreviewFormProps = {
 
 function PreviewForm({reviewTitle, questions, textfields, rangeQuestions, errorMessage }: PreviewFormProps) {
     return (
-        <Card className="preview-box">
+        <Card className="preview-box bg-body">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2">
                 <QuestionList questions={questions} />
