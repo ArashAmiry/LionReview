@@ -56,12 +56,9 @@ function RespondentReview() {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
                     const status = axiosError.response.status;
-                    if (status === 409) {
-                        console.error("Code has already been used");
-                        setErrorAccessMessage("Code has already been used")
-                    } else if (status === 404 || status === 500) {
-                        console.error("Invalid code");
-                        setErrorAccessMessage("Invalid code")
+                    if (status === 409 || status === 404 || status === 500) {
+                        console.error("Code is either invalid or has already been used");
+                        setErrorAccessMessage("Code is either invalid or has already been used")
                     } else {
                         console.error("An unexpected error occurred:", axiosError.message);
                     }
