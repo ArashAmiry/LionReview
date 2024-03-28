@@ -2,7 +2,7 @@ import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
 import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PreviewFormSidebar.css";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 type Question = {
     questionType: string;
@@ -34,9 +34,9 @@ function PreviewFormSidebar({submitReview, addNewPage, setReviewName, reviewTitl
                 
             </Card.Body>
 
-            <Button size="lg" onClick={handleShow} variant="success">Finalize Form</Button> 
-            <Button size="lg" variant="primary" onClick={addNewPage}>Add New Page</Button>
-            <Button size="lg" variant="light" onClick={() => previousStep()}>Back</Button>
+            <Button className="step-3-btn" size="lg" onClick={handleShow} variant="success">Finalize Form</Button> 
+            <Button className="step-3-btn" size="lg" variant="primary" onClick={addNewPage}>Add New Page</Button>
+            <Button className="step-3-btn" size="lg" variant="light" onClick={() => previousStep()}>Back</Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
