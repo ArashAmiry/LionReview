@@ -6,10 +6,10 @@ export class SendEmail {
     accessCodeService = new AccessCode()
     async sendReviewEmail(emails: string[], reviewID: string) {
         emails.forEach(async email => {
-            const code = this.accessCodeService.generateIndividualAccessCode(reviewID);
+            const code = await this.accessCodeService.generateIndividualAccessCode(reviewID);
             const html = `
                 <h1> Hello World </h1>
-                <a href="localhost:3000/answer/${reviewID}">Go to the review</a>
+                <a href="http://localhost:3000/answer/${reviewID}">Go to the review</a>
                 <p>Here is your accesscode: ${code}</a>
                 `;
             const transporter = nodeMailer.createTransport({

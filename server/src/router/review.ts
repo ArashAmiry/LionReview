@@ -53,14 +53,14 @@ reviewRouter.get("/single/:reviewId", async (
 })
 
 reviewRouter.post("/answer", async (
-    req: Request<{}, {}, { reviewId: string, answers: {questionId: string, answer: string}[]}>,
+    req: Request<{}, {}, { reviewId: string, answers: { questionId: string, answer: string }[] }>,
     res: Response<String>
 ) => {
     try {
-        if(req.session.accessCode !== undefined) {
+        if (req.session.accessCode !== undefined) {
             const status = (await accessCodeService.checkCodeStatus(req.session.accessCode));
 
-            if(!status && status !== undefined) {
+            if (!status && status !== undefined) {
                 await reviewService.submitReview(req.body.reviewId, req.body.answers);
                 await accessCodeService.setCodeUsed(req.session.accessCode);
                 res.status(200).send("Answers to review successfully submitted.");
@@ -81,12 +81,12 @@ reviewRouter.get("/answer/:questionID", async (
 ) => {
     try {
         const response = await reviewService.getAnswers(req.params.questionID);
-        if(response) {
+        if (response) {
             res.status(200).send(response);
         } else {
             res.status(404).send(["This question has not been answered yet"])
         }
-        
+
     } catch (e: any) {
         res.status(500).send(e.message);
     }
@@ -94,16 +94,28 @@ reviewRouter.get("/answer/:questionID", async (
 
 reviewRouter.get("/answer/individual/:reviewID", async (
     req: Request<{ reviewID: string }, {}, {}>,
-    res: Response<{questionId: string, answer: string}[][]>
+    res: Response<{ questionId: string, answer: string }[][]>
 ) => {
     try {
         const response = await reviewService.getIndividualAnswers(req.params.reviewID);
-        if(response) {
+        if (response) {
             res.status(200).send(response);
         } else {
             res.status(404).send()
         }
-        
+
+    } catch (e: any) {
+        res.status(500).send(e.message);
+    }
+});
+
+reviewRouter.post("/distribute", async (
+    req: Request<{}, {}, { emails: string[], reviewID: string }>,
+    res: Response<String>
+) => {
+    try {
+        await reviewService.distributeReview(req.body.emails, req.body.reviewID);
+        res.status(200).send("Emails sent to reviewers");
     } catch (e: any) {
         res.status(500).send(e.message);
     }

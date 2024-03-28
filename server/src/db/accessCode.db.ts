@@ -14,7 +14,3 @@ const accessCodeSchema: Schema = new Schema({
 });
 
 export const accessModel = conn.model<IAccessCode>('AccessCode', accessCodeSchema);
-
-
-
-

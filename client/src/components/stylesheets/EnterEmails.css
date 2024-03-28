@@ -1,0 +1,55 @@
+.react-multi-email {
+    min-height: 200px;
+}
+
+.react-multi-email div[data-tag] {
+    border-radius: 99px;
+    margin-bottom: 5px;
+}
+
+.react-multi-email [data-tag] [data-tag-handle] {
+    padding: 5px;
+    font-size: 15px;
+}
+
+.react-multi-email [data-tag] [data-tag-handle]:hover {
+    color: red;
+}
+
+.reviewers-emails {
+    font-family: sans-serif;
+    width: 500px;
+
+    border: 1px solid #eee;
+    background: #f3f3f3;
+    padding: 20px;
+    margin: 15px;
+}
+
+.enter-email-popup {
+    font-family: sans-serif;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #eee;
+    background: #f3f3f3;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    width: 600px;
+}
+
+.enter-email-popup h3 {
+    margin-bottom: 20px;
+}
+
+.enter-email-popup .mt-4 {
+    margin-top: 20px;
+}
+
+.enter-email-popup .mr-2 {
+    margin-right: 10px;
+}
