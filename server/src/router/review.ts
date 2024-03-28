@@ -58,12 +58,14 @@ reviewRouter.post("/answer", async (
 ) => {
     try {
         if(req.session.accessCode !== undefined) {
-            if(!await accessCodeService.checkCodeStatus(req.session.accessCode)) {
+            const status = (await accessCodeService.checkCodeStatus(req.session.accessCode));
+
+            if(!status && status !== undefined) {
                 await reviewService.submitReview(req.body.reviewId, req.body.answers);
                 await accessCodeService.setCodeUsed(req.session.accessCode);
                 res.status(200).send("Answers to review successfully submitted.");
             } else {
-                res.status(400).send("Could not submit answers");
+                res.status(400).send("Could not submit answers, code is not valid");
             }
         } else {
             res.status(400).send("Could not submit answers");

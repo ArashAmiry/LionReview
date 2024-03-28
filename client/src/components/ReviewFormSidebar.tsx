@@ -7,7 +7,7 @@ import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import RangeQuestionListReview from "./RangeQuestionListReview";
 
 type ReviewFormSideBarProps = {
-    currentPageIndex : number,
+    currentPageIndex: number,
     setCurrentPageIndex: (index: number) => void,
     answerPages: AnswerPage[],
     setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>,
@@ -15,25 +15,28 @@ type ReviewFormSideBarProps = {
     setErrorPage: (isError: boolean) => void;
 }
 
-function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage}: ReviewFormSideBarProps) {
+function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage }: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
-    
+
 
     const submitReview = async () => {
         const reviewAnswers = answerPages.flatMap(answerPage => {
-                return [...answerPage.binaryQuestions, ...answerPage.textfieldQuestions, ...answerPage.rangeQuestions].map(question => ({         
-                    "questionId": question.id,
-                    "answer": question.answer
-                }));
-            })
+            return [...answerPage.binaryQuestions, ...answerPage.textfieldQuestions, ...answerPage.rangeQuestions].map(question => ({
+                "questionId": question.id,
+                "answer": question.answer
+            }));
+        });
+
         try {
-            const res = await axios.post('http://localhost:8080/review/answer', {
+            await axios.post('http://localhost:8080/review/answer', {
                 "reviewId": reviewId,
                 "answers": reviewAnswers
+            }).catch((error: Error) => {
+                setErrorPage(true);
+                console.log(error);
             });
-            if(res.status === 400) {
-                setErrorPage(true)
-            }
+
+
         } catch (error) {
             console.log("Error occurred when updating database: ", error)
         }
@@ -44,9 +47,9 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
-                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
-                <RangeQuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
+                <QuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
+                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
+                <RangeQuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
             </Card.Body>
 
             {currentPageIndex !== answerPages.length && (

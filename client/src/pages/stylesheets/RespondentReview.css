@@ -5,3 +5,13 @@
 .access-container {
     height: 90vh;
 }
+
+.access-code-input {
+    font-size: 1rem; /* Adjust font size as needed */
+    width: calc(100% - 20px); /* Adjust width to ensure the button stays in the same position */
+}
+
+.error-text {
+    font-size: 1rem; /* Adjust font size as needed */
+    color: red; /* Set color to red for error text */
+}

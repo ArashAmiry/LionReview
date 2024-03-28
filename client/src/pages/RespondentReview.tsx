@@ -1,9 +1,9 @@
 import CodeReview from "../components/CodeReview";
-import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, InputGroup, Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import ReviewFormSidebar from "../components/ReviewFormSidebar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { IReview } from "../interfaces/IReview";
 import PagesSidebar from "../components/PagesSidebar";
 import "./stylesheets/RespondentReview.css";
@@ -31,7 +31,9 @@ function RespondentReview() {
     const [answerPages, setAnswerPages] = useState<AnswerPage[]>([]);
     const [authenticated, setAuthenticated] = useState<boolean>(false);
     const [accessCode, setAccessCode] = useState("");
-    const [errorPage, setErrorPage] = useState(false);
+    const [errorAccess, setErrorAccess] = useState<boolean>(false);
+    const [errorAccessMessage, setErrorAccessMessage] = useState("");
+    const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
     const { reviewId } = useParams<{ reviewId: string }>();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
@@ -43,13 +45,33 @@ function RespondentReview() {
         }
     };
 
-    const handleAccessSubmit = async () => {
-        const res = await axios.get(`http://localhost:8080/access/review`, {
-            params: {
-                accessCode: accessCode
+    const handleAccessSubmit = async (e: any) => {
+        e.preventDefault()
+        try {
+            const res = await axios.get(`http://localhost:8080/access/review?accessCode=${accessCode}`);
+            console.log(res)
+            setAuthenticated(res.data)
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError;
+                if (axiosError.response) {
+                    const status = axiosError.response.status;
+                    if (status === 409) {
+                        console.error("Code has already been used");
+                        setErrorAccessMessage("Code has already been used")
+                    } else if (status === 404 || status === 500) {
+                        console.error("Invalid code");
+                        setErrorAccessMessage("Invalid code")
+                    } else {
+                        console.error("An unexpected error occurred:", axiosError.message);
+                    }
+                }
+            } else {
+                console.error("An unexpected error occurred:", error);
             }
-        });
-        setAuthenticated(res.data)
+            setErrorAccess(true);
+        }
+
     }
 
     useEffect(() => {
@@ -102,16 +124,17 @@ function RespondentReview() {
     if (!authenticated) {
         return (
             <Container className="access-container d-flex flex-column justify-content-center">
-                <Form className="access-form" onSubmit={() => handleAccessSubmit()}>
+                <Form className="access-form" onSubmit={(e) => handleAccessSubmit(e)}>
                     <Form.Group className="access-input">
                         <Form.Control
-                            className='mb-3'
+                            className='mb-3 access-code-input'
                             type="text"
                             value={accessCode}
                             onChange={(e) => setAccessCode(e.target.value)}
                             placeholder="Enter your access code"
                             required
                         />
+                        {errorAccess && <Form.Text className="error-text">{errorAccessMessage}</Form.Text>}
                     </Form.Group>
                     <Button variant="primary" type="submit" className="accessCode-button">
                         Submit Code
@@ -123,7 +146,7 @@ function RespondentReview() {
     return (
         <Container fluid className="answer-container px-0">
             <Row className="code-row">
-                <Col className="sidebar-col" md={2}>
+                <Col className="sidebar-col" md={1}>
                     <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
                 </Col>
                 <Col className="code-preview" md={9}><CodeReview files={answerPages[currentPageIndex].files} /></Col>
@@ -136,11 +159,28 @@ function RespondentReview() {
                         currentPageIndex={currentPageIndex}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
                         reviewId={reviewId}
-                        setErrorPage={(isError: boolean) => setErrorPage(isError)}
+                        setErrorPage={(isError: boolean) => setErrorSubmit(isError)}
                     />
                 </Col>
             </Row>
+            <Modal show={errorSubmit} onHide={() => setErrorSubmit(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Review</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>This code has already been used</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setErrorSubmit(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={() => setErrorSubmit(false)}>
+                        Exit
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
+
     );
 }
 
