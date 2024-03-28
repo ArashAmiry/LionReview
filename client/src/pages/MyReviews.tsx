@@ -99,7 +99,7 @@ const MyReviews = ({ username }: { username: string }) => {
         <Container className="card-container">
           <Row>
             <Col xl={2} className="px-0" />
-            <ReviewCardList reviews={userReviews} />
+            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} />
             <Col xl={2} className="px-0" />
           </Row>
         </Container>
@@ -156,9 +156,9 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
                         : "white"
                     }
                     className="badge-text"
-                    bg={getBadgeVariant("Completed")}
+                    bg={getBadgeVariant(review.status)}
                   >
-                    {getBadgeText("Completed")}
+                    {getBadgeText(review.status)}
                   </Badge>
                 </Card.Text>
                 {review.name !== "Draft" && (
