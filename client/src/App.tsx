@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation  } from "react-router-dom";
 import "./App.css";
 import CreateReview from "./pages/CreateReview";
 import Header from "./components/Header";
@@ -13,10 +13,12 @@ import EmailSent from "./pages/EmailSent";
 import { AuthProvider } from "./AuthContext";
 import PrivateRoute from "./PrivateRoute";
 import ReviewDetails from "./pages/ReviewDetails";
+import NotFound from "./pages/NotFound";
 
 axios.defaults.withCredentials = true;
 
 function App() {
+
   return (
     <Router>
       <AuthProvider>
@@ -41,6 +43,7 @@ function App() {
               </PrivateRoute>
             } />
             <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
+            <Route path='*' element={<NotFound />}/>
           </Routes>
         </div>
       </AuthProvider>
