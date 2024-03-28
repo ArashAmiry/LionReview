@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
+import { Button, Card, Form, Modal} from "react-bootstrap";
 import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PreviewFormSidebar.css";

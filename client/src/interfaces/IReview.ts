@@ -2,6 +2,7 @@ export interface IReview {
     _id: string;
     name: string;
     createdBy: string;
+    status: string;
     pages: {
         formName: string,
         codeSegments: {

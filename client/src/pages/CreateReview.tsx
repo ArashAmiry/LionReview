@@ -116,6 +116,7 @@ function CreateReview() {
       name: reviewName,
       createdBy: "username",
       pages: reviewPages,
+      status: "Draft"
     });
   };
 

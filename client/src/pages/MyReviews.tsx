@@ -27,37 +27,6 @@ enum ReviewStatusFilter {
 }
 
 const MyReviews = ({ username }: { username: string }) => {
-  const [myReviews, setMyReviews] = useState<Review[]>([{
-    name: "Example Review 1",
-    id: 69,
-    status: "Draft",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 2",
-    id: 70,
-    status: "InProgress",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 3",
-    id: 71,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 4",
-    id: 72,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 5",
-    id: 73,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  }]);
-
   const [userReviews, setUserReviews] = useState<IReview[]>([]);
 
   const [statusFilter, setStatusFilter] = useState<ReviewStatusFilter>(
@@ -92,7 +61,7 @@ const MyReviews = ({ username }: { username: string }) => {
   const handleChange = (status: ReviewStatusFilter) => {
     setStatusFilter(status);
   }
-  const filterReviews = (reviews: Review[], filter: ReviewStatusFilter): Review[] => {
+  const filterReviews = (reviews: IReview[], filter: ReviewStatusFilter): IReview[] => {
     return reviews.filter(review => {
       return filter === ReviewStatusFilter.All || review.status.replace(/\s/g, '') === filter.replace(/\s/g, '');
     })
