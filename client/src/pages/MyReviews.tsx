@@ -21,43 +21,11 @@ type Review = {
 
 enum ReviewStatusFilter {
   All = "All",
-  Draft = "Draft",
   InProgress = "In Progress",
   Completed = "Completed",
 }
 
 const MyReviews = ({ username }: { username: string }) => {
-  const [myReviews, setMyReviews] = useState<Review[]>([{
-    name: "Example Review 1",
-    id: 69,
-    status: "Draft",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 2",
-    id: 70,
-    status: "InProgress",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 3",
-    id: 71,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 4",
-    id: 72,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 5",
-    id: 73,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  }]);
-
   const [userReviews, setUserReviews] = useState<IReview[]>([]);
 
   const [statusFilter, setStatusFilter] = useState<ReviewStatusFilter>(
@@ -92,7 +60,7 @@ const MyReviews = ({ username }: { username: string }) => {
   const handleChange = (status: ReviewStatusFilter) => {
     setStatusFilter(status);
   }
-  const filterReviews = (reviews: Review[], filter: ReviewStatusFilter): Review[] => {
+  const filterReviews = (reviews: IReview[], filter: ReviewStatusFilter): IReview[] => {
     return reviews.filter(review => {
       return filter === ReviewStatusFilter.All || review.status.replace(/\s/g, '') === filter.replace(/\s/g, '');
     })
@@ -130,7 +98,7 @@ const MyReviews = ({ username }: { username: string }) => {
         <Container className="card-container">
           <Row>
             <Col xl={2} className="px-0" />
-            <ReviewCardList reviews={userReviews} />
+            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} />
             <Col xl={2} className="px-0" />
           </Row>
         </Container>
@@ -143,8 +111,6 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
   const navigate = useNavigate();
   const getBadgeVariant = (status: string) => {
     switch (status) {
-      case "Draft":
-        return "secondary";
       case "InProgress":
         return "warning";
       case "Completed":
@@ -156,8 +122,6 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
 
   const getBadgeText = (status: string) => {
     switch (status) {
-      case "Draft":
-        return "Draft";
       case "InProgress":
         return "In Progress";
       case "Completed":
@@ -187,18 +151,18 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
                         : "white"
                     }
                     className="badge-text"
-                    bg={getBadgeVariant("Completed")}
+                    bg={getBadgeVariant(review.status)}
                   >
-                    {getBadgeText("Completed")}
+                    {getBadgeText(review.status)}
                   </Badge>
                 </Card.Text>
-                {review.name !== "Draft" && (
+                <Row>
                   <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
-                )}
-                {review.name === "Draft" && (
-                  <Button variant="secondary">Edit</Button>
-                )}
-                <Button variant="danger" className="mx-2">
+                  {review.status === "InProgress" && (
+                    <Button variant="secondary" className="my-1">Send to Reviewer</Button>
+                  )}
+                </Row>
+                <Button variant="danger" className="mx-2 my-2">
                   Delete
                 </Button>
               </Card.Body>

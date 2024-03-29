@@ -7,7 +7,8 @@ export class ReviewService {
         reviewModel.create({
             name: review.name,
             createdBy: createdBy,
-            pages: review.pages
+            pages: review.pages,
+            status: review.status
         });
     }
 
