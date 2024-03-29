@@ -40,11 +40,13 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
             await axios.post('http://localhost:8080/review/answer', {
                 "reviewId": reviewId,
                 "answers": reviewAnswers
+            }).then((res) => {
+                navigate("/thanks");
             }).catch((error: Error) => {
                 setErrorPage(true);
                 console.log(error);
             });
-            navigate("/thanks");
+            
 
         } catch (error) {
             console.log("Error occurred when updating database: ", error)

@@ -167,7 +167,7 @@ const ReviewCardList = ({ reviews, showEmailBox }: { reviews: IReview[], showEma
                 <Row>
                   <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
                   {review.status === "InProgress" && (
-                    <Button variant="secondary" className="my-1">Send to Reviewer</Button>
+                    <Button variant="secondary" className="my-1" onClick={() => showEmailBox(review)}>Send to Reviewer</Button>
                   )}
                 </Row>
                 <Button variant="danger" className="mx-2 my-2">
