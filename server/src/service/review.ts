@@ -84,4 +84,16 @@ export class ReviewService {
             console.log(error);
         }
     }
+
+    async deleteReview(reviewID: string) : Promise<Boolean | undefined>{
+        try{
+            const results = await reviewModel.findByIdAndDelete(reviewID).exec();
+
+            return results != null;
+
+        } catch (error){
+            console.log(error);
+            return false;
+        }
+    }
 }

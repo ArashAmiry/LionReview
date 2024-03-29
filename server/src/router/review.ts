@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { ReviewService } from "../service/review";
 import { IReview } from "../model/IReview";
+import { answerModel } from "../db/answer.db";
 
 const reviewService = new ReviewService();
 
@@ -51,7 +52,7 @@ reviewRouter.get("/single/:reviewId", async (
 })
 
 reviewRouter.post("/answer", async (
-    req: Request<{}, {}, { reviewId: string, answers: {questionId: string, answer: string}[]}>,
+    req: Request<{}, {}, { reviewId: string, answers: { questionId: string, answer: string }[] }>,
     res: Response<String>
 ) => {
     try {
@@ -68,12 +69,12 @@ reviewRouter.get("/answer/:questionID", async (
 ) => {
     try {
         const response = await reviewService.getAnswers(req.params.questionID);
-        if(response) {
+        if (response) {
             res.status(200).send(response);
         } else {
             res.status(404).send(["This question has not been answered yet"])
         }
-        
+
     } catch (e: any) {
         res.status(500).send(e.message);
     }
@@ -81,17 +82,41 @@ reviewRouter.get("/answer/:questionID", async (
 
 reviewRouter.get("/answer/individual/:reviewID", async (
     req: Request<{ reviewID: string }, {}, {}>,
-    res: Response<{questionId: string, answer: string}[][]>
+    res: Response<{ questionId: string, answer: string }[][]>
 ) => {
     try {
         const response = await reviewService.getIndividualAnswers(req.params.reviewID);
-        if(response) {
+        if (response) {
             res.status(200).send(response);
         } else {
             res.status(404).send()
         }
-        
+
     } catch (e: any) {
         res.status(500).send(e.message);
     }
 });
+
+reviewRouter.delete("/:reviewID", async (
+    req: Request<{ reviewID: string }, {}, {}>,
+    res: Response<{ deleted: Boolean }>
+) => {
+    try {
+        const review = await reviewService.getReview(req.params.reviewID);
+        if (req.session.user === review?.createdBy) {
+            const response = await reviewService.deleteReview(req.params.reviewID);
+
+            if (response) {
+                await answerModel.deleteMany({reviewId: req.params.reviewID});
+                res.status(200).send({ deleted: response });
+            } else {
+                res.status(400).send();
+            }
+        } else {
+            throw new Error('Unauthorized user.')
+        }
+
+    } catch (e: any) {
+        res.status(500).send(e.message)
+    }
+})
