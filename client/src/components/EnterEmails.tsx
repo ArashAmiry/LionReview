@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal } from "react-bootstrap";
 import { ReactMultiEmail } from "react-multi-email";
 import emailRegex from "./emailRegex";
@@ -21,6 +21,10 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
                 console.log(error);
             });
     }
+
+    useEffect(() => {
+        setEmails([]);
+    }, [reviewID]);
 
     return (
         <Modal
@@ -56,6 +60,7 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
                             </span>
                         </div>
                     )}
+                    className="multi-email-body"
                 />
             </Modal.Body>
             <Modal.Footer>

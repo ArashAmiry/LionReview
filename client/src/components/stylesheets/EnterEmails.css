@@ -1,5 +1,6 @@
 .react-multi-email {
-    min-height: 200px;
+    height: 250px;
+    overflow-y: auto;
 }
 
 .react-multi-email div[data-tag] {
@@ -9,7 +10,7 @@
 
 .react-multi-email [data-tag] [data-tag-handle] {
     padding: 5px;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .react-multi-email [data-tag] [data-tag-handle]:hover {
@@ -52,4 +53,8 @@
 
 .enter-email-popup .mr-2 {
     margin-right: 10px;
+}
+
+.emails-modal {
+    
 }

@@ -1,6 +1,6 @@
 import CodeReview from "../components/CodeReview";
 import { Container, Row, Col, Form, Button, InputGroup, Modal } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReviewFormSidebar from "../components/ReviewFormSidebar";
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
@@ -35,6 +35,7 @@ function RespondentReview() {
     const [errorAccessMessage, setErrorAccessMessage] = useState("");
     const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
     const { reviewId } = useParams<{ reviewId: string }>();
+    const navigate = useNavigate();
 
     const fetchReview = async (): Promise<IReview | undefined> => {
         try {
@@ -58,7 +59,7 @@ function RespondentReview() {
                     const status = axiosError.response.status;
                     if (status === 409 || status === 404 || status === 500) {
                         console.error("Code is either invalid or has already been used");
-                        setErrorAccessMessage("Code is either invalid or has already been used")
+                        setErrorAccessMessage("Code is either invalid or has already been used!")
                     } else {
                         console.error("An unexpected error occurred:", axiosError.message);
                     }
@@ -110,6 +111,10 @@ function RespondentReview() {
         });
     }, [reviewId]); // This effect runs when `reviewId` changes
 
+    const exitReview = () => {
+        navigate("/");
+    }
+
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
         return <div>No review ID provided</div>;
     };
@@ -160,18 +165,16 @@ function RespondentReview() {
                     />
                 </Col>
             </Row>
-            <Modal show={errorSubmit} onHide={() => setErrorSubmit(false)}>
+            <Modal show={errorSubmit} onHide={() => exitReview()}>
                 <Modal.Header closeButton>
                     <Modal.Title>Review</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>This code has already been used</p>
+                    <p>This code has already been used.</p>
+                    <p>You will be directed to the home page.</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setErrorSubmit(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={() => setErrorSubmit(false)}>
+                    <Button variant="primary" onClick={() => exitReview()}>
                         Exit
                     </Button>
                 </Modal.Footer>

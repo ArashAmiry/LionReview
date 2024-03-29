@@ -8,9 +8,10 @@ export class SendEmail {
         emails.forEach(async email => {
             const code = await this.accessCodeService.generateIndividualAccessCode(reviewID);
             const html = `
-                <h1> Hello World </h1>
-                <a href="http://localhost:3000/answer/${reviewID}">Go to the review</a>
-                <p>Here is your accesscode: ${code}</a>
+            <h3>Hello!</h3>
+            <p>You've been invited to participate in a code review.</p>
+            <p>To access the code review, kindly click <a href="http://localhost:3000/answer/${reviewID}">here</a>.</p>
+            <p>Additionally, here's your unique access code: ${code}. This code is valid for a single use.</p>            
                 `;
             const transporter = nodeMailer.createTransport({
                 host: 'smtp.gmail.com', // kanske fixa
@@ -25,7 +26,7 @@ export class SendEmail {
             const info = await transporter.sendMail({
                 from: 'ReviewTool <noreply.reviewtool@gmail.com>',
                 to: email,
-                subject: 'You have a review to do',
+                subject: 'You have a code review to do',
                 html: html
             })
 

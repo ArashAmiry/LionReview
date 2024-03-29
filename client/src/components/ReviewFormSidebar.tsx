@@ -5,6 +5,7 @@ import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import RangeQuestionListReview from "./RangeQuestionListReview";
+import { useNavigate } from "react-router-dom";
 
 type ReviewFormSideBarProps = {
     currentPageIndex: number,
@@ -17,6 +18,7 @@ type ReviewFormSideBarProps = {
 
 function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage }: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
+    const navigate = useNavigate();
 
     const handleContinue = () => {
         console.log(currentPageIndex)
@@ -42,7 +44,7 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
                 setErrorPage(true);
                 console.log(error);
             });
-
+            navigate("/thanks");
 
         } catch (error) {
             console.log("Error occurred when updating database: ", error)
