@@ -21,7 +21,6 @@ type Review = {
 
 enum ReviewStatusFilter {
   All = "All",
-  Draft = "Draft",
   InProgress = "In Progress",
   Completed = "Completed",
 }
@@ -112,8 +111,6 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
   const navigate = useNavigate();
   const getBadgeVariant = (status: string) => {
     switch (status) {
-      case "Draft":
-        return "secondary";
       case "InProgress":
         return "warning";
       case "Completed":
@@ -125,8 +122,6 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
 
   const getBadgeText = (status: string) => {
     switch (status) {
-      case "Draft":
-        return "Draft";
       case "InProgress":
         return "In Progress";
       case "Completed":
@@ -161,13 +156,13 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
                     {getBadgeText(review.status)}
                   </Badge>
                 </Card.Text>
-                {review.status !== "Draft" && (
+                <Row>
                   <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
-                )}
-                {review.status === "Draft" && (
-                  <Button variant="secondary">Edit</Button>
-                )}
-                <Button variant="danger" className="mx-2">
+                  {review.status === "InProgress" && (
+                    <Button variant="secondary" className="my-1">Send to Reviewer</Button>
+                  )}
+                </Row>
+                <Button variant="danger" className="mx-2 my-2">
                   Delete
                 </Button>
               </Card.Body>
