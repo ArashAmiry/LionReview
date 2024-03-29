@@ -11,6 +11,7 @@ import ToggleButton from "react-bootstrap/esm/ToggleButton";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
 import { useNavigate } from "react-router-dom";
+import EnterEmails from "../components/EnterEmails";
 
 type Review = {
   name: string;
@@ -27,7 +28,8 @@ enum ReviewStatusFilter {
 
 const MyReviews = ({ username }: { username: string }) => {
   const [userReviews, setUserReviews] = useState<IReview[]>([]);
-
+  const [showEmail, setShowEmail] = useState<boolean>(false);
+  const [reviewID, setReviewID] = useState("");
   const [statusFilter, setStatusFilter] = useState<ReviewStatusFilter>(
     ReviewStatusFilter.All
   );
@@ -66,6 +68,11 @@ const MyReviews = ({ username }: { username: string }) => {
     })
   }
 
+  const handleShowEmailBox = (review: IReview) => {
+    setReviewID(review._id);
+    setShowEmail(true);
+  }
+
   return (
     <Container fluid className="myReviewsContainer">
       <Row>
@@ -98,16 +105,17 @@ const MyReviews = ({ username }: { username: string }) => {
         <Container className="card-container">
           <Row>
             <Col xl={2} className="px-0" />
-            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} />
+            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} />
             <Col xl={2} className="px-0" />
           </Row>
         </Container>
       </Row>
+      <EnterEmails reviewID={reviewID} showEmail={showEmail} setShowEmail={(show) => setShowEmail(show)}/>
     </Container>
   );
 };
 
-const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
+const ReviewCardList = ({ reviews, showEmailBox }: { reviews: IReview[], showEmailBox: (review: IReview) => void }) => {
   const navigate = useNavigate();
   const getBadgeVariant = (status: string) => {
     switch (status) {

@@ -1,6 +1,7 @@
 import { answerModel } from "../db/answer.db";
 import { reviewModel } from "../db/review";
 import { IReview } from "../model/IReview";
+import { SendEmail } from "./SendEmail";
 
 export class ReviewService {
     async createReview(review: Omit<IReview, 'createdBy'>, createdBy: string) {
@@ -83,5 +84,10 @@ export class ReviewService {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    async distributeReview(emails: string[], reviewID: string) {
+        const sendEmail = new SendEmail();
+        sendEmail.sendReviewEmail(emails, reviewID);
     }
 }

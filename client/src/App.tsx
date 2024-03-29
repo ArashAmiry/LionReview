@@ -13,6 +13,7 @@ import EmailSent from "./pages/EmailSent";
 import { AuthProvider } from "./AuthContext";
 import PrivateRoute from "./PrivateRoute";
 import ReviewDetails from "./pages/ReviewDetails";
+import AfterParticipation from "./pages/AfterParticipation";
 import NotFound from "./pages/NotFound";
 
 axios.defaults.withCredentials = true;
@@ -44,6 +45,7 @@ function App() {
             } />
             <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
             <Route path='*' element={<NotFound />}/>
+            <Route path="/thanks" element={<AfterParticipation />} />
           </Routes>
         </div>
       </AuthProvider>

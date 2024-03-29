@@ -1,3 +1,24 @@
 .answer-container {
     padding-left: 80px !important;
 }
+
+.access-container {
+    height: 90vh;
+    width: 30%;
+}
+
+.access-form {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.access-code-input {
+    font-size: 1.1rem; /* Adjust font size as needed */
+    width: 100%;
+}
+
+.error-text {
+    font-size: 1.1rem; /* Adjust font size as needed */
+    color: red; /* Set color to red for error text */
+}

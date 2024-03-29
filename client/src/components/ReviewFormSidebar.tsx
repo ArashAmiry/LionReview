@@ -5,30 +5,47 @@ import TextfieldListReview from "./TextfieldListReview";
 import axios from "axios";
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import RangeQuestionListReview from "./RangeQuestionListReview";
+import { useNavigate } from "react-router-dom";
 
 type ReviewFormSideBarProps = {
-    currentPageIndex : number,
+    currentPageIndex: number,
     setCurrentPageIndex: (index: number) => void,
     answerPages: AnswerPage[],
     setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>,
-    reviewId: string
+    reviewId: string,
+    setErrorPage: (isError: boolean) => void;
 }
 
-function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId}: ReviewFormSideBarProps) {
+function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage }: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
+    const navigate = useNavigate();
+
+    const handleContinue = () => {
+        console.log(currentPageIndex)
+        console.log(answerPages.length)
+        if(currentPageIndex !== answerPages.length) {
+            setCurrentPageIndex(currentPageIndex + 1)
+        }
+    }
 
     const submitReview = async () => {
         const reviewAnswers = answerPages.flatMap(answerPage => {
-                return [...answerPage.binaryQuestions, ...answerPage.textfieldQuestions, ...answerPage.rangeQuestions].map(question => ({         
-                    "questionId": question.id,
-                    "answer": question.answer
-                }));
-            })
+            return [...answerPage.binaryQuestions, ...answerPage.textfieldQuestions, ...answerPage.rangeQuestions].map(question => ({
+                "questionId": question.id,
+                "answer": question.answer
+            }));
+        });
+
         try {
             await axios.post('http://localhost:8080/review/answer', {
                 "reviewId": reviewId,
                 "answers": reviewAnswers
+            }).catch((error: Error) => {
+                setErrorPage(true);
+                console.log(error);
             });
+            navigate("/thanks");
+
         } catch (error) {
             console.log("Error occurred when updating database: ", error)
         }
@@ -39,13 +56,13 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
-                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
-                <RangeQuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)}/>
+                <QuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
+                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
+                <RangeQuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
             </Card.Body>
 
-            {currentPageIndex !== answerPages.length && (
-                <Button size="lg" variant="light" onClick={() => setCurrentPageIndex(currentPageIndex + 1)}>Continue</Button>
+            {(currentPageIndex + 1) !== answerPages.length && (
+                <Button size="lg" variant="light" onClick={handleContinue}>Continue</Button>
             )}
             {<Button onClick={() => submitReview()} size="lg" variant="success">Submit Review</Button>}
         </Card>
@@ -53,3 +70,7 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
 }
 
 export default ReviewFormSidebar;
+
+function useState(arg0: boolean): [any, any] {
+    throw new Error("Function not implemented.");
+}
