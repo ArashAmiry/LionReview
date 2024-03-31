@@ -7,7 +7,7 @@ function TextfieldListPreview({ textfields }: { textfields: {questionType: strin
                 .filter(textfield => textfield.question !== "")
                 .map((textfield, index) => (
                     <Form.Group key={index} className="mb-3 textfield-group questionBox p-3" controlId={`step-${index}`}>
-                        <Form.Label className="textfield-label">{textfield.question}</Form.Label>
+                        <p>{textfield.question}</p>
                         <Form.Control
                             type="text"
                             defaultValue="Textfield answer..."

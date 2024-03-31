@@ -3,6 +3,7 @@ import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PreviewFormSidebar.css";
 import { ChangeEvent, useState } from "react";
+import RangeQuestionListPreview from "./RangeQuestionList";
 
 type Question = {
     questionType: string;
@@ -11,15 +12,16 @@ type Question = {
   
 type PreviewFormSidebarProps = {
     reviewTitle: string;
-    questions: Question[];
-    textfields: Question[];
+    binaryQuestions: Question[];
+    textfieldQuestions: Question[];
+    rangeQuestions: Question[];
     submitReview: (e: React.MouseEvent) => void;
     addNewPage: (e: React.MouseEvent) => void;
     setReviewName: (name: string) => void;
     previousStep: () => void;
 };
 
-function PreviewFormSidebar({submitReview, addNewPage, setReviewName, reviewTitle, questions, textfields, previousStep} : PreviewFormSidebarProps) {
+function PreviewFormSidebar({submitReview, addNewPage, setReviewName, reviewTitle, binaryQuestions, textfieldQuestions, rangeQuestions, previousStep} : PreviewFormSidebarProps) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -29,9 +31,9 @@ function PreviewFormSidebar({submitReview, addNewPage, setReviewName, reviewTitl
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionList questions={questions} />
-                <TextfieldList textfields={textfields}/>
-                
+                <QuestionList questions={binaryQuestions} />
+                <TextfieldList textfields={textfieldQuestions}/>
+                <RangeQuestionListPreview rangeQuestions={rangeQuestions}/>
             </Card.Body>
 
             <Button size="lg" onClick={handleShow} variant="success">Finalize Form</Button> 

@@ -28,7 +28,7 @@ function TextfieldListReview({ currentPageIndex, answerPages, setAnswerPages }: 
                 .filter(textfield => textfield.question !== "")
                 .map((textfield, index) => (
                     <Form.Group key={index} className="mb-3 questionBox textfield-group p-3" controlId={`step-${index}`}>
-                        <Form.Label className="textfield-label">{textfield.question}</Form.Label>
+                        <p>{textfield.question}</p>
                         <Form.Control
                             type="text"
                             placeholder="Textfield answer..."

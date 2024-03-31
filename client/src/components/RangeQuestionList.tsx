@@ -22,20 +22,22 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                         <Container>
                             <Row>
                                 <Col>
-                                <Form.Label>{rangeQuestions.question}</Form.Label>
+                                    <p>{rangeQuestions.question}</p>
                                 </Col>
                             </Row>
                             <Row>
-                                <Slider
-                                    aria-label="Rating"
-                                    defaultValue={3}
-                                    getAriaValueText={valuetext}
-                                    shiftStep={1}
-                                    step={1}
-                                    marks={marks}
-                                    min={1}
-                                    max={maxValue}
-                                />
+                                <Col>
+                                    <Slider
+                                        aria-label="Rating"
+                                        defaultValue={3}
+                                        getAriaValueText={valuetext}
+                                        shiftStep={1}
+                                        step={1}
+                                        marks={marks}
+                                        min={1}
+                                        max={maxValue}
+                                    />
+                                </Col>
                             </Row>
                         </Container>
                     </Form.Group>

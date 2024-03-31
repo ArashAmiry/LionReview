@@ -8,35 +8,35 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                 .map((question, index) => (
                     <Form className="questionBox p-3 mb-3">
                         <Container>
-                        <Row>
-                            <Col>
-                                <FormLabel ><p>{question.question}</p></FormLabel>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <Form.Check
-                                    inline
-                                    name="binary"
-                                    key={index}
-                                    id={`step-${index}`} // Add a unique id for each checkbox
-                                    type="radio"
-                                    label={<p>Yes</p>}
-                                    className="text-start custom-checkbox"
-                                />
-                            </Col>
-                            <Col md={6}>
-                                <Form.Check
-                                    inline
-                                    name="binary"
-                                    key={index}
-                                    id={`step-${index}`} // Add a unique id for each checkbox
-                                    type="radio"
-                                    label={<p>No</p>}
-                                    className="text-start custom-checkbox"
-                                />
-                            </Col>
-                        </Row>
+                            <Row>
+                                <Col>
+                                <p>{question.question}</p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <Form.Check
+                                        inline
+                                        name="binary"
+                                        key={index}
+                                        id={`step-${index}`} // Add a unique id for each checkbox
+                                        type="radio"
+                                        label={<p>Yes</p>}
+                                        className="text-start custom-checkbox"
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Check
+                                        inline
+                                        name="binary"
+                                        key={index}
+                                        id={`step-${index}`} // Add a unique id for each checkbox
+                                        type="radio"
+                                        label={<p>No</p>}
+                                        className="text-start custom-checkbox"
+                                    />
+                                </Col>
+                            </Row>
                         </Container>
                     </Form>
                 ))}

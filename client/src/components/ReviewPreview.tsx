@@ -46,8 +46,9 @@ function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview
                 addNewPage={(e) => addNewPage()}
                 setReviewName={(name) => setReviewName(name)}
                 reviewTitle={pagesData[currentPageIndex].reviewTitle}
-                questions={pagesData[currentPageIndex].binaryQuestions}
-                textfields={pagesData[currentPageIndex].textFieldQuestions}
+                binaryQuestions={pagesData[currentPageIndex].binaryQuestions}
+                textfieldQuestions={pagesData[currentPageIndex].textFieldQuestions}
+                rangeQuestions={pagesData[currentPageIndex].rangeQuestions}
                 previousStep={() => previousStep()}
             />
             </Col>

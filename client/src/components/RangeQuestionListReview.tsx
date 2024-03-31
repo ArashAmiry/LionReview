@@ -35,7 +35,7 @@ function RangeQuestionListReview({ currentPageIndex, answerPages, setAnswerPages
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestion, index) => (
                     <Form.Group key={index} className="mb-3 questionBox p-3" controlId={`step-${index}`}>
-                        <Form.Label>{rangeQuestion.question}</Form.Label>
+                        <p>{rangeQuestion.question}</p>
                         <Slider
                             aria-label="Rating"
                             value={parseInt(rangeQuestion.answer)}

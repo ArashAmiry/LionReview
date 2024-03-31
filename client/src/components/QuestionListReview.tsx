@@ -27,42 +27,42 @@ function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: Q
                 .map((question, index) => (
                     <Form className="questionBox p-3 mb-3">
                         <Container>
-                        <Row>
-                            <Col>
-                                <FormLabel><p>{question.question}</p></FormLabel>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
-                                <Form.Check
-                                    inline
-                                    name="binary"
-                                    key={index}
-                                    id={`step-${index}`} // Add a unique id for each checkbox
-                                    type="radio"
-                                    value="Yes"
-                                    label={<p>Yes</p>}
-                                    checked={question.answer === "Yes"}
-                                    className="text-start custom-checkbox"
-                                    onChange={(e) => handleRadioChange(e.target.value, question.id)}
-                                />
-                            </Col>
-                            <Col md={6}>
-                                <Form.Check
-                                    inline
-                                    name="binary"
-                                    key={index}
-                                    id={`step-${index}`} // Add a unique id for each checkbox
-                                    type="radio"
-                                    value="No"
-                                    label={<p>No</p>}
-                                    checked={question.answer === "No"}
-                                    className="text-start custom-checkbox"
-                                    onChange={(e) => handleRadioChange(e.target.value, question.id)}
-                                />
-                            </Col>
-                        </Row>
-                    </Container>
+                            <Row>
+                                <Col>
+                                    <p>{question.question}</p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <Form.Check
+                                        inline
+                                        name="binary"
+                                        key={index}
+                                        id={`step-${index}`} // Add a unique id for each checkbox
+                                        type="radio"
+                                        value="Yes"
+                                        label={<p>Yes</p>}
+                                        checked={question.answer === "Yes"}
+                                        className="text-start custom-checkbox"
+                                        onChange={(e) => handleRadioChange(e.target.value, question.id)}
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Check
+                                        inline
+                                        name="binary"
+                                        key={index}
+                                        id={`step-${index}`} // Add a unique id for each checkbox
+                                        type="radio"
+                                        value="No"
+                                        label={<p>No</p>}
+                                        checked={question.answer === "No"}
+                                        className="text-start custom-checkbox"
+                                        onChange={(e) => handleRadioChange(e.target.value, question.id)}
+                                    />
+                                </Col>
+                            </Row>
+                         </Container>
                     </Form>
                 ))
             }
