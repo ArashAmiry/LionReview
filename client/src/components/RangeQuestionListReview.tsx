@@ -29,6 +29,7 @@ function RangeQuestionListReview({ currentPageIndex, answerPages, setAnswerPages
             return updatedAnswerPage;
         })
     };
+
     return (
         <>
             {answerPages[currentPageIndex].rangeQuestions
@@ -45,7 +46,12 @@ function RangeQuestionListReview({ currentPageIndex, answerPages, setAnswerPages
                             marks={marks}
                             min={1}
                             max={maxValue}
-                            onChange={(event, value) => handleSliderChange(event, value as number, rangeQuestion.id)} // Why is type number | number[] ?
+                            onChange={(event, value) => handleSliderChange(event, value as number, rangeQuestion.id)}
+                            sx={{
+                                '& .MuiSlider-markLabel': {
+                                  color: "var(--text-color)",
+                                },
+                            }}
                         />
                     </Form.Group>
                 ))}

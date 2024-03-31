@@ -19,27 +19,22 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestions, index) => (
                     <Form.Group key={index} className="mb-3 questionBox p-3" controlId={`step-${index}`}>
-                        <Container>
-                            <Row>
-                                <Col>
-                                    <p>{rangeQuestions.question}</p>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Slider
-                                        aria-label="Rating"
-                                        defaultValue={3}
-                                        getAriaValueText={valuetext}
-                                        shiftStep={1}
-                                        step={1}
-                                        marks={marks}
-                                        min={1}
-                                        max={maxValue}
-                                    />
-                                </Col>
-                            </Row>
-                        </Container>
+                        <p>{rangeQuestions.question}</p>
+                        <Slider
+                            aria-label="Rating"
+                            defaultValue={3}
+                            getAriaValueText={valuetext}
+                            shiftStep={1}
+                            step={1}
+                            marks={marks}
+                            min={1}
+                            max={maxValue}
+                            sx={{
+                                '& .MuiSlider-markLabel': {
+                                  color: "var(--text-color)",
+                                },
+                            }}
+                        />
                     </Form.Group>
                 ))}
         </>
