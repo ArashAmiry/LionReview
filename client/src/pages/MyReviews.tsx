@@ -74,8 +74,8 @@ const MyReviews = ({ username }: { username: string }) => {
   }
 
   return (
-    <Container fluid className="myReviewsContainer">
-      <Row>
+    <Container fluid className="myReviewsContainer mx-0">
+      <Row className="first-row">
         <Col className="py-3">
           <h1 className="reviewforms">Review forms </h1>
           <ToggleButtonGroup
@@ -104,9 +104,7 @@ const MyReviews = ({ username }: { username: string }) => {
       <Row>
         <Container className="card-container">
           <Row>
-            <Col xl={2} className="px-0" />
             <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} setReviews={(reviews) => setUserReviews(reviews)}/>
-            <Col xl={2} className="px-0" />
           </Row>
         </Container>
       </Row>
@@ -184,10 +182,10 @@ const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IRevie
   };
 
   return (
-    <Col md={8}>
+    <Col md={12}>
       <Row>
         {reviews.map((review, index) => (
-          <Col key={index} md={3} className="mt-4">
+          <Col key={index} md={3} className="mt-3 mb-2">
             <Card className="review">
               <Card.Body>
                 <Card.Title>{review.name}</Card.Title>
