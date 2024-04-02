@@ -44,7 +44,7 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
                 <ReactMultiEmail
                     placeholder="Paste however many email addresses"
                     emails={emails}
-                    validateEmail={email => {
+                    validateEmail={(email: string) => {
                         const isValid = emailRegex.test(email);
                         if (!isValid) {
                             setInvalidEmails([...invalidEmails, email]);
