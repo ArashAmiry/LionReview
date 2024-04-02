@@ -1,6 +1,6 @@
 import Container from "react-bootstrap/esm/Container";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./stylesheets/ReviewDetails.css";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
@@ -32,8 +32,10 @@ type DetailsPage = {
 };
 
 const ReviewDetails = () => {
+    const navigate = useNavigate();
     const [reviewName, setReviewName] = useState<string>("")
     const [reviewPages, setReviewPages] = useState<DetailsPage[]>()
+    const [reviewStatus, setReviewStatus] = useState("");
     const [questionsAnswers, setQuestionsAnswers] = useState<{ questionId: string, answers: string[] }[]>()
     const { reviewId } = useParams<{ reviewId: string }>();
     const [currentPageIndex, setCurrentPageIndex] = useState(0)
@@ -69,15 +71,16 @@ const ReviewDetails = () => {
     }
 
     const nextIndividual = () => {
-        if (currentIndividualAnswer !== individualAnswers.length - 1){
+        if (currentIndividualAnswer !== individualAnswers.length - 1) {
             setCurrentIndividualAnswer(currentIndividualAnswer + 1);
-        }    
+        }
     }
 
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
                 setReviewName(response.name);
+                setReviewStatus(response.status);
                 setReviewPages(response.pages.map((page) => ({
                     codeSegments: page.codeSegments.map((file) => ({
                         name: file.filename,
@@ -94,7 +97,7 @@ const ReviewDetails = () => {
                 if (response) {
                     setIndividualAnswers(response);
                 }
-            })
+            });
     }, [reviewId]);
 
     useEffect(() => {
@@ -159,6 +162,22 @@ const ReviewDetails = () => {
         return <div>Loading</div>;
     }
 
+    const completeReview = async () => {
+        try{
+            const response = await axios.put(`http://localhost:8080/review/${reviewId}`);
+    
+            if (response.status === 200) {
+                navigate("/myReviews");
+            }
+            else{
+                console.log("Didnt work");
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+
     return (
         <Container fluid className="page-container d-flex flex-column">
             <Col className="sidebar-col" md={2}>
@@ -168,115 +187,121 @@ const ReviewDetails = () => {
             <h3 className="review-page">The {showCode ? "code" : "answers"} for "{reviewPages[currentPageIndex].formName}"</h3>
             <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
             {showCode ?
-                <Container className="container-details mt-2">
-                    <CodeDisplay
-                        files={reviewPages[currentPageIndex].codeSegments}
-                    />
-                </Container>
+                <>
+                    <Container className="container-details mt-2">
+                        <CodeDisplay
+                            files={reviewPages[currentPageIndex].codeSegments}
+                        />
+                    </Container>
+                    {reviewStatus !== "Completed" && <Button className="toggle-code-answers m-3" onClick={() => completeReview()}>Complete review</Button>}
+                </>
                 :
                 <>
                     {isThereQuestionsForThisPage ? (
-                        <Container className="big-container">
-                            <div className="tab-list-container">
+                        <>
+                            <Container className="big-container">
+                                <div className="tab-list-container">
+                                    <TabContext value={value}>
+                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                            <TabList onChange={handleChange} aria-label="lab API tabs example" centered className="tab-list">
+                                                <Tab label="Summary" value="1" />
+                                                <Tab label="Individual" value="2" />
+                                            </TabList>
+                                        </Box>
+                                    </TabContext>
+                                </div>
                                 <TabContext value={value}>
-                                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                        <TabList onChange={handleChange} aria-label="lab API tabs example" centered className="tab-list">
-                                            <Tab label="Summary" value="1" />
-                                            <Tab label="Individual" value="2" />
-                                        </TabList>
-                                    </Box>
+                                    <TabPanel value="1">
+                                        <Container className="container-statistics mt-2">
+                                            <Row>
+                                                {reviewPages[currentPageIndex].questions
+                                                    .filter(question => question.questionType === "binary")
+                                                    .map((question) => (
+                                                        <Col key={question._id} lg={3} className='my-2'>
+                                                            <BinaryQuestionDetailsCard
+                                                                question={question}
+                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                                            />
+                                                        </Col>
+                                                    ))}
+                                            </Row>
+                                            <Row>
+                                                {reviewPages[currentPageIndex].questions
+                                                    .filter(question => question.questionType === "range")
+                                                    .map((question) => (
+                                                        <Col key={question._id} lg={6} className='my-2'>
+                                                            <RangeQuestionDetailsCard
+                                                                question={question}
+                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                                            />
+                                                        </Col>
+                                                    ))}
+                                            </Row>
+                                            {reviewPages[currentPageIndex].questions
+                                                .filter(question => question.questionType === "text")
+                                                .map((question) => (
+                                                    <TextfieldQuestionDetails
+                                                        key={question._id}
+                                                        question={question}
+                                                        answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                                    />
+                                                ))}
+                                        </Container>
+                                    </TabPanel>
+                                    <TabPanel value="2">
+                                        <Row className="pb-3">
+                                            <Col onClick={() => previousIndividual()} className="page-change"><AiFillCaretLeft /></Col>
+                                            <Col className="page-change">Individual {currentIndividualAnswer + 1}</Col>
+                                            <Col onClick={() => nextIndividual()} className="page-change"><AiFillCaretRight /></Col>
+                                        </Row>
+                                        {individualAnswers[currentIndividualAnswer].map((a) => (
+                                            reviewPages[currentPageIndex].questions
+                                                .filter(question => question.questionType === "binary" && question._id === a.questionId)
+                                                .map(question => {
+                                                    return (
+                                                        <QuestionListAnswer
+                                                            binaryQuestion={question.question}
+                                                            answer={a.answer}
+                                                        />
+                                                    );
+                                                })
+                                        ))}
+                                        {individualAnswers[currentIndividualAnswer].map((a) => (
+                                            reviewPages[currentPageIndex].questions
+                                                .filter(question => question.questionType === "text" && question._id === a.questionId)
+                                                .map(question => {
+                                                    return (
+                                                        <TextfieldListAnswer
+                                                            textfieldQuestion={question.question}
+                                                            answer={a.answer}
+                                                        />
+                                                    );
+                                                })
+                                        ))}
+
+                                        {individualAnswers[currentIndividualAnswer].map((a) => (
+                                            reviewPages[currentPageIndex].questions
+                                                .filter(question => question.questionType === "range" && question._id === a.questionId)
+                                                .map(question => {
+                                                    return (
+                                                        <RangeQuestionListAnswer
+                                                            rangeQuestion={question.question}
+                                                            answer={a.answer}
+                                                        />
+                                                    );
+                                                })
+                                        ))}
+                                    </TabPanel>
+
                                 </TabContext>
-                            </div>
-                            <TabContext value={value}>
-                                <TabPanel value="1">
-                                    <Container className="container-statistics mt-2">
-                                        <Row>
-                                            {reviewPages[currentPageIndex].questions
-                                                .filter(question => question.questionType === "binary")
-                                                .map((question) => (
-                                                    <Col key={question._id} lg={3} className='my-2'>
-                                                        <BinaryQuestionDetailsCard
-                                                            question={question}
-                                                            answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                                                        />
-                                                    </Col>
-                                                ))}
-                                        </Row>
-                                        <Row>
-                                            {reviewPages[currentPageIndex].questions
-                                                .filter(question => question.questionType === "range")
-                                                .map((question) => (
-                                                    <Col key={question._id} lg={6} className='my-2'>
-                                                        <RangeQuestionDetailsCard
-                                                            question={question}
-                                                            answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                                                        />
-                                                    </Col>
-                                                ))}
-                                        </Row>
-                                        {reviewPages[currentPageIndex].questions
-                                            .filter(question => question.questionType === "text")
-                                            .map((question) => (
-                                                <TextfieldQuestionDetails
-                                                    key={question._id}
-                                                    question={question}
-                                                    answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                                                />
-                                            ))}
-                                    </Container>
-                                </TabPanel>
-                                <TabPanel value="2">
-                                    <Row className="pb-3">
-                                        <Col onClick={() => previousIndividual()} className="page-change"><AiFillCaretLeft /></Col>
-                                        <Col className="page-change">Individual {currentIndividualAnswer + 1}</Col>
-                                        <Col onClick={() => nextIndividual()} className="page-change"><AiFillCaretRight /></Col>
-                                    </Row>
-                                    {individualAnswers[currentIndividualAnswer].map((a) => (
-                                        reviewPages[currentPageIndex].questions
-                                            .filter(question => question.questionType === "binary" && question._id === a.questionId)
-                                            .map(question => {
-                                                return (
-                                                    <QuestionListAnswer
-                                                        binaryQuestion={question.question}
-                                                        answer={a.answer}
-                                                    />
-                                                );
-                                            })
-                                    ))}
-                                    {individualAnswers[currentIndividualAnswer].map((a) => (
-                                        reviewPages[currentPageIndex].questions
-                                            .filter(question => question.questionType === "text" && question._id === a.questionId)
-                                            .map(question => {
-                                                return (
-                                                    <TextfieldListAnswer
-                                                        textfieldQuestion={question.question}
-                                                        answer={a.answer}
-                                                    />
-                                                );
-                                            })
-                                    ))}
+                            </Container>
 
-                                    {individualAnswers[currentIndividualAnswer].map((a) => (
-                                        reviewPages[currentPageIndex].questions
-                                            .filter(question => question.questionType === "range" && question._id === a.questionId)
-                                            .map(question => {
-                                                return (
-                                                    <RangeQuestionListAnswer
-                                                        rangeQuestion={question.question}
-                                                        answer={a.answer}
-                                                    />
-                                                );
-                                            })
-                                    ))}
-                                </TabPanel>
-
-                            </TabContext>
-                        </Container>
-
-
+                            {reviewStatus !== "Completed" && <Button className="toggle-code-answers m-3" onClick={() => completeReview()}>Complete review</Button>}
+                        </>
                     ) : (
                         <Container style={{ height: "65vh" }} className="d-flex flex-column justify-content-center align-items-center">
                             <h1 className="no-answers">Oh no, there are no answers submitted for this page.</h1>
+                            {reviewStatus !== "Completed" && <Button className="toggle-code-answers m-3" onClick={() => completeReview()}>Complete review</Button>}
                         </Container>
                     )}
                 </>
