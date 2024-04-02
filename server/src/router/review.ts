@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { ReviewService } from "../service/review";
 import { IReview } from "../model/IReview";
+import { answerModel } from "../db/answer.db";
 import { AccessCode } from "../service/accessCode";
 
 const reviewService = new ReviewService();
@@ -120,3 +121,27 @@ reviewRouter.post("/distribute", async (
         res.status(500).send(e.message);
     }
 });
+
+reviewRouter.delete("/:reviewID", async (
+    req: Request<{ reviewID: string }, {}, {}>,
+    res: Response<{ deleted: Boolean }>
+) => {
+    try {
+        const review = await reviewService.getReview(req.params.reviewID);
+        if (req.session.user === review?.createdBy) {
+            const response = await reviewService.deleteReview(req.params.reviewID);
+
+            if (response) {
+                await answerModel.deleteMany({reviewId: req.params.reviewID});
+                res.status(200).send({ deleted: response });
+            } else {
+                res.status(400).send();
+            }
+        } else {
+            throw new Error('Unauthorized user.')
+        }
+
+    } catch (e: any) {
+        res.status(500).send(e.message)
+    }
+})

@@ -86,6 +86,18 @@ export class ReviewService {
         }
     }
 
+    async deleteReview(reviewID: string) : Promise<Boolean | undefined>{
+        try{
+            const results = await reviewModel.findByIdAndDelete(reviewID).exec();
+
+            return results != null;
+
+        } catch (error){
+            console.log(error);
+            return false;
+        }
+    }
+
     async distributeReview(emails: string[], reviewID: string) {
         const sendEmail = new SendEmail();
         sendEmail.sendReviewEmail(emails, reviewID);

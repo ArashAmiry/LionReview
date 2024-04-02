@@ -34,28 +34,28 @@ const MyReviews = ({ username }: { username: string }) => {
     ReviewStatusFilter.All
   );
 
+  const fetchReviews = async () => {
+    const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
+      .then(function (response) {
+        setUserReviews(response.data);
+        console.log(response);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log("error: " + error);
+      });
+  };
+
   useEffect(() => {
-    const fetchReviews = async () => {
-      const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
-        .then(function (response) {
-          setUserReviews(response.data);
-          console.log(response);
-        })
-        .catch(function (error) {
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-
-            console.log(error.request);
-          } else {
-            console.log('Error', error.message);
-          }
-          console.log("error: " + error);
-        });
-    };
-
     fetchReviews();
   }, [username]);
 
@@ -105,7 +105,7 @@ const MyReviews = ({ username }: { username: string }) => {
         <Container className="card-container">
           <Row>
             <Col xl={2} className="px-0" />
-            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} />
+            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} setReviews={(reviews) => setUserReviews(reviews)}/>
             <Col xl={2} className="px-0" />
           </Row>
         </Container>
@@ -115,7 +115,7 @@ const MyReviews = ({ username }: { username: string }) => {
   );
 };
 
-const ReviewCardList = ({ reviews, showEmailBox }: { reviews: IReview[], showEmailBox: (review: IReview) => void }) => {
+const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IReview[], setReviews: (reviews: IReview[]) => void, showEmailBox: (review: IReview) => void }) => {
   const navigate = useNavigate();
   const getBadgeVariant = (status: string) => {
     switch (status) {
@@ -142,6 +142,46 @@ const ReviewCardList = ({ reviews, showEmailBox }: { reviews: IReview[], showEma
   const goToReviewDetails = (review: IReview) => {
     navigate(`/myreviews/${review._id}`)
   }
+
+  const deleteReview = async (review: IReview) => {
+    await axios.delete<Boolean>(`http://localhost:8080/review/${review._id}`)
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log("error: " + error);
+      });
+
+      fetchReviews();
+  }
+
+  const fetchReviews = async () => {
+    const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
+      .then(function (response) {
+        setReviews(response.data);
+        console.log(response);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log("error: " + error);
+      });
+  };
 
   return (
     <Col md={8}>
@@ -170,7 +210,7 @@ const ReviewCardList = ({ reviews, showEmailBox }: { reviews: IReview[], showEma
                     <Button variant="secondary" className="my-1" onClick={() => showEmailBox(review)}>Send to Reviewer</Button>
                   )}
                 </Row>
-                <Button variant="danger" className="mx-2 my-2">
+                <Button onClick={() => deleteReview(review)} variant="danger" className="mx-2 my-2">
                   Delete
                 </Button>
               </Card.Body>
