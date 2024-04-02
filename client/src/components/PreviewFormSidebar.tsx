@@ -3,6 +3,8 @@ import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PreviewFormSidebar.css";
 import { useState } from "react";
+import ReviewNameModal from "./ReviewNameModal";
+import CreateReviewSendEmail from "./CreateReviewSendEmail";
 
 type Question = {
     questionType: string;
@@ -21,9 +23,15 @@ type PreviewFormSidebarProps = {
 
 function PreviewFormSidebar({submitReview, addNewPage, setReviewName, reviewTitle, questions, textfields, previousStep} : PreviewFormSidebarProps) {
     const [show, setShow] = useState(false);
+    const [showEmailModal, setShowEmailModal] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleCreateForm = (e: React.MouseEvent) => {
+        handleClose();
+        setShowEmailModal(true);
+    }
     
     return (
         <Card className="sidebar">
@@ -38,36 +46,8 @@ function PreviewFormSidebar({submitReview, addNewPage, setReviewName, reviewTitl
             <Button className="step-3-btn" size="lg" variant="primary" onClick={addNewPage}>Add New Page</Button>
             <Button className="step-3-btn" size="lg" variant="light" onClick={() => previousStep()}>Back</Button>
 
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>Review</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <Form>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="name"
-                        placeholder="Gregorys Review"
-                        autoFocus
-                        required
-                        onChange={(e) => {
-                            const { value } = e.target;
-                            setReviewName(value);
-                        }}
-                    />
-                    </Form.Group>
-                </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={submitReview}>
-                    Create Form
-                </Button>
-                </Modal.Footer>
-           </Modal>
+            <CreateReviewSendEmail submitReview={submitReview} showEmail={showEmailModal} setShowEmail={setShowEmailModal} />
+            <ReviewNameModal show={show} handleClose={handleClose} handleCreateForm={handleCreateForm} setReviewName={setReviewName}/>
         </Card>
     )
 }

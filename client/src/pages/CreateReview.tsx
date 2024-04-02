@@ -11,6 +11,8 @@ import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
 import PagesSidebar from "../components/PagesSidebar";
+import EnterEmails from "../components/EnterEmails";
+import CreateReviewSendEmail from "../components/CreateReviewSendEmail";
 
 const initialPagesState: CreateReviewPage[] = [
   {
@@ -112,12 +114,13 @@ function CreateReview() {
       };
     });
     console.log(reviewPages);
-    await axios.post("http://localhost:8080/review/", {
+    const review = await axios.post("http://localhost:8080/review/", {
       name: reviewName,
       createdBy: "username",
       pages: reviewPages,
       status: "InProgress"
     });
+    return review.data;
   };
 
   return (
@@ -159,6 +162,7 @@ function CreateReview() {
             setReviewName={(name) => setReviewName(name)}
             previousStep={() => previousStep()}
             />
+            
           </Col>
         )}
 

@@ -15,8 +15,8 @@ reviewRouter.post("/", async (
 ) => {
     try {
         if (req.session.user !== undefined) {
-            await reviewService.createReview(req.body, req.session.user);
-            res.status(200).send("Review created successfully.");
+            const reviewID = await reviewService.createReview(req.body, req.session.user);
+            res.status(200).send(reviewID);
         }
     } catch (e: any) {
         res.status(500).send(e.message);

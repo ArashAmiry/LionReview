@@ -4,13 +4,14 @@ import { IReview } from "../model/IReview";
 import { SendEmail } from "./SendEmail";
 
 export class ReviewService {
-    async createReview(review: Omit<IReview, 'createdBy'>, createdBy: string) {
-        reviewModel.create({
+    async createReview(review: Omit<IReview, 'createdBy'>, createdBy: string): Promise<String> {
+        const newReview = await reviewModel.create({
             name: review.name,
             createdBy: createdBy,
             pages: review.pages,
             status: review.status
         });
+        return newReview._id.toString()
     }
 
     async getReviews(username: string) {
