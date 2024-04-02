@@ -36,8 +36,9 @@ function CreateReview() {
   const amountSteps = 3;
   const navigate = useNavigate();
 
-  const getAllNonEmptyQuestions = () => {
-    const currentPage = pagesData[currentPageIndex];
+  const getAllNonEmptyQuestions = (index: number) => {
+    const currentPage = pagesData[index];
+    console.log(currentPage);
     const allQuestions = [...currentPage.binaryQuestions, ...currentPage.textFieldQuestions, ...currentPage.rangeQuestions];
     return allQuestions.filter((question) => question.question.trim() !== "");
   };
@@ -73,7 +74,7 @@ function CreateReview() {
         return;
       }
     } else if (pagesData[currentPageIndex].currentStep === 2) {
-      if (getAllNonEmptyQuestions().length === 0) {
+      if (getAllNonEmptyQuestions(currentPageIndex).length === 0) {
         setFormErrorMessage("At least one question is required to continue.");
         return;
       } else {
@@ -98,7 +99,7 @@ function CreateReview() {
   };
   
   const submitReview = async () => {
-    const reviewPages = pagesData.map((pageData) => {
+    const reviewPages = pagesData.map((pageData, index) => {
       const codeSegments: { filename: string; content: string }[] = [];
       Object.entries(pageData.cachedFiles).forEach((record) => {
         codeSegments.push({
@@ -110,7 +111,7 @@ function CreateReview() {
       return {
         formName: pageData.reviewTitle,
         codeSegments: codeSegments,
-        questions: getAllNonEmptyQuestions(),
+        questions: getAllNonEmptyQuestions(index),
       };
     });
     console.log(reviewPages);
