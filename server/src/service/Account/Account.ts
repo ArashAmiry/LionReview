@@ -21,4 +21,12 @@ export class Account implements IAccountService{
         console.log("account" + this.logInManager.logIn(username, password))
         return await this.logInManager.logIn(username, password);
     }
+
+    async usernameExists(username: string) : Promise<Boolean> {
+        return (await accountModel.find({ username: username }).exec()).length > 0;
+    }
+
+    async emailExists(email: string) : Promise<Boolean> {
+        return (await accountModel.find({ email: email }).exec()).length > 0;
+    }
 }
