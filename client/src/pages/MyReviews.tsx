@@ -141,45 +141,6 @@ const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IRevie
     navigate(`/myreviews/${review._id}`)
   }
 
-  const deleteReview = async (review: IReview) => {
-    await axios.delete<Boolean>(`http://localhost:8080/review/${review._id}`)
-      .catch(function (error) {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
-        console.log("error: " + error);
-      });
-
-      fetchReviews();
-  }
-
-  const fetchReviews = async () => {
-    const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
-      .then(function (response) {
-        setReviews(response.data);
-        console.log(response);
-      })
-      .catch(function (error) {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
-        console.log("error: " + error);
-      });
-  };
 
   return (
     <Col md={12}>
@@ -187,7 +148,7 @@ const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IRevie
         {reviews.map((review, index) => (
           <Col key={index} md={3} className="mt-3 mb-2">
             <Card className="review">
-              <Card.Body>
+              <Card.Body className="review-card">
                 <Card.Title>{review.name}</Card.Title>
                 <Card.Text>
                   <Badge
@@ -208,9 +169,6 @@ const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IRevie
                     <Button variant="secondary" className="my-1" onClick={() => showEmailBox(review)}>Send to Reviewer</Button>
                   )}
                 </Row>
-                <Button onClick={() => deleteReview(review)} variant="danger" className="mx-2 my-2">
-                  Delete
-                </Button>
               </Card.Body>
             </Card>
           </Col>

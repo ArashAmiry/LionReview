@@ -17,6 +17,7 @@ import QuestionListAnswer from "../components/QuestionListAnswer";
 import TextfieldListAnswer from "../components/TextfieldListAnswer";
 import RangeQuestionListAnswer from "../components/RangeQuestionListAnswer";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
+import ActionButtons from "../components/review_details/ActionButtons";
 
 type DetailsPage = {
     formName: string;
@@ -156,26 +157,42 @@ const ReviewDetails = () => {
     };
 
     if (!questionsAnswers || !reviewPages) {
-        console.log("r" + reviewPages)
-        console.log("q" + questionsAnswers)
-        console.log("i" + isThereQuestionsForThisPage)
         return <div>Loading</div>;
     }
 
     const completeReview = async () => {
-        try{
+        try {
             const response = await axios.put(`http://localhost:8080/review/${reviewId}`);
-    
+
             if (response.status === 200) {
                 navigate("/myReviews");
             }
-            else{
+            else {
                 console.log("Didnt work");
             }
         } catch (e) {
             console.log(e);
         }
 
+    }
+
+    const deleteReview = async () => {
+        await axios.delete<Boolean>(`http://localhost:8080/review/${reviewId}`)
+            .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+                console.log("error: " + error);
+            });
+
+        navigate("/myReviews");
     }
 
     return (
@@ -193,7 +210,7 @@ const ReviewDetails = () => {
                             files={reviewPages[currentPageIndex].codeSegments}
                         />
                     </Container>
-                    {reviewStatus !== "Completed" && <Button className="toggle-code-answers m-3" onClick={() => completeReview()}>Complete review</Button>}
+                    <ActionButtons reviewStatus={reviewStatus} deleteReview={() => deleteReview()} completeReview={() => completeReview()} />
                 </>
                 :
                 <>
@@ -295,14 +312,15 @@ const ReviewDetails = () => {
 
                                 </TabContext>
                             </Container>
-
-                            {reviewStatus !== "Completed" && <Button className="toggle-code-answers m-3" onClick={() => completeReview()}>Complete review</Button>}
+                            <ActionButtons reviewStatus={reviewStatus} deleteReview={() => deleteReview()} completeReview={() => completeReview()} />
                         </>
                     ) : (
-                        <Container style={{ height: "65vh" }} className="d-flex flex-column justify-content-center align-items-center">
-                            <h1 className="no-answers">Oh no, there are no answers submitted for this page.</h1>
-                            {reviewStatus !== "Completed" && <Button className="toggle-code-answers m-3" onClick={() => completeReview()}>Complete review</Button>}
-                        </Container>
+                        <>
+                            <Container style={{ height: "65vh" }} className="d-flex flex-column justify-content-center align-items-center">
+                                <h1 className="no-answers">Oh no, there are no answers submitted for this page.</h1>
+                            </Container>
+                            <ActionButtons reviewStatus={reviewStatus} deleteReview={() => deleteReview()} completeReview={() => completeReview()} />
+                        </>
                     )}
                 </>
 
