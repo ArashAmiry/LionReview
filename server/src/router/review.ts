@@ -132,7 +132,7 @@ reviewRouter.delete("/:reviewID", async (
             const response = await reviewService.deleteReview(req.params.reviewID);
 
             if (response) {
-                await answerModel.deleteMany({reviewId: req.params.reviewID});
+                await answerModel.deleteMany({ reviewId: req.params.reviewID });
                 res.status(200).send({ deleted: response });
             } else {
                 res.status(400).send();
@@ -145,3 +145,26 @@ reviewRouter.delete("/:reviewID", async (
         res.status(500).send(e.message)
     }
 })
+
+reviewRouter.put("/:reviewID", async (
+    req: Request<{reviewID: string}, {}, {}>,
+    res: Response<{}>
+) => {
+    try {
+
+        const review = await reviewService.getReview(req.params.reviewID);
+        if (review && req.session.user === review.createdBy) {
+            const response = await reviewService.completeReview(req.params.reviewID);
+
+            if (response) {
+                res.status(200).send();
+            } else {
+                res.status(400).send();
+            }
+        } else {
+            throw new Error('Unauthorized user.')
+        }
+    } catch (e: any) {
+        res.status(500).send(e.message)
+    }
+});

@@ -102,4 +102,14 @@ export class ReviewService {
         const sendEmail = new SendEmail();
         sendEmail.sendReviewEmail(emails, reviewID);
     }
+
+    async completeReview(reviewID: string) : Promise<Boolean>{
+        try{
+            const results = await reviewModel.findByIdAndUpdate( {_id: reviewID }, {status: "Completed"}).exec();
+            return results != null;
+        } catch (error){
+            console.log(error);
+            return false;
+        }
+    }
 }
