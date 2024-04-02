@@ -59,7 +59,7 @@ reviewRouter.post("/answer", async (
 ) => {
     try {
         if (req.session.accessCode !== undefined) {
-            const status = (await accessCodeService.checkCodeStatus(req.session.accessCode));
+            const status = (await accessCodeService.checkCodeStatus(req.session.accessCode, req.body.reviewId));
 
             if (!status && status !== undefined) {
                 await reviewService.submitReview(req.body.reviewId, req.body.answers);

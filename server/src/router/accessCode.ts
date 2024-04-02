@@ -6,17 +6,18 @@ const accessCodeService = new AccessCode();
 export const accessCodeRouter = express.Router();
 
 accessCodeRouter.get("/review", async (
-    req: Request<{}, {}, {}, {accessCode: string}>,
+    req: Request<{}, {}, {}, {accessCode: string, reviewId: string}>,
     res: Response<boolean>
 ) => {
     try {
         const accessCode = req.query.accessCode;
-        console.log(accessCode)
+        const reviewId = req.query.reviewId;
         if (!accessCode) {
             return res.status(400).send(false);
         }
 
-        const result = await accessCodeService.checkCodeStatus(accessCode);
+        //const result = await accessCodeService.checkCodeStatus(accessCode);
+        const result = await accessCodeService.checkCodeStatus(accessCode, reviewId);
         console.log(result)
         if (result === undefined) {
             return res.status(404).send(false);

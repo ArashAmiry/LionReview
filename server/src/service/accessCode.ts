@@ -15,10 +15,10 @@ export class AccessCode {
         return result
     }
 
-    async checkCodeStatus(accessCode: string): Promise<Boolean | undefined> {
+    async checkCodeStatus(accessCode: string, reviewID: string): Promise<Boolean | undefined> {
         try {
             const result = await accessModel.findById(accessCode).exec();
-            if (result !== null) {
+            if (result !== null && result.reviewId === reviewID) {
                 return result.completed;
             }
         } catch (e) {

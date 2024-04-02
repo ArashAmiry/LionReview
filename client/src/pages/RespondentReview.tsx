@@ -49,7 +49,12 @@ function RespondentReview() {
     const handleAccessSubmit = async (e: any) => {
         e.preventDefault()
         try {
-            const res = await axios.get(`http://localhost:8080/access/review?accessCode=${accessCode}`);
+            const res = await axios.get(`http://localhost:8080/access/review`, {
+                params: {
+                    accessCode: accessCode,
+                    reviewId: reviewId
+                }
+            });
             console.log(res)
             setAuthenticated(res.data)
         } catch (error) {
