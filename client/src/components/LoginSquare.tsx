@@ -11,6 +11,7 @@ const LoginSquare: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { setIsLoggedIn } = useAuthContext();
   const navigate = useNavigate();
 
@@ -28,12 +29,16 @@ const LoginSquare: React.FC = () => {
       "username": username,
       "password": password
     })
+      .then((response) => {
+        if (response.status === 200){
+          setIsLoggedIn(true);
+          navigate('/');
+        } 
+      })
       .catch(function (error) {
+        setErrorMessage("Try again, wrong credentials.");
         console.log(error);
       });
-
-    setIsLoggedIn(true);
-    navigate('/')
   };
 
   return (
@@ -63,6 +68,7 @@ const LoginSquare: React.FC = () => {
               </InputGroup.Text>}
             </InputGroup>
           </Form.Group>
+          {errorMessage && <p className='text-white'>{errorMessage}</p>}
           <Button variant="primary" type="submit" className="login-button">
             Log In
           </Button>
