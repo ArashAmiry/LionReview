@@ -80,6 +80,7 @@ function RespondentReview() {
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
+                response.pages.sort(() => Math.random() - 0.5);
                 setReview(response);
 
                 const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
