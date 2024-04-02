@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
+import { Menu, MenuItem, Sidebar, sidebarClasses } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useState } from "react";
 
@@ -9,8 +9,21 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex }: { pagesTitles: strin
     const toggleSidebar = () => setCollapsed(!collapsed);
 
     return (
-        <Sidebar className="sidebar bg-body" collapsed={collapsed}>
-            <Menu>
+        <Sidebar className="sidebar" collapsed={collapsed} style={{borderWidth: 0}}
+            rootStyles={{
+                [`.${sidebarClasses.container}`]: {
+                backgroundColor: 'var(--bs-body-bg)'
+                },
+            }}
+        >
+            <Menu menuItemStyles={{
+                button: {
+                    [`&:hover`]: {
+                    backgroundColor: 'var(--bs-secondary-bg)',
+                    },
+                },
+                }}
+            >
                 <MenuItem
                     onClick={() => toggleSidebar()}
                     icon={<MenuOutlinedIcon />}
