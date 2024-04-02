@@ -9,7 +9,8 @@ export class ReviewService {
             name: review.name,
             createdBy: createdBy,
             pages: review.pages,
-            status: review.status
+            status: review.status,
+            randomize: review.randomize
         });
         return newReview._id.toString()
     }

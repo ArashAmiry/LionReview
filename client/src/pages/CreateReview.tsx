@@ -11,8 +11,7 @@ import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
 import PagesSidebar from "../components/PagesSidebar";
-import EnterEmails from "../components/EnterEmails";
-import CreateReviewSendEmail from "../components/CreateReviewSendEmail";
+
 
 const initialPagesState: CreateReviewPage[] = [
   {
@@ -33,6 +32,7 @@ function CreateReview() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
   const [reviewName, setReviewName] = useState("");
+  const [randomize, setRandomize] = useState<Boolean>(false);
   const amountSteps = 3;
   const navigate = useNavigate();
 
@@ -116,9 +116,10 @@ function CreateReview() {
     console.log(reviewPages);
     const review = await axios.post("http://localhost:8080/review/", {
       name: reviewName,
-      createdBy: "username",
+      createdBy: "username", // TODO ta bort
       pages: reviewPages,
-      status: "InProgress"
+      status: "InProgress",
+      randomize: randomize
     });
     return review.data;
   };
@@ -158,6 +159,7 @@ function CreateReview() {
             currentPageIndex={currentPageIndex} 
             setPagesData={(e) => setPagesData(e)}
             submitReview={() => submitReview()}
+            setRandomize={(randomize: Boolean) => setRandomize(randomize)}
             addNewPage={() => addNewPage()}
             setReviewName={(name) => setReviewName(name)}
             previousStep={() => previousStep()}

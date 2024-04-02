@@ -18,6 +18,11 @@ const reviewSchema: Schema = new Schema({
         type: String,
         required: true,
     },
+
+    randomize: {
+        type: String,
+        required: true
+    },
     
     pages: {
         type: [

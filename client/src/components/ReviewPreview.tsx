@@ -11,10 +11,11 @@ type ReviewPreviewProps = {
     submitReview: () => void,
     addNewPage: () => void,
     setReviewName: (name: string) => void,
-    previousStep: () => void
+    previousStep: () => void,
+    setRandomize: (randomize: Boolean) => void,
 }
 
-function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep} : ReviewPreviewProps) {
+function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep, setRandomize} : ReviewPreviewProps) {
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setPagesData((prevPagesData) => {
@@ -47,6 +48,7 @@ function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview
                 questions={pagesData[currentPageIndex].binaryQuestions}
                 textfields={pagesData[currentPageIndex].textFieldQuestions}
                 previousStep={() => previousStep()}
+                setRandomize={(randomize: Boolean) => setRandomize(randomize)}
             />
             </Col>
       </Row>

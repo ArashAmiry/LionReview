@@ -3,6 +3,7 @@ export interface IReview {
     name: string;
     createdBy: string;
     status: string;
+    randomize: Boolean;
     pages: {
         formName: string,
         codeSegments: {
