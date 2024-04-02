@@ -9,7 +9,6 @@ import axios from "axios";
 
 const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail }: { submitReview: (e: React.MouseEvent) => void, showEmail: boolean, setShowEmail: (show: boolean) => void }) => {
     const [emails, setEmails] = useState<string[]>([]);
-    //const [reviewID, setReviewID] = useState("");
     const [invalidEmails, setInvalidEmails] = useState<string[]>([]);
     const navigate = useNavigate();
 
@@ -70,8 +69,8 @@ const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail }: { subm
                 />
             </Modal.Body>
             <Modal.Footer>
+                <Button variant="secondary" onClick={(e) => handleSkip(e)}>Send later</Button>
                 <Button onClick={(e) => handleSendEmails(e)}>Send emails</Button>
-                <Button onClick={(e) => handleSkip(e)}>Send later</Button>
             </Modal.Footer>
         </Modal>
     );
