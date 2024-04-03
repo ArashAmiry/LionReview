@@ -33,7 +33,6 @@ function App() {
     document.documentElement.classList.add('dark-mode');
     const htmlElement = document.documentElement;
     htmlElement.setAttribute('data-bs-theme', 'dark');
-    console.log("Dark mode set");
   };
   
   const setLightModeTheme = () => {
@@ -41,7 +40,6 @@ function App() {
     document.documentElement.classList.remove('dark-mode');
     const htmlElement = document.documentElement;
     htmlElement.removeAttribute('data-bs-theme');
-    console.log("Light mode set");
   };
 
   const toggleDarkMode = () => {

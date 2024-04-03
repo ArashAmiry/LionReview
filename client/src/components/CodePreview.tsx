@@ -3,8 +3,6 @@ import axios from 'axios';
 import hljs from 'highlight.js';
 import { Col, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
-import 'highlight.js/styles/github.css';
-
 
 export interface CodeFile {
     url: string;
@@ -70,11 +68,12 @@ const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles, isDarkMode }: C
     }, [urls]);
 
     useEffect(() => {
-        // Highlight code when the 'files' state updates        
+        // Highlight code when the 'files' state updates      
         files.forEach(({ content }) => {
             if (content) {
                 document.querySelectorAll('pre code').forEach((block) => {
                     block.removeAttribute('data-highlighted');
+                    block.textContent = content;
                     hljs.highlightAll();
                 });
             }
