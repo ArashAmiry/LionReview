@@ -128,11 +128,12 @@ function RespondentReview() {
     if (!answerPages || !review) {
         return <div>Loading...</div>
     };
-
+    
     if (!authenticated) {
         return (
             <Container className="access-container d-flex flex-column justify-content-center">
-                <Form className="access-form" onSubmit={(e) => handleAccessSubmit(e)}>
+                {review.status === "Completed" && <h1 className="access-header">Review is already completed.</h1>}
+                {review.status === "InProgress" && <Form className="access-form" onSubmit={(e) => handleAccessSubmit(e)}>
                     <Form.Group className="access-input">
                         <Form.Control
                             className='mb-3 access-code-input'
@@ -147,7 +148,7 @@ function RespondentReview() {
                     <Button variant="primary" type="submit" className="accessCode-button">
                         Submit Code
                     </Button>
-                </Form>
+                </Form>}
             </Container>
         );
     }
