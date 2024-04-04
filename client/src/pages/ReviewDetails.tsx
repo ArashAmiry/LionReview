@@ -198,7 +198,7 @@ const ReviewDetails = () => {
     return (
         <Container fluid className="page-container d-flex flex-column">
             <Col className="sidebar-col" md={2}>
-                <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+                <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
             </Col>
             <h1 className="review-name">{reviewName}</h1>
             <h3 className="review-page">The {showCode ? "code" : "answers"} for "{reviewPages[currentPageIndex].formName}"</h3>
