@@ -16,9 +16,7 @@ import PagesSidebar from "../components/PagesSidebar";
 const initialPagesState: CreateReviewPage[] = [
   {
     currentStep: 1,
-    binaryQuestions: [{ questionType: "binary", question: "" }],
-    textFieldQuestions: [{ questionType: "text", question: "" }],
-    rangeQuestions: [{ questionType: "range", question: ""}],
+    questions: [{ questionType: "binary", question: "" }, { questionType: "text", question: "" }, { questionType: "range", question: "" }],
     reviewTitle: "Page 1",
     urls: [""],
     cachedFiles: {},
@@ -39,7 +37,7 @@ function CreateReview() {
   const getAllNonEmptyQuestions = (index: number) => {
     const currentPage = pagesData[index];
     console.log(currentPage);
-    const allQuestions = [...currentPage.binaryQuestions, ...currentPage.textFieldQuestions, ...currentPage.rangeQuestions];
+    const allQuestions = [...currentPage.questions];
     return allQuestions.filter((question) => question.question.trim() !== "");
   };
 
