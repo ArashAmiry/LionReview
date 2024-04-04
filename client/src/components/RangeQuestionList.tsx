@@ -29,6 +29,7 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                             marks={marks}
                             min={1}
                             max={maxValue}
+                            disabled={true}
                         />
                     </Form.Group>
                 ))}

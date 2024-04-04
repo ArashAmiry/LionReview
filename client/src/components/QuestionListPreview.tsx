@@ -22,6 +22,7 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                     type="radio"
                                     label={<p>Yes</p>}
                                     className="text-start custom-checkbox"
+                                    disabled={true}
                                 />
                             </Col>
                             <Col md={6}>
@@ -33,6 +34,7 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                     type="radio"
                                     label={<p>No</p>}
                                     className="text-start custom-checkbox"
+                                    disabled={true}
                                 />
                             </Col>
                         </Row>
