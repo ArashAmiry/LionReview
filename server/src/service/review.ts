@@ -39,6 +39,17 @@ export class ReviewService {
         throw new Error("No review was found with id: " + reviewId);
     }
 
+    async getReviewStatus(reviewId: string): Promise<string | undefined> {
+        try {
+            const review = await reviewModel.findOne({ _id: reviewId }).exec();
+            if (review !== null) {
+                return review.status;
+            }
+        } catch (error) {
+            console.error('An error occurred while fetching the review:', error);
+        }
+    }
+
     async submitReview(reviewId: string, answers: { questionId: string, answer: string }[]) {
         try {
             await answerModel.create({
