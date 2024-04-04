@@ -10,8 +10,9 @@ function RangeQuestions({questions, setQuestions}: {questions: {questionType: st
       const deleteQuestion = (index: number) => {
         const updatedList = [...questions];
         updatedList.splice(index, 1);
-        if (updatedList.length === 0) {
-          setQuestions([{questionType: "range", question: ""}]);
+        const rangeQuestions = updatedList.filter(question => question.questionType === "range");
+        if (rangeQuestions.length === 0) {
+          setQuestions([...updatedList, {questionType: "range", question: ""}]);
         }
         else {
           setQuestions(updatedList);
@@ -28,7 +29,9 @@ function RangeQuestions({questions, setQuestions}: {questions: {questionType: st
     return (
         <>
             {questions.map((question, index) => (
+              question.questionType === "range" && (
                 <QuestionRow key={index} question={question.question} index={index} deleteQuestion={() => deleteQuestion(index)} handleChangeQuestion={(e) => handleChangeQuestion(e, index)} />
+              )
             ))}
             <Button variant="outline-secondary" className="btn-outline-secondary mt-3 mb-3" onClick={() => addQuestion()}>
                 Add new question
