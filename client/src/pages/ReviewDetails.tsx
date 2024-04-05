@@ -217,13 +217,13 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
                 <>
                     {isThereQuestionsForThisPage ? (
                         <>
-                            <Container className="big-container">
-                                <div className="tab-list-container">
+                            <Container className="big-container bg-body">
+                                <div className="tab-list-container bg-body">
                                     <TabContext value={value}>
-                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                        <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                                             <TabList onChange={handleChange} aria-label="lab API tabs example" centered className="tab-list">
-                                                <Tab label="Summary" value="1" />
-                                                <Tab label="Individual" value="2" />
+                                                <Tab label="Summary" value="1" sx={{ color: 'var(--text-color)' }}/>
+                                                <Tab label="Individual" value="2" sx={{ color: 'var(--text-color)' }}/>
                                             </TabList>
                                         </Box>
                                     </TabContext>
