@@ -10,7 +10,8 @@ import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
-import PagesSidebar from "../components/PagesSidebar";
+import useStateCallBack from "../components/UseStateCallBack";
+import PagesSidebarWithDelete from "../components/PagesSidebarWithDelete";
 
 
 const initialPagesState: CreateReviewPage[] = [
@@ -27,7 +28,7 @@ const initialPagesState: CreateReviewPage[] = [
 ];
 
 function CreateReview() {
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useStateCallBack(0);
   const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
   const [reviewName, setReviewName] = useState("");
   const [randomize, setRandomize] = useState<Boolean>(false);
@@ -95,6 +96,40 @@ function CreateReview() {
     setPagesData((prevPageData) => [...prevPageData, newPage]);
     setCurrentPageIndex((currentPageIndex) => currentPageIndex + 1);
   };
+
+  const handleDeletePage = (pageIndex: number) => { // Fixa 
+    const updatedPagesData = [...pagesData];
+    for (let i = pageIndex + 1; i < pagesData.length; i++) {
+      if (updatedPagesData[i].reviewTitle === "Page " + (i+1)) {
+        updatedPagesData[i].reviewTitle = "Page " + i;
+      }   
+    }
+    setPagesData(updatedPagesData);
+
+    if (currentPageIndex !== pageIndex && (pageIndex > currentPageIndex)) {
+      deletePage(pageIndex);
+    } else if (currentPageIndex !== pageIndex && (pageIndex < currentPageIndex)) {
+      setCurrentPageIndex(currentPageIndex - 1, () => deletePage(pageIndex));
+    } else if (currentPageIndex === pageIndex) {
+      if (pageIndex > 0) { 
+        if (pagesData.length > 1) { 
+          setCurrentPageIndex(pageIndex - 1, () => deletePage(pageIndex));
+        } 
+      } else if (pageIndex === 0 && pagesData.length > 1) {
+          deletePage(pageIndex);
+        } else {
+          setPagesData(JSON.parse(JSON.stringify(initialPagesState)));
+      }
+    }
+  };
+
+  const deletePage = (pageIndex: number) => {
+    setPagesData((prevPagesData) => {
+      const updatedPagesData = [...prevPagesData];
+      updatedPagesData.splice(pageIndex, 1); 
+      return updatedPagesData;
+    });
+  }
   
   const submitReview = async () => {
     const reviewPages = pagesData.map((pageData, index) => {
@@ -127,7 +162,7 @@ function CreateReview() {
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
-          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep}/>
+          <PagesSidebarWithDelete pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep} handleDeletePage={(index) => handleDeletePage(index)}/>
         </Col>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
