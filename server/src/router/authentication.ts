@@ -104,3 +104,33 @@ authenticationRouter.get("/:token", async (
         return res.status(500).send('Error activating account');
     }
 });
+
+
+authenticationRouter.get("/usernameExists/:username", async (
+    req: Request<{username : string}, {}, {}>,
+    res: Response
+) => {    
+    try {
+        const username = req.params.username;
+        const usernameExists = await account.usernameExists(username);
+
+        return res.status(200).json({ exists: usernameExists });
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
+
+authenticationRouter.get("/emailExists/:email", async (
+    req: Request<{email : string}, {}, {}>,
+    res: Response
+) => {    
+    try {
+        const email = req.params.email;
+        const emailExists = await account.emailExists(email);
+        
+        return res.status(200).json({ exists: emailExists });
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
+

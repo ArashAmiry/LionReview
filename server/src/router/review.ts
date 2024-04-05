@@ -58,17 +58,20 @@ reviewRouter.post("/answer", async (
 ) => {
     try {
         if (req.session.accessCode !== undefined) {
-            const status = (await accessCodeService.checkCodeStatus(req.session.accessCode, req.body.reviewId));
+            const codeHasBeenUsed = (await accessCodeService.checkCodeStatus(req.session.accessCode, req.body.reviewId));
+            const reviewStatus = await reviewService.getReviewStatus(req.body.reviewId);
 
-            if (!status && status !== undefined) {
-                await reviewService.submitReview(req.body.reviewId, req.body.answers);
-                await accessCodeService.setCodeUsed(req.session.accessCode);
-                res.status(200).send("Answers to review successfully submitted.");
-            } else {
-                res.status(400).send("Could not submit answers, code is not valid");
+            if (codeHasBeenUsed || codeHasBeenUsed !== undefined) {
+                res.status(400).send("Could not submit answers, code is not valid.");
+            } else if (reviewStatus === "Completed"){
+                res.status(400).send("Could not submit answers, review is already completed.");
             }
+
+            await reviewService.submitReview(req.body.reviewId, req.body.answers);
+            await accessCodeService.setCodeUsed(req.session.accessCode);
+            res.status(200).send("Answers to review successfully submitted.");
         } else {
-            res.status(400).send("Could not submit answers");
+            res.status(400).send("Could not submit answers.");
         }
     } catch (e: any) {
         res.status(500).send(e.message);

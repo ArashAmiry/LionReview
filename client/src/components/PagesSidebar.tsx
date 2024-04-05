@@ -7,13 +7,14 @@
 
     type PagesSidebarProps = {
         pagesTitles: string[];
+        currentPageIndex: number;
         setCurrentPageIndex: (index: number) => void;
         isDarkMode?: boolean;
         currentStep?: number;
         handleDeletePage?: (pageIndex: number) => void;
     };
 
-    function PagesSidebar({ pagesTitles, setCurrentPageIndex, isDarkMode, currentStep, handleDeletePage}: PagesSidebarProps) {
+    function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex, isDarkMode, currentStep, handleDeletePage}: PagesSidebarProps) {
         const [collapsed, setCollapsed] = useState(false);
 
         // Function to toggle the collapse state
@@ -52,7 +53,7 @@
                         pagesTitles.map((pageTitle, index) => {
                             const title = pageTitle || `Page ${index + 1}`;
                             return (
-                                <MenuItem key={index} onClick={() => setCurrentPageIndex(index)}>
+                                <MenuItem key={index} onClick={() => setCurrentPageIndex(index)} style={currentPageIndex === index ? { backgroundColor: "#d3d3d3" } : {}}>
                                     <Row className="d-flex justify-content-center align-items-center">
                                         <Col></Col>
                                         <Col style={{ fontSize: "20px" }}>{title}</Col>

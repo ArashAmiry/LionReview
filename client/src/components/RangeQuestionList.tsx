@@ -34,6 +34,7 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                                   color: "var(--text-color)",
                                 },
                             }}
+                            disabled={true}
                         />
                     </Form.Group>
                 ))}

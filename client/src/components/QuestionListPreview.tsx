@@ -9,7 +9,7 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                     <Form key={index} className="questionBox p-3 mb-3">
                         <Container>
                             <Row>
-                                <Col>
+                                <Col md={12}>
                                 <p>{question.question}</p>
                                 </Col>
                             </Row>
@@ -23,6 +23,7 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                         type="radio"
                                         label={<p>Yes</p>}
                                         className="text-start custom-checkbox"
+                                        disabled={true}
                                     />
                                 </Col>
                                 <Col md={6}>
@@ -34,6 +35,7 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                         type="radio"
                                         label={<p>No</p>}
                                         className="text-start custom-checkbox"
+                                        disabled={true}
                                     />
                                 </Col>
                             </Row>
