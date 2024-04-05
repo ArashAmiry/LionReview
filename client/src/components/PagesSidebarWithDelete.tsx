@@ -1,8 +1,9 @@
 import { Menu, MenuItem, Sidebar, sidebarClasses } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
-function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pagesTitles: string[], setCurrentPageIndex: (index: number) => void, currentStep?: number }) {
+function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep, handleDeletePage}: { pagesTitles: string[], setCurrentPageIndex: (index: number) => void, currentStep?: number, handleDeletePage: (pageIndex: number) => void }) {
     const [collapsed, setCollapsed] = useState(false);
 
     // Function to toggle the collapse state
@@ -18,20 +19,18 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pages
 
     return (
         <Sidebar className="sidebar" collapsed={collapsed} style={{borderWidth: 0}}
-            rootStyles={{
-                [`.${sidebarClasses.container}`]: {
-                backgroundColor: 'var(--bs-body-bg)'
-                },
-            }}
-        >
+        rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+            backgroundColor: 'var(--bs-body-bg)'
+            },
+        }}>
             <Menu menuItemStyles={{
                 button: {
                     [`&:hover`]: {
                     backgroundColor: 'var(--bs-secondary-bg)',
                     },
                 },
-                }}
-            >
+                }}>
                 <MenuItem
                     onClick={() => toggleSidebar()}
                     icon={<MenuOutlinedIcon />}
@@ -43,7 +42,9 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pages
                         return (
                             <MenuItem key={index} onClick={() => setCurrentPageIndex(index)}>
                                 {title}
+                                <Button onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }}>Delete</Button>         
                             </MenuItem>
+                            
                         );
                     })}
             </Menu>

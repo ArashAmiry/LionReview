@@ -12,10 +12,11 @@ type ReviewPreviewProps = {
     addNewPage: () => void,
     setReviewName: (name: string) => void,
     previousStep: () => void,
-    isDarkMode: boolean
+    isDarkMode: boolean,
+    setRandomize: (randomize: Boolean) => void,
 }
 
-function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep, isDarkMode} : ReviewPreviewProps) {
+function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep, isDarkMode, setRandomize} : ReviewPreviewProps) {
 
     const updateCachedFiles = (url: string, fileData: CodeFile) => {
         setPagesData((prevPagesData) => {
@@ -46,10 +47,9 @@ function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview
                 addNewPage={(e) => addNewPage()}
                 setReviewName={(name) => setReviewName(name)}
                 reviewTitle={pagesData[currentPageIndex].reviewTitle}
-                binaryQuestions={pagesData[currentPageIndex].binaryQuestions}
-                textfieldQuestions={pagesData[currentPageIndex].textFieldQuestions}
-                rangeQuestions={pagesData[currentPageIndex].rangeQuestions}
+                questions={pagesData[currentPageIndex].questions}
                 previousStep={() => previousStep()}
+                setRandomize={(randomize: Boolean) => setRandomize(randomize)}
             />
             </Col>
       </Row>

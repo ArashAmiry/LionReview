@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation  } from "react-router-dom";
 import "./App.css";
 import CreateReview from "./pages/CreateReview";
 import Header from "./components/Header";
@@ -10,8 +10,12 @@ import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
 import AfterActivation from "./pages/AfterActivation";
 import EmailSent from "./pages/EmailSent";
+import { AuthProvider } from "./AuthContext";
+import PrivateRoute from "./PrivateRoute";
 import ReviewDetails from "./pages/ReviewDetails";
 import { useEffect, useState } from "react";
+import AfterParticipation from "./pages/AfterParticipation";
+import NotFound from "./pages/NotFound";
 
 axios.defaults.withCredentials = true;
 
@@ -56,22 +60,33 @@ function App() {
   
   return (
     <Router>
-      <div className="App">
-        <Header isDarkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-            <Routes>
-              <Route path="/" element={<StartPage />} />
-              <Route path="/logIn" element={<LoginPage />} />
-              <Route path="/signUp" element={<SignupPage />} />
-              <Route path="/create" element={<CreateReview isDarkMode={darkMode} />} />
-              <Route path="/activated" element={<AfterActivation />} />
-              <Route path="/emailSent" element={<EmailSent />} />
-              <Route path="/answer/:reviewId" element={<RespondentReview />} />
-              <Route path="/myReviews" element={<MyReviews username={"username"} />} />
-              <Route path="/myReviews/:reviewId" element={<ReviewDetails isDarkMode={darkMode} />} />
-            </Routes>
-
-          </div>
-
+      <AuthProvider>
+        <div className="App">
+          <Header isDarkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
+          <Routes>
+            <Route path="/" element={<StartPage />} />
+            <Route path="/logIn" element={<LoginPage />} />
+            <Route path="/signUp" element={<SignupPage />} />
+            <Route path="/create" element={
+              <PrivateRoute>
+                <CreateReview isDarkMode={darkMode}/>
+              </PrivateRoute>
+            }
+            />
+            <Route path="/activated" element={<AfterActivation />} />
+            <Route path="/emailSent" element={<EmailSent />} />
+            <Route path="/answer/:reviewId" element={<RespondentReview />} />
+            <Route path="/myReviews" element={
+              <PrivateRoute>
+                <MyReviews username={"username"} />
+              </PrivateRoute>
+            } />
+            <Route path="/myReviews/:reviewId" element={<ReviewDetails isDarkMode={darkMode}/>} />
+            <Route path='*' element={<NotFound />}/>
+            <Route path="/thanks" element={<AfterParticipation />} />
+          </Routes>
+        </div>
+      </AuthProvider>
     </Router>
   );
 }

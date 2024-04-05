@@ -17,23 +17,27 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
         values: number[];
     } {
         const counts: { [key: string]: number } = {};
-    
+
         arr.forEach(label => {
             counts[label] = (counts[label] || 0) + 1;
         });
-    
+
         let answerLabels = Object.keys(counts);
         let answerValues = Object.values(counts);
-    
-        // Sort labels so that "Yes" is always before "No"
-        answerLabels.sort((a, b) => {
-            if (a.toLowerCase() === "yes") return -1;
-            if (b.toLowerCase() === "yes") return 1;
-            if (a.toLowerCase() === "no") return 1;
-            if (b.toLowerCase() === "no") return -1;
+
+        let labeledCounts = answerLabels.map((label, index) => ({ label, count: answerValues[index] }));
+
+        labeledCounts.sort((a, b) => {
+            if (a.label.toLowerCase() === "yes") return -1;
+            if (b.label.toLowerCase() === "yes") return 1;
+            if (a.label.toLowerCase() === "no") return 1;
+            if (b.label.toLowerCase() === "no") return -1;
             return 0;
         });
-    
+
+        answerValues = labeledCounts.map(({ count }) => count);
+        answerLabels = labeledCounts.map(({ label }) => label);
+
         return {
             labels: answerLabels,
             values: answerValues

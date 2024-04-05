@@ -9,7 +9,7 @@
 .questionBox {
     background-color: var(--bs-secondary-bg);
     border-radius: 10px;
-    width: 10rem;
+    width: 16rem;
 }
 
 .question {

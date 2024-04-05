@@ -15,29 +15,14 @@ interface ReviewFormEditorProps {
 
 function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFormEditorProps) {
    
-    const setBinaryQuestions = (questions: { questionType: string; question: string }[]) => {
+    const setQuestions = (questions: { questionType: string; question: string }[]) => {
         setPagesData((prevPageData) => {
           const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-          updatedPageData[currentPageIndex].binaryQuestions = questions; // Update binaryQuestions of the current page
+          updatedPageData[currentPageIndex].questions = questions; // Update binaryQuestions of the current page
           return updatedPageData; // Return the updated array of page states
         });
       };
-    
-    const setTextfieldQuestions = (questions: { questionType: string; question: string }[]) => {
-        setPagesData((prevPageData) => {
-          const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-          updatedPageData[currentPageIndex].textFieldQuestions = questions; // Update textFieldQuestions of the current page
-          return updatedPageData; // Return the updated array of page states
-        });
-      };
-
-    const setRangeQuestions = (questions: { questionType: string; question: string }[]) => {
-      setPagesData((prevPageData) => {
-        const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-        updatedPageData[currentPageIndex].rangeQuestions = questions; // rangeQuestions of the current page
-        return updatedPageData; // Return the updated array of page states
-      });
-    }
+  
 
     const handleChangeReviewTitle = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
@@ -65,12 +50,8 @@ function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFo
         </Row>
         <Row>
           <AddFormQuestions
-            questions={pagesData[currentPageIndex].binaryQuestions}
-            setQuestions={(questions) => setBinaryQuestions(questions)}
-            textfields={pagesData[currentPageIndex].textFieldQuestions}
-            setTextfields={(textfields) => setTextfieldQuestions(textfields)}
-            rangeQuestions={pagesData[currentPageIndex].rangeQuestions}
-            setRangeQuestions={(rangeQuestions) => setRangeQuestions(rangeQuestions)}
+            questions={pagesData[currentPageIndex].questions}
+            setQuestions={(questions) => setQuestions(questions)}
           />
         </Row>
       </Col>
@@ -78,9 +59,7 @@ function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFo
       <Col md={5}>
         <PreviewForm
           reviewTitle={pagesData[currentPageIndex].reviewTitle}
-          questions={pagesData[currentPageIndex].binaryQuestions}
-          textfields={pagesData[currentPageIndex].textFieldQuestions}
-          rangeQuestions={pagesData[currentPageIndex].rangeQuestions}
+          questions={pagesData[currentPageIndex].questions}
           errorMessage={pagesData[currentPageIndex].formErrorMessage}
         />
       </Col>
