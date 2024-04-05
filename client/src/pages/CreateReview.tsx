@@ -11,7 +11,6 @@ import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
 import useStateCallBack from "../components/UseStateCallBack";
-import PagesSidebarWithDelete from "../components/PagesSidebarWithDelete";
 import PagesSidebar from "../components/PagesSidebar";
 
 
@@ -163,7 +162,7 @@ function CreateReview({isDarkMode} : {isDarkMode: boolean}) {
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
-          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep} handleDeletePage={(index) => handleDeletePage(index)}/>
+          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} isDarkMode={isDarkMode} currentStep={pagesData[currentPageIndex].currentStep} handleDeletePage={(index) => handleDeletePage(index)}/>
         </Col>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
