@@ -53,14 +53,21 @@
                         pagesTitles.map((pageTitle, index) => {
                             const title = pageTitle || `Page ${index + 1}`;
                             return (
-                                <MenuItem key={index} onClick={() => setCurrentPageIndex(index)} style={currentPageIndex === index ? { backgroundColor: "#d3d3d3" } : {}}>
+                                <MenuItem 
+                                    key={index} 
+                                    onClick={() => setCurrentPageIndex(index)} 
+                                    style={currentPageIndex === index ? { backgroundColor: "var(--active-color)" } : {}}
+                                    >
                                     <Row className="d-flex justify-content-center align-items-center">
                                         <Col></Col>
                                         <Col style={{ fontSize: "20px" }}>{title}</Col>
                                   
                                         <Col>
                                             {handleDeletePage &&                         
-                                                <Image className="justify-content-end" onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }} src={isDarkMode ? deleteWhite : deleteBlack} width={30}/>
+                                                <Image 
+                                                className="justify-content-end" 
+                                                onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }} 
+                                                src={isDarkMode ? deleteWhite : deleteBlack} width={30}/>
                                             }
                                         </Col>
                                     </Row>
