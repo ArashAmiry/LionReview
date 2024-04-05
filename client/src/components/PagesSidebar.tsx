@@ -6,7 +6,7 @@ type PagesSidebarProps = {
     pagesTitles: string[],
     currentPageIndex: number,
     setCurrentPageIndex: (index: number) => void,
-    currentStep: number,
+    currentStep?: number,
 }
 
 function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex, currentStep}: PagesSidebarProps) {
