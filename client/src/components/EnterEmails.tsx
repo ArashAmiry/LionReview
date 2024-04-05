@@ -20,6 +20,7 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
             }).catch((error: Error) => {
                 console.log(error);
             });
+        setShowEmail(false)
     }
 
     useEffect(() => {
@@ -37,12 +38,12 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Enter Email
+                    Enter Email Addresses
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <ReactMultiEmail
-                    placeholder="Paste however many email addresses"
+                    placeholder="Enter the email addresses of the reviewers"
                     emails={emails}
                     validateEmail={(email: string) => {
                         const isValid = emailRegex.test(email);
