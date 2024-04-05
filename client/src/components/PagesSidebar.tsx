@@ -1,8 +1,16 @@
 import { Menu, MenuItem, Sidebar, sidebarClasses } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
-function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pagesTitles: string[], setCurrentPageIndex: (index: number) => void, currentStep?: number }) {
+type PagesSidebarProps = {
+    pagesTitles: string[];
+    setCurrentPageIndex: (index: number) => void;
+    currentStep?: number;
+    handleDeletePage?: (pageIndex: number) => void;
+};
+
+function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep, handleDeletePage}: PagesSidebarProps) {
     const [collapsed, setCollapsed] = useState(false);
 
     // Function to toggle the collapse state
@@ -43,6 +51,7 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pages
                         return (
                             <MenuItem key={index} onClick={() => setCurrentPageIndex(index)}>
                                 {title}
+                                {handleDeletePage && <Button onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }}>Delete</Button>}
                             </MenuItem>
                         );
                     })}
