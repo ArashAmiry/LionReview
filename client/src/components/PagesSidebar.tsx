@@ -1,12 +1,27 @@
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex }: { pagesTitles: string[], currentPageIndex: number, setCurrentPageIndex: (index: number) => void }) {
+type PagesSidebarProps = {
+    pagesTitles: string[],
+    currentPageIndex: number,
+    setCurrentPageIndex: (index: number) => void,
+    currentStep: number,
+}
+
+function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex, currentStep}: PagesSidebarProps) {
     const [collapsed, setCollapsed] = useState(false);
 
     // Function to toggle the collapse state
     const toggleSidebar = () => setCollapsed(!collapsed);
+
+    useEffect(() => {
+        if (currentStep === 3){
+            setCollapsed(true);
+        } else{
+            setCollapsed(false);
+        }
+    }, [currentStep])
 
     return (
         <Sidebar className="sidebar" collapsed={collapsed} backgroundColor="rgb(242, 242, 242, 1)">

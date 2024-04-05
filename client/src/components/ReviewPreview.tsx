@@ -45,8 +45,7 @@ function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview
                 addNewPage={(e) => addNewPage()}
                 setReviewName={(name) => setReviewName(name)}
                 reviewTitle={pagesData[currentPageIndex].reviewTitle}
-                questions={pagesData[currentPageIndex].binaryQuestions}
-                textfields={pagesData[currentPageIndex].textFieldQuestions}
+                questions={pagesData[currentPageIndex].questions}
                 previousStep={() => previousStep()}
                 setRandomize={(randomize: Boolean) => setRandomize(randomize)}
             />

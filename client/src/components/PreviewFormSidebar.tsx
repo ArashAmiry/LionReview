@@ -5,6 +5,7 @@ import "./stylesheets/PreviewFormSidebar.css";
 import { useState } from "react";
 import ReviewNameModal from "./ReviewNameModal";
 import CreateReviewSendEmail from "./CreateReviewSendEmail";
+import RangeQuestionListPreview from "./RangeQuestionList";
 
 type Question = {
     questionType: string;
@@ -14,7 +15,6 @@ type Question = {
 type PreviewFormSidebarProps = {
     reviewTitle: string;
     questions: Question[];
-    textfields: Question[];
     submitReview: (e: React.MouseEvent) => void;
     addNewPage: (e: React.MouseEvent) => void;
     setReviewName: (name: string) => void;
@@ -22,7 +22,7 @@ type PreviewFormSidebarProps = {
     setRandomize: (randomize: Boolean) => void;
 };
 
-function PreviewFormSidebar({ submitReview, addNewPage, setReviewName, reviewTitle, questions, textfields, previousStep, setRandomize }: PreviewFormSidebarProps) {
+function PreviewFormSidebar({ submitReview, addNewPage, setReviewName, reviewTitle, questions, previousStep, setRandomize }: PreviewFormSidebarProps) {
     const [show, setShow] = useState(false);
     const [showEmailModal, setShowEmailModal] = useState(false);
 
@@ -38,9 +38,19 @@ function PreviewFormSidebar({ submitReview, addNewPage, setReviewName, reviewTit
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionList questions={questions} />
-                <TextfieldList textfields={textfields} />
-
+            {questions.map((question, index) => (
+                    <div key={index}>
+                        {question.questionType === "binary" && (
+                            <QuestionList questions={[question]} />
+                        )}
+                        {question.questionType === "text" && (
+                            <TextfieldList textfields={[question]} />
+                        )}
+                        {question.questionType === "range" && (
+                            <RangeQuestionListPreview rangeQuestions={[question]} />
+                        )}
+                    </div>
+                ))}
             </Card.Body>
 
             <Button className="step-3-btn" size="lg" onClick={handleShow} variant="success">Finalize Form</Button>

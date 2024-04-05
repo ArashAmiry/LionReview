@@ -1,3 +1,4 @@
+import { accessModel } from "../db/accessCode.db";
 import { answerModel } from "../db/answer.db";
 import { reviewModel } from "../db/review";
 import { IReview } from "../model/IReview";
@@ -119,7 +120,8 @@ export class ReviewService {
     async completeReview(reviewID: string) : Promise<Boolean>{
         try{
             const results = await reviewModel.findByIdAndUpdate( {_id: reviewID }, {status: "Completed"}).exec();
-            return results != null;
+            const inactivatedAnswers = await accessModel.updateMany({reviewId: reviewID}, {completed: true}).exec();
+            return (results != null && inactivatedAnswers != null);
         } catch (error){
             console.log(error);
             return false;

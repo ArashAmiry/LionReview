@@ -29,7 +29,6 @@ reviewRouter.get("/", async (
 ) => {
     try {
         if (req.session.user !== undefined) {
-            console.log(req.session.user);
             const reviews = await reviewService.getReviews(req.session.user);
             res.status(200).send(reviews);
         } else {
