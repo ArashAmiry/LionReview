@@ -1,0 +1,11 @@
+.range-card {    
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.rq-card {
+    align-items: center;
+    height: fit-content;
+    height: 350px;
+}

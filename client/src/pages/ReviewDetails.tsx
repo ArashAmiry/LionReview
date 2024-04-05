@@ -230,7 +230,31 @@ const ReviewDetails = () => {
                                 <TabContext value={value}>
                                     <TabPanel value="1">
                                         <Container className="container-statistics mt-2">
-                                            <Row>
+                                            {reviewPages[currentPageIndex].questions
+                                                .map((question) => (
+                                                    <Row>
+                                                        {question.questionType === "binary" && (
+                                                            <BinaryQuestionDetailsCard
+                                                                question={question}
+                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                                            />)
+                                                        }
+                                                        {question.questionType === "text" && (
+                                                            <TextfieldQuestionDetails
+                                                                key={question._id}
+                                                                question={question}
+                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                                            />)
+                                                        }
+                                                        {question.questionType === "range" && (
+                                                            <RangeQuestionDetailsCard
+                                                                question={question}
+                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
+                                                            />)
+                                                        }
+                                                    </Row>
+                                                ))}
+                                            {/*<Row>
                                                 {reviewPages[currentPageIndex].questions
                                                     .filter(question => question.questionType === "binary")
                                                     .map((question) => (
@@ -262,7 +286,7 @@ const ReviewDetails = () => {
                                                         question={question}
                                                         answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
                                                     />
-                                                ))}
+                                                ))}*/}
                                         </Container>
                                     </TabPanel>
                                     <TabPanel value="2">
