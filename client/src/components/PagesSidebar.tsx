@@ -2,7 +2,14 @@ import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useEffect, useState } from "react";
 
-function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pagesTitles: string[], setCurrentPageIndex: (index: number) => void, currentStep?: number }) {
+type PagesSidebarProps = {
+    pagesTitles: string[],
+    currentPageIndex: number,
+    setCurrentPageIndex: (index: number) => void,
+    currentStep?: number,
+}
+
+function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex, currentStep}: PagesSidebarProps) {
     const [collapsed, setCollapsed] = useState(false);
 
     // Function to toggle the collapse state
@@ -23,12 +30,13 @@ function PagesSidebar({ pagesTitles, setCurrentPageIndex, currentStep }: { pages
                     onClick={() => toggleSidebar()}
                     icon={<MenuOutlinedIcon />}
                     className="d-flex justify-content-center align-items-center"
+
                 />
                 {!collapsed &&
                     pagesTitles.map((pageTitle, index) => {
                         const title = pageTitle || `Page ${index + 1}`;
                         return (
-                            <MenuItem key={index} onClick={() => setCurrentPageIndex(index)}>
+                            <MenuItem key={index} onClick={() => setCurrentPageIndex(index)} style={currentPageIndex === index ? { backgroundColor: "#d3d3d3" } : {}} active={index === currentPageIndex}>
                                 {title}
                             </MenuItem>
                         );

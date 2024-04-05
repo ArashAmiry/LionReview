@@ -22,3 +22,9 @@
     font-size: 1.1rem; /* Adjust font size as needed */
     color: red; /* Set color to red for error text */
 }
+
+.access-header {
+    font-size: 1.5rem; 
+    color: white;
+    font-weight: bold; 
+}

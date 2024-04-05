@@ -127,7 +127,7 @@ function CreateReview() {
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className="mx-0">
         <Col className="sidebar-col" md={2}>
-          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep}/>
+          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep}/>
         </Col>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
