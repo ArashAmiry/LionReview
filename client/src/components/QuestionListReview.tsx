@@ -1,30 +1,27 @@
 import { Col, Form, FormLabel, Row } from "react-bootstrap";
 import './stylesheets/PreviewForm.css'
-import { AnswerPage } from "../pages/RespondentReview";
+import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 
 type QuestionListReviewProps = {
     currentPageIndex: number,
-    answerPages: AnswerPage[], 
+    question: QuestionAnswer, 
+    questionIndex: number,
     setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>
 }
 
-function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: QuestionListReviewProps) {
-    const binaryQuestions = answerPages[currentPageIndex].binaryQuestions;
+function QuestionListReview({ currentPageIndex, question, questionIndex, setAnswerPages }: QuestionListReviewProps) {
+    //const questions = answerPages[currentPageIndex].questions;
 
     const handleRadioChange = (answer: string, id: string) => {
-        const questionIndex = binaryQuestions.findIndex(q => q.id === id);
+        //const questionIndex = questions.findIndex(q => q.id === id);
         setAnswerPages((prevAnswerPage) => {
             const updatedAnswerPage = [...prevAnswerPage]; 
-            updatedAnswerPage[currentPageIndex].binaryQuestions[questionIndex].answer = answer; 
+            updatedAnswerPage[currentPageIndex].questions[questionIndex].answer = answer; 
             return updatedAnswerPage;
         })
     };
     
     return (
-        <>
-            {binaryQuestions
-                .filter(question => question.question !== "")
-                .map((question, index) => (
                     <Form className="question p-3 mb-3">
                         <Row>
                             <Col md={12}>
@@ -36,8 +33,8 @@ function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: Q
                                 <Form.Check
                                     inline
                                     name="binary"
-                                    key={index}
-                                    id={`step-${index}`} // Add a unique id for each checkbox
+                                    key={questionIndex}
+                                    id={`step-${questionIndex}`} // Add a unique id for each checkbox
                                     type="radio"
                                     value="Yes"
                                     label={<p>Yes</p>}
@@ -50,8 +47,8 @@ function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: Q
                                 <Form.Check
                                     inline
                                     name="binary"
-                                    key={index}
-                                    id={`step-${index}`} // Add a unique id for each checkbox
+                                    key={questionIndex}
+                                    id={`step-${questionIndex}`} // Add a unique id for each checkbox
                                     type="radio"
                                     value="No"
                                     label={<p>No</p>}
@@ -62,10 +59,7 @@ function QuestionListReview({ currentPageIndex, answerPages, setAnswerPages }: Q
                             </Col>
                         </Row>
                     </Form>
-                ))
-            }
-        </>
-    )
+                )
 }
 
 export default QuestionListReview;
