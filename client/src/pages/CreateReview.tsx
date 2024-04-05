@@ -16,7 +16,7 @@ import PagesSidebar from "../components/PagesSidebar";
 const initialPagesState: CreateReviewPage[] = [
   {
     currentStep: 1,
-    questions: [{ questionType: "binary", question: "" }, { questionType: "text", question: "" }, { questionType: "range", question: "" }],
+    questions: [],
     reviewTitle: "Page 1",
     urls: [""],
     cachedFiles: {},

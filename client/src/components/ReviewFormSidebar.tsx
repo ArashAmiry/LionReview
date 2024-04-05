@@ -18,19 +18,20 @@ type ReviewFormSideBarProps = {
 
 function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage }: ReviewFormSideBarProps) {
     const reviewTitle = answerPages[currentPageIndex].formName;
+    const questions = answerPages[currentPageIndex].questions;
     const navigate = useNavigate();
 
     const handleContinue = () => {
         console.log(currentPageIndex)
         console.log(answerPages.length)
-        if(currentPageIndex !== answerPages.length) {
+        if (currentPageIndex !== answerPages.length) {
             setCurrentPageIndex(currentPageIndex + 1)
         }
     }
 
     const submitReview = async () => {
         const reviewAnswers = answerPages.flatMap(answerPage => {
-            return [...answerPage.binaryQuestions, ...answerPage.textfieldQuestions, ...answerPage.rangeQuestions].map(question => ({
+            return [...answerPage.questions].map(question => ({
                 "questionId": question.id,
                 "answer": question.answer
             }));
@@ -46,7 +47,7 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
                 setErrorPage(true);
                 console.log(error);
             });
-            
+
 
         } catch (error) {
             console.log("Error occurred when updating database: ", error)
@@ -58,9 +59,18 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
         <Card className="sidebar">
             <Card.Title className="m-3">{reviewTitle}</Card.Title>
             <Card.Body className="mx-5 mt-2 sidebar-form">
-                <QuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
-                <TextfieldListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
-                <RangeQuestionListReview currentPageIndex={currentPageIndex} answerPages={answerPages} setAnswerPages={(e) => setAnswerPages(e)} />
+                {questions
+                    .filter(question => question.question !== "")
+                    .map((question, index) => (
+                        <>{question.questionType === "binary" &&
+                            (<QuestionListReview currentPageIndex={currentPageIndex} question={question} questionIndex={index} setAnswerPages={(e) => setAnswerPages(e)} />)}
+                          {question.questionType === "text" && 
+                          (<TextfieldListReview currentPageIndex={currentPageIndex} question={question} questionIndex={index} setAnswerPages={(e) => setAnswerPages(e)} />)}  
+                          {question.questionType === "range" && 
+                          (<RangeQuestionListReview currentPageIndex={currentPageIndex} question={question} questionIndex={index} setAnswerPages={(e) => setAnswerPages(e)} />)}
+                        </>
+
+                    ))}
             </Card.Body>
 
             {(currentPageIndex + 1) !== answerPages.length && (
