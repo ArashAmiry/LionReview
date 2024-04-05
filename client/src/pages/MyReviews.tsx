@@ -12,7 +12,7 @@ import axios from "axios";
 import { IReview } from "../interfaces/IReview";
 import { useNavigate } from "react-router-dom";
 import EnterEmails from "../components/EnterEmails";
-
+import { Toast } from 'react-bootstrap';
 type Review = {
   name: string;
   status: string;
@@ -73,6 +73,12 @@ const MyReviews = ({ username }: { username: string }) => {
     setShowEmail(true);
   }
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleShowToast = () => {
+    setShowConfirmation(true);
+  };
+
   return (
     <Container fluid className="myReviewsContainer mx-0">
       <Row className="first-row">
@@ -108,7 +114,17 @@ const MyReviews = ({ username }: { username: string }) => {
           </Row>
         </Container>
       </Row>
-      <EnterEmails reviewID={reviewID} showEmail={showEmail} setShowEmail={(show) => setShowEmail(show)}/>
+      <EnterEmails reviewID={reviewID} showEmail={showEmail} setShowEmail={(show) => setShowEmail(show)} displayToast={handleShowToast}/>
+
+      {/* Fixed position Toast at the top of screen */}
+      <div style={{ position: 'fixed', top: '11vh', left: '50%', transform: 'translateX(-50%)', zIndex: 9999 }}>
+        <Toast onClose={() => setShowConfirmation(false)} show={showConfirmation} delay={4000} autohide bg="light">
+          <Toast.Header>
+            <strong className="me-auto">Email sent</strong>
+          </Toast.Header>
+          <Toast.Body className="text-black">The review has now been sent to the reviewers</Toast.Body>
+        </Toast>
+      </div>
     </Container>
   );
 };

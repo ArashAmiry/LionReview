@@ -6,7 +6,7 @@ import './stylesheets/EnterEmails.css';
 import 'react-multi-email/dist/style.css';
 import axios from "axios";
 
-const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, showEmail: boolean, setShowEmail: (show: boolean) => void }) => {
+const EnterEmails = ({ reviewID, showEmail, setShowEmail, displayToast }: { reviewID: string, showEmail: boolean, setShowEmail: (show: boolean) => void, displayToast: () => void }) => {
     const [emails, setEmails] = useState<string[]>([]);
     const [invalidEmails, setInvalidEmails] = useState<string[]>([]);
 
@@ -20,7 +20,8 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
             }).catch((error: Error) => {
                 console.log(error);
             });
-        setShowEmail(false)
+        setShowEmail(false);
+        displayToast();
     }
 
     useEffect(() => {

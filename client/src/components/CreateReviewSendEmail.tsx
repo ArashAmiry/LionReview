@@ -7,7 +7,7 @@ import './stylesheets/EnterEmails.css';
 import 'react-multi-email/dist/style.css';
 import axios from "axios";
 
-const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail }: { submitReview: (e: React.MouseEvent) => void, showEmail: boolean, setShowEmail: (show: boolean) => void }) => {
+const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail, setShowToast }: { submitReview: (e: React.MouseEvent) => void, showEmail: boolean, setShowEmail: (show: boolean) => void, setShowToast: (show: boolean) => void }) => {
     const [emails, setEmails] = useState<string[]>([]);
     const [invalidEmails, setInvalidEmails] = useState<string[]>([]);
     const navigate = useNavigate();
@@ -22,7 +22,12 @@ const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail }: { subm
             }).catch((error: Error) => {
                 console.log(error);
             });
-        navigate("/myReviews");
+        setShowEmail(false);
+        setShowToast(true);
+        
+        setTimeout(() => {
+            navigate("/myReviews");
+          }, 3000);
     }
 
     const handleSkip = async (e: React.MouseEvent) => {
