@@ -42,17 +42,13 @@ const RangeQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
             ]
         };
     
-        // Calculate the total count of answers displayed in the chart
-        const totalCount = Object.values(countsMap).reduce((sum, count) => sum + count, 0);
-    
-        return { chartData, totalCount };
+        return { chartData };
     }
     
-    const { chartData, totalCount } = generateChartData(answers);
+    const { chartData } = generateChartData(answers);
     
     return (
         <Container className="bar-chart-container d-flex flex-column justify-content-center">
-            <p className="mb-0">answers: {totalCount}</p>
             <Bar className="bar-chart" data={chartData} />
         </Container>
     );

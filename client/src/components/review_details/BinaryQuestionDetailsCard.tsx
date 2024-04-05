@@ -12,7 +12,8 @@ const BinaryQuestionDetailsCard = ({ question, answers }:BinaryQuestionDetailsCa
     return (
         <Card id={question._id} className='bq-card my-3'>
             <Card.Body className='binary-card justify-content-center'>
-                <Card.Title className="two-line-name">{question.question}</Card.Title>
+                <Card.Title className="binary-question-title">{question.question}</Card.Title>
+                <p className="binary-number-responses mt-1 mb-1">{answers?.length} responses</p>
                 {answers && <BinaryQuestionStatistics answers={answers} />}
             </Card.Body>
         </Card>

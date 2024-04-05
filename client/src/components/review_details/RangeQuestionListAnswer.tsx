@@ -3,6 +3,8 @@ import { FormLabel } from "react-bootstrap";
 import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
 import Row from "react-bootstrap/esm/Row";
+import '../stylesheets/review_details/TextfieldListAnswer.css'
+
 
 function RangeQuestionListAnswer({ rangeQuestion, answer }: { rangeQuestion: string, answer: string }) {
     const maxValue = 5;
@@ -18,7 +20,7 @@ function RangeQuestionListAnswer({ rangeQuestion, answer }: { rangeQuestion: str
 
     return (
         <>
-            <Form.Group  className="mb-3 question p-3">
+            <Form.Group  className="mb-3 individual-range p-3">
                 <Form.Label>{rangeQuestion}</Form.Label>
                 <Slider
                     aria-label="Rating"
@@ -29,6 +31,7 @@ function RangeQuestionListAnswer({ rangeQuestion, answer }: { rangeQuestion: str
                     marks={marks}
                     min={1}
                     max={maxValue}
+                    className="range-slider"
                 />
             </Form.Group>
         </>

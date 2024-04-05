@@ -59,7 +59,7 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
 
     return (
         <Container className="pie-chart-container d-flex flex-column justify-content-center">
-            <p className="mb-0">svar: {answers.length}</p>
+            
             <Pie className="pie-chart" data={chartData} />
         </Container>
     );

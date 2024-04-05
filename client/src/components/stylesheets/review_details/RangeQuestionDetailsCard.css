@@ -9,3 +9,11 @@
     height: fit-content;
     height: 350px;
 }
+
+.range-question-title {
+    text-align: left;
+}
+
+.range-number-responses {
+    text-align: left;
+}

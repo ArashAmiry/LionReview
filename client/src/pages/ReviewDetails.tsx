@@ -13,9 +13,9 @@ import RangeQuestionDetailsCard from "../components/review_details/RangeQuestion
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import QuestionListAnswer from "../components/QuestionListAnswer";
-import TextfieldListAnswer from "../components/TextfieldListAnswer";
-import RangeQuestionListAnswer from "../components/RangeQuestionListAnswer";
+import QuestionListAnswer from "../components/review_details/QuestionListAnswer";
+import TextfieldListAnswer from "../components/review_details/TextfieldListAnswer";
+import RangeQuestionListAnswer from "../components/review_details/RangeQuestionListAnswer";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import ActionButtons from "../components/review_details/ActionButtons";
 
@@ -254,84 +254,71 @@ const ReviewDetails = () => {
                                                         }
                                                     </Row>
                                                 ))}
-                                            {/*<Row>
-                                                {reviewPages[currentPageIndex].questions
-                                                    .filter(question => question.questionType === "binary")
-                                                    .map((question) => (
-                                                        <Col key={question._id} lg={3} className='my-2'>
-                                                            <BinaryQuestionDetailsCard
-                                                                question={question}
-                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                                                            />
-                                                        </Col>
-                                                    ))}
-                                            </Row>
-                                            <Row>
-                                                {reviewPages[currentPageIndex].questions
-                                                    .filter(question => question.questionType === "range")
-                                                    .map((question) => (
-                                                        <Col key={question._id} lg={6} className='my-2'>
-                                                            <RangeQuestionDetailsCard
-                                                                question={question}
-                                                                answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                                                            />
-                                                        </Col>
-                                                    ))}
-                                            </Row>
-                                            {reviewPages[currentPageIndex].questions
-                                                .filter(question => question.questionType === "text")
-                                                .map((question) => (
-                                                    <TextfieldQuestionDetails
-                                                        key={question._id}
-                                                        question={question}
-                                                        answers={questionsAnswers.find(q => q.questionId === question._id)?.answers}
-                                                    />
-                                                ))}*/}
                                         </Container>
                                     </TabPanel>
                                     <TabPanel value="2">
-                                        <Row className="pb-3">
-                                            <Col onClick={() => previousIndividual()} className="page-change"><AiFillCaretLeft /></Col>
-                                            <Col className="page-change">Individual {currentIndividualAnswer + 1}</Col>
-                                            <Col onClick={() => nextIndividual()} className="page-change"><AiFillCaretRight /></Col>
-                                        </Row>
-                                        {individualAnswers[currentIndividualAnswer].map((a) => (
-                                            reviewPages[currentPageIndex].questions
-                                                .filter(question => question.questionType === "binary" && question._id === a.questionId)
-                                                .map(question => {
-                                                    return (
-                                                        <QuestionListAnswer
-                                                            binaryQuestion={question.question}
-                                                            answer={a.answer}
-                                                        />
-                                                    );
-                                                })
-                                        ))}
-                                        {individualAnswers[currentIndividualAnswer].map((a) => (
-                                            reviewPages[currentPageIndex].questions
-                                                .filter(question => question.questionType === "text" && question._id === a.questionId)
-                                                .map(question => {
-                                                    return (
-                                                        <TextfieldListAnswer
-                                                            textfieldQuestion={question.question}
-                                                            answer={a.answer}
-                                                        />
-                                                    );
-                                                })
-                                        ))}
+                                        <Container className="d-flex flex-column align-items-center">
+                                            <Row className="buttons-row mb-3">
+                                                <Col md={2} onClick={() => previousIndividual()} className="d-flex justify-content-center align-items-center">
+                                                    <Button
+                                                        onClick={() => {
+                                                            previousIndividual();
+                                                        }}
+                                                        className={`page-change ${currentIndividualAnswer === 0
+                                                            ? 'page-change-disabled'
+                                                            : 'page-change-enabled'
+                                                            }`}
+                                                        disabled={currentIndividualAnswer === 0}
+                                                    >
+                                                        <AiFillCaretLeft />
+                                                    </Button>
+                                                </Col>
+                                                <Col md={8} className="d-flex justify-content-center align-items-center">
+                                                    Response {currentIndividualAnswer + 1}
+                                                </Col>
+                                                <Col md={2} onClick={() => nextIndividual()} className="d-flex justify-content-center align-items-center">
+                                                    <Button
+                                                        onClick={() => {
+                                                            nextIndividual();
+                                                        }}
+                                                        className={`page-change ${currentIndividualAnswer === individualAnswers.length - 1
+                                                            ? 'page-change-disabled'
+                                                            : 'page-change-enabled'
+                                                            }`}
+                                                        disabled={currentIndividualAnswer === individualAnswers.length - 1}
+                                                    >
+                                                        <AiFillCaretRight />
+                                                    </Button>
+                                                </Col>
+                                            </Row>
 
-                                        {individualAnswers[currentIndividualAnswer].map((a) => (
-                                            reviewPages[currentPageIndex].questions
-                                                .filter(question => question.questionType === "range" && question._id === a.questionId)
-                                                .map(question => {
-                                                    return (
-                                                        <RangeQuestionListAnswer
-                                                            rangeQuestion={question.question}
-                                                            answer={a.answer}
-                                                        />
-                                                    );
-                                                })
-                                        ))}
+                                            {individualAnswers[currentIndividualAnswer].map((a) => (
+                                                reviewPages[currentPageIndex].questions
+                                                    .filter(question => question._id === a.questionId)
+                                                    .map(question => (
+                                                        <>
+                                                            {question.questionType === "binary" && (
+                                                                <QuestionListAnswer
+                                                                    binaryQuestion={question.question}
+                                                                    answer={a.answer}
+                                                                />
+                                                            )}
+                                                            {question.questionType === "text" && (
+                                                                <TextfieldListAnswer
+                                                                    textfieldQuestion={question.question}
+                                                                    answer={a.answer}
+                                                                />
+                                                            )}
+                                                            {question.questionType === "range" && (
+                                                                <RangeQuestionListAnswer
+                                                                    rangeQuestion={question.question}
+                                                                    answer={a.answer}
+                                                                />
+                                                            )}
+                                                        </>
+                                                    ))
+                                            ))}
+                                        </Container>
                                     </TabPanel>
 
                                 </TabContext>

@@ -10,9 +10,11 @@ interface RangeQuestionDetailsCardProps {
 
 const RangeQuestionDetailsCard = ({ question, answers }:RangeQuestionDetailsCardProps) => {
     return (
-        <Card id={question._id} className='rq-card my-3'>
+        <Card id={question._id} className='rq-card my-3 text-left'>
             <Card.Body className='range-card justify-content-center'>
-                <Card.Title className="two-line-name">{question.question}</Card.Title>
+                <Card.Title className="range-question-title mb-0">{question.question}</Card.Title>
+                <p className="range-number-responses mt-1 mb-1">{answers?.length} responses</p>
+
                 {answers && <RangeQuestionStatistics answers={answers} />}
             </Card.Body>
         </Card>
