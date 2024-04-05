@@ -201,7 +201,6 @@ const ReviewDetails = () => {
                 <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
             </Col>
             <h1 className="review-name">{reviewName}</h1>
-            <h3 className="review-page">The {showCode ? "code" : "answers"} for "{reviewPages[currentPageIndex].formName}"</h3>
             <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
             {showCode ?
                 <>
