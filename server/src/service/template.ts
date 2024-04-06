@@ -7,7 +7,6 @@ export class TemplateService {
     async createPresetTemplate(template: Omit<ITemplate, 'category'>, category: string) {
         try {
             await templateModel.create({
-                _id: template._id,
                 category: "preset", // Set the category to "presetTemplates"
                 name: template.name,
                 info: template.info,
@@ -23,7 +22,6 @@ export class TemplateService {
     async createSavedTemplate(template: Omit<ITemplate, 'category'>, category: string) {
         try {
             await templateModel.create({
-                _id: template._id,
                 category: "saved", // Set the category to "presetTemplates"
                 name: template.name,
                 info: template.info,
@@ -64,9 +62,10 @@ export class TemplateService {
 
     async updateTemplate(TemplateId: string, updatedTemplate: Partial<ITemplate>) {
         try {
-            const result = await templateModel.findOneAndUpdate({_id: TemplateId}, {updatedTemplate}, { new: true });
+            const result = await templateModel.findOneAndUpdate({_id: TemplateId}, updatedTemplate, { new: true }).exec();
             if (result) {
-                return result.toObject();
+                console.log(result);
+                return result.toObject();   
             } else {
                 throw new Error("No template was found with id: " + TemplateId);
             }

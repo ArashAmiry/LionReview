@@ -1,5 +1,4 @@
 export interface ITemplate {
-    _id: string;
     category: string;
     name: string;
     info: string;

@@ -4,10 +4,6 @@ import { ITemplate } from "../model/ITemplate";
 
 // Define the schema
 const templateSchema: Schema = new Schema({
-  _id:{
-    type: String,
-    required: true
-  },//Ta bort, sätts automatiskt
   category: {
     type: String,
     required: true
