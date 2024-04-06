@@ -87,3 +87,12 @@
     width: 420px; /* Subtract padding from width */
     border-radius: 0;
 }
+.add{
+    margin-bottom: 30px;
+}
+.form-control{
+    margin-bottom: 10px;
+}
+.CardBody{
+    margin: 0px;
+}

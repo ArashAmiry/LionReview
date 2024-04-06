@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { TemplateService } from "../service/template";
 import { ITemplate } from "../model/ITemplate";
+import { log } from "console";
 
 const templateService = new TemplateService();
 
@@ -70,7 +71,7 @@ templateRouter.get("/getSavedTemplate", async (
     }
 });
 
-templateRouter.get("/single/:reviewId", async (
+templateRouter.get("/single/:templateId", async (
     req: Request<{ templateId: string }, {}, {}>,
     res: Response<ITemplate>
 ) => {
@@ -83,11 +84,13 @@ templateRouter.get("/single/:reviewId", async (
     }
 })
 
-templateRouter.put('/editTemplate/:id', async (req: Request, res: Response) => {
-    const templateId = req.params.id;
-    const updatedTemplateData = req.body; // Assuming the updated template data is sent in the request body
+templateRouter.put('/editTemplate/:templateId', async (
+    req: Request<{templateId: string}, {}, Partial<ITemplate>>,
+    res: Response
+    ) => {
     try {
-        const updatedTemplate = await templateService.updateTemplate(templateId, updatedTemplateData);
+        const updatedTemplateData = req.body;
+        const updatedTemplate = await templateService.updateTemplate(req.params.templateId, updatedTemplateData);
         res.json(updatedTemplate);
     } catch (error) {
         console.error('Error updating template:', error);

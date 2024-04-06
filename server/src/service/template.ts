@@ -62,13 +62,13 @@ export class TemplateService {
     }
 
 
-    async updateTemplate(templateId: string, updatedTemplate: Partial<ITemplate>) {
+    async updateTemplate(TemplateId: string, updatedTemplate: Partial<ITemplate>) {
         try {
-            const result = await templateModel.findByIdAndUpdate(templateId, updatedTemplate, { new: true });
+            const result = await templateModel.findOneAndUpdate({_id: TemplateId}, {updatedTemplate}, { new: true });
             if (result) {
                 return result.toObject();
             } else {
-                throw new Error("No template was found with id: " + templateId);
+                throw new Error("No template was found with id: " + TemplateId);
             }
         } catch (error) {
             console.error('An error occurred while updating the template:', error);

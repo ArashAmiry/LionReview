@@ -3,8 +3,8 @@ export interface ITemplate {
     category: string;
     name: string;
     info: string;
-    questions: [{
-        questionType: string;
-        question: string;
-      }],
+    questions: {
+        questionType: string
+        question: string
+      }[]
 }
