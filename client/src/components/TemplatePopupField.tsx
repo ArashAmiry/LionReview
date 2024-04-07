@@ -6,11 +6,13 @@ import { useState } from "react";
 import { ITemplate } from "../interfaces/ITemplate";
 import axios from "axios";
 import React from "react";
+import Template from "./Template";
 
 interface PreviewTemplateProps{
     templateId: string;
     template: ITemplate;
     onClose: () => void;
+    //handleDelete: () => void;
     //onUpdateTemplate: (updatedTemplate: Template) => void;
 }
 
@@ -44,6 +46,70 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
         );
     }
 
+    const [isDeleted, setIsDeleted] = useState(false)
+
+
+
+    const [isDeleteAlert, setIsDeleteAlert] = useState(false)
+
+    function DeleteButton({ isDeleteAlert }: { isDeleteAlert: boolean}) {
+
+        const deleteTemplate = async (templateId: string) => {
+            const response = await axios.delete<ITemplate[]>(`http://localhost:8080/template/deleteTemplate/${templateId}`) //ändra /templates/...
+                .then(function (response) {
+                //setSavedTemplates(response.data);
+                //handleDelete()
+                onClose()
+                console.log('something weird')
+                console.log(response);
+                })
+
+                .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+    
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+                console.log("error: " + error);
+                });
+        };
+        
+        const handleDeleteAlert = () => {
+            if(isDeleteAlert){
+                setIsDeleteAlert(false);
+            }
+            else{
+                setIsDeleteAlert(true);
+            }  
+        };
+
+        const handleDeleteTemplate = () => {
+            deleteTemplate(templateId)
+        }
+
+        return (
+            <div className="deleteAlert">
+                {!isDeleteAlert ? (
+                    <Button className="delete-button" size="lg" variant="danger" onClick={handleDeleteAlert}>Delete Template</Button>
+                ):(
+                    <div className="deleteAlertOn">
+                            <p className="alert-text">You sure you want to delete template?</p>
+                            <div className="alertYesCol"><button type="button" className="alert-button-yes" onClick={handleDeleteTemplate}>Yes</button></div>
+                            <div className="alertNoCol"><button type="button" className="alert-button-no" onClick={handleDeleteAlert}>No</button></div>   
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+
+
+
     function Preview({questions} : {questions: {questionType: string, question: string}[]}) {
         const binaryQuestions = questions.filter(question => question.questionType === "binary")
         const textQuestions = questions.filter(question => question.questionType === "text")
@@ -69,9 +135,6 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
 
     const [updatedInfo, setUpdatedInfo] = React.useState<string>(
         template.info);
-
-    const [allQuestions, setAllQuestions] = React.useState<{ questionType: string, question: string }[]>(
-        template.questions);
     
     const [textQuestions, setTextQuestions] = React.useState<{ questionType: string, question: string }[]>(
         template.questions.filter(question => question.questionType === "text")
@@ -96,28 +159,31 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
 
     // Function to add new binary question
     const addBinaryQuestion = () => {
-        setBinaryQuestions([...binaryQuestions, { questionType: "binary", question: `new binary question` }]);
+        setBinaryQuestions([...binaryQuestions, { questionType: "binary", question: `` }]);
         setIsSaved(false);
     };
 
     // Function to add new text question
     const addTextQuestion = () => {
-        setTextQuestions([...textQuestions, { questionType: "text", question: `new text question` }]);
+        setTextQuestions([...textQuestions, { questionType: "text", question: '' }]);
         setIsSaved(false);
     };
 
     const deleteQuestion = (list:{ questionType: string, question: string }[], index: number) => {
         const updatedList = [...list];
+        const type = updatedList[index].questionType
+        console.log(type)
         updatedList.splice(index, 1);
-        if (list[0].questionType === "binary"){
+        if (type === "binary"){
             setBinaryQuestions(updatedList)
         }
-        else if(list[0].questionType === "text"){
+        else if(type === "text"){
             setTextQuestions(updatedList)
         }
-      }
+        setIsSaved(false);
+    }
 
-      const handleTitleChange = (value: string) => {
+    const handleTitleChange = (value: string) => {
         const updatedName = value
         setUpdatedName(updatedName);
         setIsSaved(false);
@@ -135,7 +201,10 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
             .then(function (response) {
                 //setSavedTemplates(response.data); //ändra (setTemplates, rad 60)
                 console.log(response);
-                setIsSaved(true)
+                setIsSaved(true);
+                template.name = updatedName;
+                template.info = updatedInfo;
+                template.questions = [...binaryQuestions, ...textQuestions];
             })
             .catch(function (error) {
             if (error.response) {
@@ -157,11 +226,12 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
 
     function saveTemplate() {
 
-        setAllQuestions(binaryQuestions && textQuestions)
+        const allQuestionsUpdated = [...binaryQuestions, ...textQuestions];
+        console.log(allQuestionsUpdated)
         const updatedTemplateData: Partial<ITemplate> = {
             name: updatedName,
             info: updatedInfo,
-            questions: allQuestions
+            questions: allQuestionsUpdated
         };
         console.log(templateId)
         console.log(updatedTemplateData)
@@ -198,6 +268,7 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
                                         key={`binaryQuestion${index}`} // Use index to create unique key
                                         className="form-control"
                                         id={`binaryQuestion${index}`} // Use index to create unique ID
+                                        placeholder="new Yes/No question..."
                                         value={question.question} // Use question as placeholder
                                         onChange={(e) => handleBinaryQuestionChange(index, e.target.value)}
                                     />
@@ -217,6 +288,7 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
                                         key={`binaryQuestion${index}`} // Use index to create unique key
                                         className="form-control"
                                         id={`binaryQuestion${index}`} // Use index to create unique ID
+                                        placeholder="new text question..."
                                         value={question.question} // Use question as placeholder
                                         onChange={(e) => handleTextQuestionChange(index, e.target.value)}
                                     />
@@ -245,6 +317,7 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
                                     onChange={(e) => handleInfoChange(e.target.value)}/>
                         </div>
                         <SaveButton isSaved={isSaved}></SaveButton>
+                        <DeleteButton isDeleteAlert={isDeleteAlert}></DeleteButton>
                         <Button className="exit-button" size="lg" variant="light" onClick={handleEditModeButton}>Exit</Button>
                     </div>
                 </div>
@@ -254,88 +327,3 @@ const PreviewTemplate:  React.FC<PreviewTemplateProps> = ({templateId, template,
     )}
 
 export default PreviewTemplate;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-const binaryQuestions = template.questions.filter(question => question.questionType === "binary")
-const textfieldQuestions = template.questions.filter(question => question.questionType === "text")
-
-//const [editedTemplate, setEditedTemplate] = useState<ITemplate>(template);
-//const [editedQuestions, setEditedQuestions] = useState<[{questionType: string, question: string}]>(template.questions);
-
-const [templateData, setTemplateData] = useState<ITemplate>(template);
-
-const setBinaryQuestions = (
-    questions: { questionType: string; question: string }[]
-  ) => {
-    setTemplateData((prevTemplateData) => {
-      let updatedTemplateData = {...prevTemplateData} // Create a copy of the template
-      //updatedTemplateData = questions; // Update binaryQuestions of the current page
-      return updatedTemplateData; // Return the updated array of page states
-    });
-  };
-
-  const setTextfieldQuestions = (
-    questions: { questionType: string; question: string }[]
-  ) => {
-        const updatedTextfieldQuestion = {...textfieldQuestions, questions}; 
-
-        return updatedTextfieldQuestion; // Return the updated array of page states
-    };
-
-function EditQuestions({questions, setQuestions, textfields, setTextfields}:{
-    questions: { questionType: string, question: string }[], setQuestions: (questions: { questionType: string, question: string }[]) => void,
-    textfields: { questionType: string, question: string }[], setTextfields: (textfields: { questionType: string, question: string }[]) => void
-}) {
-
-    return(
-        <div className="edit-question-cont">
-            <p className="binaryQT">Checkbox questions:</p>
-            <Question questions={questions} setQuestions={(questions) => setQuestions(questions)} />
-            <p className="binaryQT">Textfield questions:</p>
-            <Textfields textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} />
-
-        </div>
-
-    )
-
-        const updateTemplate = async (templateId: string, updatedTemplateData: Partial<ITemplate>) => {
-        const response = await axios.put(`http://localhost:8080/template/editTemplate/${templateId}`, updatedTemplateData);
-        console.log(response.data); // Log the updated template data
-        // Handle any further actions after updating the template if needed
-    } 
-
-            /*try {
-            const response = await axios.put(`http://localhost:8080/template/editTemplate/${templateId}`, updatedTemplateData);
-            console.log(response.data); // Log the updated template data
-            // Handle any further actions after updating the template if needed
-        }catch (error: unknown) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    console.error('Error response:', axiosError.response.data);
-                    console.error('Status code:', axiosError.response.status);
-                    console.error('Headers:', axiosError.response.headers);
-                } else if (axiosError.request) {
-                    console.error('No response received:', axiosError.request);
-                } else {
-                    console.error('Error:', axiosError.message);
-                }
-            } else {
-                console.error('Unknown error:', error);
-            }
-        }*/

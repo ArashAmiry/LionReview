@@ -8,6 +8,7 @@ import { ITemplate } from '../interfaces/ITemplate';
 interface CardProps {
   templateId: string
   template: ITemplate;
+  //handleDelete: () => void;
 }
 
 const TemplateCard: React.FC<CardProps> = ({templateId, template}) => {
@@ -46,7 +47,7 @@ const TemplateCard: React.FC<CardProps> = ({templateId, template}) => {
       )}
       {isPopupOpen && (
         <div className='popup-container'>
-          <TemplatePopupField templateId={templateId} template={template} onClose={() => setIsPopupOpen(false)} />
+          <TemplatePopupField templateId={templateId} template={template} onClose={() => setIsPopupOpen(false)}/>
         </div>
       )}
 

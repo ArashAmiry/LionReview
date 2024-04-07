@@ -24,7 +24,7 @@
 
 .name-intro-cont{
     width: 440px;
-    height: 420px;
+    height: 370px;
 }
 
 .intro-name{
@@ -95,4 +95,59 @@
 }
 .CardBody{
     margin: 0px;
+}
+
+.deleteAlert{
+    background-color: rgb(250, 202, 202);
+    margin-left: 10px;
+    width: 420px;
+}
+.delete-button{
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
+}
+.deleteRow{
+    width: 420px;
+    height: 48px;
+}
+.deleteAlertOn{
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 48px;
+}
+.alert-text{
+    color: #ab0000;
+    width: 278px;
+    margin-top: 14px;
+    margin-right: 10px;
+}
+.alertYes{
+    width: 60px;
+}
+.alertNo{
+    width: 60px;
+}
+.alert-button-yes{
+    border: 1px solid #ab0000; /* Example border style */
+    border-radius: 5px;
+    color: #ab0000;
+    width: 46.7px;
+    height: 38px;
+}
+.alert-button-yes:hover {
+    background-color: #c50000; /* Change background color on hover */
+    color: #ffffff; /* Change text color on hover */
+}
+.alert-button-no{
+    border: 1px solid #000; /* Example border style */
+    border-radius: 5px;
+    width: 46.7px;
+    height: 38px;
+}
+.alert-button-no:hover {
+    background-color: #474747; /* Change background color on hover */
+    color: #ffffff; /* Change text color on hover */
 }

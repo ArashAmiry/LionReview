@@ -7,19 +7,6 @@ const templateService = new TemplateService();
 
 export const templateRouter = express.Router();
 
-templateRouter.post("/presetTemplates", async (
-    req: Request<{}, {}, Omit<ITemplate, 'category'>>,
-    res: Response<String>
-) => {
-    try {
-        if (req.session.user !== undefined) {
-            await templateService.createPresetTemplate(req.body, req.session.user);
-            res.status(200).send("Preset Template created successfully.");
-        }
-    } catch (e: any) {
-        res.status(500).send(e.message);
-    }
-});
 
 templateRouter.post("/savedTemplates", async (
     req: Request<{}, {}, Omit<ITemplate, 'category'>>,
@@ -35,23 +22,6 @@ templateRouter.post("/savedTemplates", async (
     }
 });
 
-templateRouter.get("/getPresetTemplate", async (
-    req: Request<{}, {}, {}>,
-    res: Response<ITemplate[] | string>
-) => {
-    try {
-        if (req.session.user !== undefined) {
-            console.log(req.session.user);
-            const reviews = await templateService.getTemplates("preset");
-            res.status(200).send(reviews);
-        } else {
-            res.status(400).send("You are not logged in.");
-        }
-
-    } catch (e: any) {
-        res.status(500).send(e.message);
-    }
-});
 
 templateRouter.get("/getSavedTemplate", async (
     req: Request<{}, {}, {}>,
@@ -98,10 +68,12 @@ templateRouter.put('/editTemplate/:templateId', async (
     }
 });
 
-templateRouter.delete('/deleteTemplate', async (req: Request, res: Response) => {
-    const templateId = req.params.id;
+templateRouter.delete('/deleteTemplate/:templateId', async (
+    req: Request<{templateId: string}, {}, {}>, 
+    res: Response) => {
     try {
-        await templateService.deleteTemplate(templateId);
+        const deleteTemplate = await templateService.deleteTemplate(req.params.templateId);
+        res.json(deleteTemplate);
         res.sendStatus(204); // No content, successful deletion
     } catch (error) {
         console.error('Error deleting template:', error);
