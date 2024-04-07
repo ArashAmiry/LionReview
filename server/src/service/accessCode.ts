@@ -17,8 +17,10 @@ export class AccessCode {
 
     async checkCodeStatus(accessCode: string, reviewID: string): Promise<Boolean | undefined> {
         try {
+            console.log(accessCode + "ACCCESSSS");
             const result = await accessModel.findById(accessCode).exec();
             if (result !== null && result.reviewId === reviewID) {
+                console.log(result.completed + "RESULLLTTT");
                 return result.completed;
             }
         } catch (e) {

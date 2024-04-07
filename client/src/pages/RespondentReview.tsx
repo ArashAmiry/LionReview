@@ -32,7 +32,7 @@ function RespondentReview() {
     const [accessCode, setAccessCode] = useState("");
     const [errorAccess, setErrorAccess] = useState<boolean>(false);
     const [errorAccessMessage, setErrorAccessMessage] = useState("");
-    const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
+    const [errorSubmit, setErrorSubmit] = useState<{isError: boolean, message: string, redirect: boolean}>({isError: false, message: "", redirect: false});
     const { reviewId } = useParams<{ reviewId: string }>();
     const navigate = useNavigate();
 
@@ -103,7 +103,11 @@ function RespondentReview() {
     }, [reviewId]); // This effect runs when `reviewId` changes
 
     const exitReview = () => {
-        navigate("/");
+        if (errorSubmit.redirect){
+            navigate("/");
+        } else {
+            setErrorSubmit({isError: false, message: "", redirect: false});
+        }
     }
 
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
@@ -153,17 +157,18 @@ function RespondentReview() {
                         currentPageIndex={currentPageIndex}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
                         reviewId={reviewId}
-                        setErrorPage={(isError: boolean) => setErrorSubmit(isError)}
+                        setErrorPage={(error: {isError: boolean, message: string, redirect: boolean}) => setErrorSubmit(error)}
                     />
                 </Col>
             </Row>
-            <Modal show={errorSubmit} onHide={() => exitReview()}>
+            <Modal show={errorSubmit.isError} onHide={() => exitReview()}>
                 <Modal.Header closeButton>
                     <Modal.Title>Review</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>This code has already been used.</p>
-                    <p>You will be directed to the home page.</p>
+                    <p>{errorSubmit.message}</p>
+                    {errorSubmit.redirect && <p>You will be directed to the home page.</p>}
+                    
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => exitReview()}>

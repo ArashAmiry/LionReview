@@ -11,8 +11,8 @@ const TextfieldQuestionDetails = ({ question, answers }:TextfieldQuestionDetails
     return ( 
         <Container className="textfield-container my-4">
             <h5 className="mb-0">{question.question}</h5>
-            <p className="mt-1 mb-3">{answers?.length} responses</p>
-            {answers && answers.map((answer, index) => (
+            <p className="mt-1 mb-3">{answers?.filter(item => item !== "").length} responses</p>
+            {answers && answers.filter(item => item !== "").map((answer, index) => (
                     <TextfieldAnswer key={index} answer={answer}/>
             ))}
         </Container>
