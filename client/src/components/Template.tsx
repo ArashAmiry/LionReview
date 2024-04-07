@@ -1,172 +1,141 @@
 import React, { useEffect, useState } from 'react';
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
+import { Col, Row, Form, ListGroup, Button } from 'react-bootstrap';
+import QuestionList from "./QuestionListPreview";
+import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PresetQuestions.css";
-import Form from "react-bootstrap/esm/Form";
-import ListGroup from "react-bootstrap/esm/ListGroup";
 import TemplateCard from './TemplateCard';
+import { ITemplate } from '../interfaces/ITemplate';
+import axios from "axios";
+
+interface TemplateProps {
+
+}
+
+function Template ({}: TemplateProps) {
+  const [templates, setTemplates] = useState<ITemplate[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<ITemplate>({_id:'exampleId', name:'Preview of Template', info:'select template to see a preview', questions:[{questionType:'binary', question:'check'}, {questionType:'text', question:'text'}]});
+
+  const [textQuestions, setTextQuestions] = React.useState<{ questionType: string, question: string }[]>(
+    selectedTemplate.questions.filter(question => question.questionType === "text")
+  );
 
 
-export class Template {
-  key: string;
-  name: string;
-  info: string;
-  checkboxQuestions: {
-    questionType: string;
-    question: string;
-  }[]
+  const binaryQuestions = selectedTemplate.questions.filter(question => question.questionType === "binary");
 
-  textfieldQuestions: {
-    questionType: string;
-    question: string;
-  }[]
+ /* 
+  useEffect(() => {
+    const removedPresetQuestions = selectedQuestions.filter(x => !questions.includes(x));
+    removedPresetQuestions.forEach(removeFromSelectedList);
+  }, [questions]);
 
-  constructor(key: string, name: string, info: string, checkboxQuestions:{questionType: string, question: string}[], textfieldQuestions: {questionType: string, question: string}[]) {
-    this.key = key;
-    this.name = name;
-    this.info = info;
-    this.checkboxQuestions = checkboxQuestions;
-    this.textfieldQuestions = textfieldQuestions;
+  function handleRemove(removedQuestion: {questionType: string, question: string}): void {
+   removeFromSelectedList(removedQuestion);
+   removeFromQuestionsList(removedQuestion);
   }
-}
 
-export interface TemplateData {
-  [key: string]: Template;
-}
+  function removeFromSelectedList(removedQuestion: {questionType: string, question: string}): void {
+    const index = selectedQuestions.findIndex((selectedQuestion) => selectedQuestion.question === removedQuestion.question);
+    const newSelectedQuestions = [...selectedQuestions];
+    newSelectedQuestions.splice(index, 1);
+    setSelectedQuestions(newSelectedQuestions);
+  }
 
-export const presetTemplates: TemplateData = {
-  securityTemplateKey: {
-    key: 'securityTemplateKey',
-    name: 'Security Template',
-    info: 'Short information about the template. This template is about security.',
-    checkboxQuestions: [{questionType:'checkbox', question:'Checkbox Question 1'}, {questionType:'checkbox', question:'Checkbox Question 2'}],
-    textfieldQuestions: [{questionType:'textfield', question:'Textfield Question 1'}, {questionType:'textfield', question:'Textfield Question 2'}],
-  },
-  codeStructureTemplate: {
-    key: 'key2',
-    name: 'Code Structure',
-    info: 'Short information about the template',
-    checkboxQuestions: [{questionType:'checkbox', question:'Checkbox Question 1'}, {questionType:'checkbox', question:'Checkbox Question 2'}],
-    textfieldQuestions: [{questionType:'textfield', question:'Textfield Question 1'}, {questionType:'textfield', question:'Textfield Question 2'}],
-  },
-  performanceTemplate: {
-    key: 'key3',
-    name: 'Performance Template',
-    info: 'Short information about the template',
-    checkboxQuestions: [{questionType:'checkbox', question:'Checkbox Question 1'}, {questionType:'checkbox', question:'Checkbox Question 2'}],
-    textfieldQuestions: [{questionType:'textfield', question:'Textfield Question 1'}, {questionType:'textfield', question:'Textfield Question 2'}],
-  },
-};
+  function removeFromQuestionsList(removedQuestion: {questionType: string, question: string}): void {
+    const index = questions.findIndex((question) => question.question === removedQuestion.question);
+    const updatedList = [...questions];
+    updatedList.splice(index, 1);
+    if (updatedList.length === 0) {
+      setQuestions([{questionType: "binary", question: ""}]);
+    }
+    else {
+      setQuestions(updatedList);
+    }
+  }
+
+
+  function handleAdd(addedQuestion: {questionType: string, question: string}): void {
+    setSelectedQuestions([...selectedQuestions, addedQuestion]);
+    setQuestions([...questions, addedQuestion]);
+  }
+
+  function handleChange(question: {questionType: string, question: string}): void {
+    if (selectedQuestions.includes(question)) {
+        handleRemove(question);
+    } else {
+        handleAdd(question)
+    }
+  }
+*/
+
+  useEffect(() => {
+    fetchSavedTemplates();
+  }, []);
+
+
+  const fetchSavedTemplates = async () => {
+    const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getSavedTemplate`) //ändra /templates/...
+      .then(function (response) {
+        setTemplates(response.data); //ändra (setTemplates, rad 60)
+        console.log(response);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log("error: " + error);
+      });
+  };
+
+  return (
+
+
+    <Row>
+    <Col className="presetQuestionSelectionBox">
+        <h4>{selectedTemplate.name}</h4>
+        <p>Info: {selectedTemplate.info}</p>
+        <Form>
+          <QuestionList questions={binaryQuestions} />
+          <TextfieldList textfields={textQuestions}/>
+        </Form>
+        <Button>Use this template</Button>
+    </Col>
+
+    <Col>
+        <ListGroup>
+        {templates.map((name, index) => (
+                <ListGroup.Item
+                    key={index + 1}
+                    action
+                    //active={selectedTemplate.name}
+                    onClick={() => {setSelectedTemplate(templates[index]);}}
+                >
+                    {templates[index].name}
+                </ListGroup.Item>
+            ))}
+        </ListGroup>
+    </Col>
+</Row>
+    
+  );
+}
 
 
 export default Template;
 
-/*
-interface Template {
-  key: string;
-  name: string;
-  info: string;
-  checkboxQuestions: string[];
-  textfieldQuestions: string[];
-}
 
-export interface TemplateData {
-  [key: string]: Template;
-}
-
-export class TemplateManager {
-  private templates: TemplateData;
-
-  constructor(templates: TemplateData = {}) {
-    this.templates = templates;
-  }
-
-  // Add or update a template
-  public updateTemplate(key: string, template: Template): void {
-    this.templates[key] = template;
-  }
-
-  // Get a template by key
-  public getTemplate(key: string): Template {
-    return this.templates[key];
-  }
-
-  // Get all templates
-  public getAllTemplates(): TemplateData {
-    return this.templates;
-  }
-
-  // Delete a template by key
-  public deleteTemplate(key: string): void {
-    delete this.templates[key];
-  }
-}
-
-// Example usage:
-
-export const presetTemplates: TemplateData = {
-  securityTemplateKey: {
-    key: 'securityTemplateKey',
-    name: 'Security Template',
-    info: 'Short information about the template. This template is about security.',
-    checkboxQuestions: ['Checkbox Question 1', 'Checkbox Question 2'],
-    textfieldQuestions: ['Textfield Question 1', 'Textfield Question 2'],
-  },
-  codeStructureTemplate: {
-    key: 'key2',
-    name: 'Code Structure',
-    info: 'Short information about the template',
-    checkboxQuestions: ['Checkbox Question 1', 'Checkbox Question 2'],
-    textfieldQuestions: ['Textfield Question 1', 'Textfield Question 2'],
-  },
-  performanceTemplate: {
-    key: 'key3',
-    name: 'Performance Template',
-    info: 'Short information about the template',
-    checkboxQuestions: ['Checkbox Question 1', 'Checkbox Question 2'],
-    textfieldQuestions: ['Textfield Question 1', 'Textfield Question 2'],
-  },
-};
-
-const templateManager = new TemplateManager(presetTemplates);
-
-
-/*
-// Accessing templates
-const allTemplates = templateManager.getAllTemplates();
-console.log(allTemplates);
-
-// Accessing a specific template
-const securityTemplate = templateManager.getTemplate('securityTemplate');
-console.log(securityTemplate);
-
-// Deleting a template
-templateManager.deleteTemplate('codeStructureTemplate');
-console.log(templateManager.getAllTemplates());
-*/
-
-/*export const updateTemplate = (
-  templateData: TemplateData,
-  templateKey: string,
-  updatedName: string,
-  updatedInfo: string,
-  updatedCheckboxQuestions: string[],
-  updatedTextfieldQuestions: string[]
-): void => {
-  // Check if the template key exists in the template data
-  if (templateKey in templateData) {
-    // Update the template with the new values
-    templateData[templateKey] = {
-      name: updatedName,
-      info: updatedInfo,
-      checkboxQuestions: updatedCheckboxQuestions,
-      textfieldQuestions: updatedTextfieldQuestions,
-    };
-  } else {
-    console.error(`Template with key '${templateKey}' does not exist.`);
-  }
-};
-*/
-
-
-
+/*        <ListGroup.Item
+          key={0}
+          action
+          //active={selectedCategory.name === allQuestionsCategory.name}
+          //onClick={() => {setSelectedCategory(allQuestionsCategory);}}
+        >
+        {selectedTemplate.name}
+                </ListGroup.Item> 
+                */

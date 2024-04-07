@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './stylesheets/TemplateCard.css'
 import { Button } from "react-bootstrap";
-import { Template, presetTemplates } from './Template';
 import TemplatePopupField from './TemplatePopupField';
 import { ITemplate } from '../interfaces/ITemplate';
 
