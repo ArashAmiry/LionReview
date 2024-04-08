@@ -14,6 +14,7 @@ const RangeQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
 
     function generateChartData(arr: string[]) {
         const countsMap: { [label: string]: number } = {
+            "Don't know": 0,
             "1": 0,
             "2": 0,
             "3": 0,

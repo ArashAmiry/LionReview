@@ -1,6 +1,7 @@
 import Slider from "@mui/material/Slider/Slider";
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import Form from "react-bootstrap/esm/Form";
+import { ChangeEvent, useState } from "react";
 
 type RangeQuestionListReviewProps = {
     currentPageIndex: number,
@@ -11,6 +12,8 @@ type RangeQuestionListReviewProps = {
 
 function RangeQuestionListReview({ currentPageIndex, question, questionIndex, setAnswerPages }: RangeQuestionListReviewProps) {
     const maxValue = 5;
+    const [isChecked, setIsChecked] = useState(false);
+    const [slideValue, setSlideValue] = useState(1);
     //const rangeQuestions = answerPages[currentPageIndex].rangeQuestions;
 
     function valuetext(value: number, max: number) {
@@ -22,7 +25,22 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
         label: `${index + 1}`
     }));
 
-    const handleSliderChange = (event: Event, answer: number, id: string) => {
+    const handleSliderChangeCheckbox = () => {
+        const check = !isChecked;
+        setIsChecked(check);
+
+        if(check){
+            setSlideValue(1);
+            setAnswerPages((prevAnswerPage) => {
+                const updatedAnswerPage = [...prevAnswerPage];
+                updatedAnswerPage[currentPageIndex].questions[questionIndex].answer = "Don't know";
+                return updatedAnswerPage;
+            })
+        }
+    }
+
+    const handleSliderChange = (answer: number) => {
+        setSlideValue(answer);
         //const questionIndex = rangeQuestions.findIndex(q => q.id === id);
         setAnswerPages((prevAnswerPage) => {
             const updatedAnswerPage = [...prevAnswerPage];
@@ -35,14 +53,23 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
             <Form.Label>{question.question}</Form.Label>
             <Slider
                 aria-label="Rating"
-                value={parseInt(question.answer)}
+                value={slideValue}
                 getAriaValueText={valuetext}
                 shiftStep={1}
                 step={1}
                 marks={marks}
                 min={1}
                 max={maxValue}
-                onChange={(event, value) => handleSliderChange(event, value as number, question.id)} // Why is type number | number[] ?
+                onChange={(event, value) => handleSliderChange(value as number)} // Why is type number | number[] ?
+                disabled={isChecked}
+            />
+            <Form.Check
+                checked={isChecked}
+                className="clear-checkbox"
+                type="checkbox"
+                label={`Don't know`}
+                onChange={() => handleSliderChangeCheckbox()}
+                
             />
         </Form.Group>
     )
