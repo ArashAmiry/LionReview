@@ -12,7 +12,8 @@ function TextfieldListAnswer({ textfieldQuestion, answer }: { textfieldQuestion:
                 {textfieldQuestion}
             </p>
             <p className="individual-text">
-                {answer}
+                {answer.length === 0 && "The question was not answered."}
+                {answer.length !== 0 && answer}
             </p>
         </Container>
     )
