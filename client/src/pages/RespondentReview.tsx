@@ -79,7 +79,10 @@ function RespondentReview() {
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
-                response.pages.sort(() => Math.random() - 0.5);
+                if (response.randomize) {
+                    response.pages.sort(() => Math.random() - 0.5);
+                }
+
                 setReview(response);
 
                 const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
@@ -113,7 +116,7 @@ function RespondentReview() {
     if (!answerPages || !review) {
         return <div>Loading...</div>
     };
-    
+
     if (!authenticated) {
         return (
             <Container className="access-container d-flex flex-column justify-content-center">
