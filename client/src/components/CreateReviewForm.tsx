@@ -5,25 +5,26 @@ import { Col } from 'react-bootstrap';
 import Question from "./Question";
 import PresetQuestions from "./PresetQuestions";
 import Textfields from "./Textfields";
+import RangeQuestions from "./RangeQuestions";
 import Template from "./Template";
 
+type AddFormQuestionsProps = {
+  questions: { questionType: string, question: string }[], 
+  setQuestions: (questions: { questionType: string, question: string }[]) => void,
+}
 
-function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }:
-  {
-    questions: { questionType: string, question: string }[], setQuestions: (questions: { questionType: string, question: string }[]) => void,
-    textfields: { questionType: string, question: string }[], setTextfields: (textfields: { questionType: string, question: string }[]) => void
 
-  }) 
-  {
+function AddFormQuestions({ questions, setQuestions}: AddFormQuestionsProps) {
   return (
     <Col md={12} className="box rounded">
       <Tabs
-        defaultActiveKey="home"
+        defaultActiveKey="binaryQuestions"
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        <Tab eventKey="home" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
-        <Tab eventKey="profile" title="Textfields"><Textfields textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} /></Tab>
+        <Tab eventKey="binaryQuestions" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
+        <Tab eventKey="textQuestions" title="Textfields"><Textfields questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
+        <Tab eventKey="rangeQuestions" title="Range" ><RangeQuestions questions={questions} setQuestions={(rangeQuestions) => setQuestions(rangeQuestions)} /></Tab>
         <Tab eventKey="contact" title="Templates">
           <Template questions={questions} setQuestions={(questions) => setQuestions(questions)}></Template>
         </Tab>
@@ -69,4 +70,4 @@ function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }
   );
 }
 
-export default CreateReviewForm;
+export default AddFormQuestions;

@@ -1,6 +1,9 @@
 import { Schema } from "mongoose";
 
 export interface IAnswer {
-    questionId: Schema.Types.ObjectId;
-    answers: string[];
+    reviewId: Schema.Types.ObjectId;
+    answers: [{
+        questionId: Schema.Types.ObjectId;
+        answer: string;
+    }];
 }

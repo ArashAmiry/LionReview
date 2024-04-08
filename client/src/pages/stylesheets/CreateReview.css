@@ -4,11 +4,12 @@
 
 .container-create{
     height: 90vh;
+    padding-left: 80px !important;
 }
 
 .form-box{
     background-color: white;
-    height: 50vh;
+    height: 60vh;
 /*     margin-top: 150px; */
     overflow-y: scroll;
     overflow-x: hidden;
@@ -16,7 +17,7 @@
 }
 
 .second-step{
-    margin-left: 20%;
+    margin-left: 25%;
     margin-right: 20%;
 }
 
@@ -27,7 +28,13 @@
 .code-row{
     height: 90vh;
     margin-right: 0px;
-    margin-left: 80px;
+    margin-left: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.form-row{
+    margin-right: 0px;
 }
 
 .sidebar-col {
@@ -39,7 +46,8 @@
     padding-left: 0;
   }
   
-  .first-step {
+  .first-step{
     padding-left: 25%; /* Match the default collapsed sidebar width */
     padding-right: 5%;
+    margin-left: 0px;
   }

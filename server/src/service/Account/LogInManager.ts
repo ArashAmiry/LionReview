@@ -7,7 +7,7 @@ export class LogInManager {
         try {
             const acc = await this.getAccountForUsername(username);
             const hash: string = acc.password;
-            return (await this.validatePassword(password, hash)) && acc.active;
+            return (await this.validatePassword(password, hash))/*  && acc.active */;
         }
         catch (error) {
             console.log(error)

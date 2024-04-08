@@ -5,11 +5,14 @@ import './stylesheets/LoginSquare.css';
 import axios from 'axios';
 import { error } from 'console';
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import { useAuthContext } from '../AuthContext';
 
 const LoginSquare: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { setIsLoggedIn } = useAuthContext();
   const navigate = useNavigate();
 
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,10 +29,16 @@ const LoginSquare: React.FC = () => {
       "username": username,
       "password": password
     })
+      .then((response) => {
+        if (response.status === 200){
+          setIsLoggedIn(true);
+          navigate('/');
+        } 
+      })
       .catch(function (error) {
+        setErrorMessage("Try again, wrong credentials.");
         console.log(error);
       });
-    navigate('/')
   };
 
   return (
@@ -59,11 +68,12 @@ const LoginSquare: React.FC = () => {
               </InputGroup.Text>}
             </InputGroup>
           </Form.Group>
+          {errorMessage && <p className='text-white'>{errorMessage}</p>}
           <Button variant="primary" type="submit" className="login-button">
             Log In
           </Button>
 
-          <Link className="mt-2 forgot-password" to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
+          {/* <Link className="mt-2 forgot-password" to="/forgot-password">Forgot password?</Link> {/* Link to the forgot password page */}
           <hr className='divider' />
           <p className='create-new-text'>Don't have an account?</p>
           <Button variant="primary" className="create-new-account">

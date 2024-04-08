@@ -67,7 +67,25 @@ authenticationRouter.post("/logIn", async (
     }
 });
 
-authenticationRouter.post("/:token", async (
+
+authenticationRouter.delete("/logOut", async (
+    req: Request<{}, {}, {}>,
+    res: Response
+) => {
+    if (req.session) {
+        req.session.destroy(err => {
+          if (err) {
+            res.status(400).send('Unable to log out')
+          } else {
+            res.send('Logout successful')
+          }
+        });
+      } else {
+        res.end()
+      }
+});
+
+authenticationRouter.get("/:token", async (
     req: Request<{token : string}, {}, {}>,
     res: Response
 ) => {
@@ -80,9 +98,39 @@ authenticationRouter.post("/:token", async (
         const tokenHandler = new TokenHandler();
         const decodedUsername = tokenHandler.decodeToken(tok);
         await accountModel.findOneAndUpdate({ username: decodedUsername }, { active: true });
-        return res.send('Account activated successfully');
+        return res.redirect('http://localhost:3000/activated');
     } catch (error) {
         console.error(error);
         return res.status(500).send('Error activating account');
     }
 });
+
+
+authenticationRouter.get("/usernameExists/:username", async (
+    req: Request<{username : string}, {}, {}>,
+    res: Response
+) => {    
+    try {
+        const username = req.params.username;
+        const usernameExists = await account.usernameExists(username);
+
+        return res.status(200).json({ exists: usernameExists });
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
+
+authenticationRouter.get("/emailExists/:email", async (
+    req: Request<{email : string}, {}, {}>,
+    res: Response
+) => {    
+    try {
+        const email = req.params.email;
+        const emailExists = await account.emailExists(email);
+        
+        return res.status(200).json({ exists: emailExists });
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+});
+

@@ -10,7 +10,9 @@ import ToggleButtonGroup from "react-bootstrap/esm/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/esm/ToggleButton";
 import axios from "axios";
 import { IReview } from "../interfaces/IReview";
-
+import { useNavigate } from "react-router-dom";
+import EnterEmails from "../components/EnterEmails";
+import { Toast } from 'react-bootstrap';
 type Review = {
   name: string;
   status: string;
@@ -20,86 +22,67 @@ type Review = {
 
 enum ReviewStatusFilter {
   All = "All",
-  Draft = "Draft",
   InProgress = "In Progress",
   Completed = "Completed",
 }
 
 const MyReviews = ({ username }: { username: string }) => {
-  const [myReviews, setMyReviews] = useState<Review[]>([{
-    name: "Example Review 1",
-    id: 69,
-    status: "Draft",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 2",
-    id: 70,
-    status: "InProgress",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 3",
-    id: 71,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 4",
-    id: 72,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  },
-  {
-    name: "Example Review 5",
-    id: 73,
-    status: "Completed",
-    created: "March 8, 2024, 10:00 AM",
-  }]);
-
   const [userReviews, setUserReviews] = useState<IReview[]>([]);
-
+  const [showEmail, setShowEmail] = useState<boolean>(false);
+  const [reviewID, setReviewID] = useState("");
   const [statusFilter, setStatusFilter] = useState<ReviewStatusFilter>(
     ReviewStatusFilter.All
   );
 
+  const fetchReviews = async () => {
+    const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
+      .then(function (response) {
+        setUserReviews(response.data);
+        console.log(response);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log("error: " + error);
+      });
+  };
+
   useEffect(() => {
-    const fetchReviews = async () => {
-      const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
-        .then(function (response) {
-          setUserReviews(response.data);
-          console.log(response);
-        })
-        .catch(function (error) {
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-
-            console.log(error.request);
-          } else {
-            console.log('Error', error.message);
-          }
-          console.log("error: " + error);
-        });
-    };
-
     fetchReviews();
   }, [username]);
 
   const handleChange = (status: ReviewStatusFilter) => {
     setStatusFilter(status);
   }
-  const filterReviews = (reviews: Review[], filter: ReviewStatusFilter): Review[] => {
+  const filterReviews = (reviews: IReview[], filter: ReviewStatusFilter): IReview[] => {
     return reviews.filter(review => {
       return filter === ReviewStatusFilter.All || review.status.replace(/\s/g, '') === filter.replace(/\s/g, '');
     })
   }
 
+  const handleShowEmailBox = (review: IReview) => {
+    setReviewID(review._id);
+    setShowEmail(true);
+  }
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleShowToast = () => {
+    setShowConfirmation(true);
+  };
+
   return (
-    <Container fluid className="myReviewsContainer">
-      <Row>
+    <body className="body-my-reviews">
+    <Container fluid className="myReviewsContainer mx-0">
+      <Row className="first-row">
         <Col className="py-3">
           <h1 className="reviewforms">Review forms </h1>
           <ToggleButtonGroup
@@ -128,21 +111,30 @@ const MyReviews = ({ username }: { username: string }) => {
       <Row>
         <Container className="card-container">
           <Row>
-            <Col xl={2} className="px-0" />
-            <ReviewCardList reviews={userReviews} />
-            <Col xl={2} className="px-0" />
+            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} setReviews={(reviews) => setUserReviews(reviews)}/>
           </Row>
         </Container>
       </Row>
+      <EnterEmails reviewID={reviewID} showEmail={showEmail} setShowEmail={(show) => setShowEmail(show)} displayToast={handleShowToast}/>
+
+      {/* Fixed position Toast at the top of screen */}
+      <div style={{ position: 'fixed', top: '11vh', left: '50%', transform: 'translateX(-50%)', zIndex: 9999 }}>
+        <Toast onClose={() => setShowConfirmation(false)} show={showConfirmation} delay={4000} autohide bg="light">
+          <Toast.Header>
+            <strong className="me-auto">Email sent</strong>
+          </Toast.Header>
+          <Toast.Body className="text-black">The review has now been sent to the reviewers</Toast.Body>
+        </Toast>
+      </div>
     </Container>
+  </body>
   );
 };
 
-const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
+const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IReview[], setReviews: (reviews: IReview[]) => void, showEmailBox: (review: IReview) => void }) => {
+  const navigate = useNavigate();
   const getBadgeVariant = (status: string) => {
     switch (status) {
-      case "Draft":
-        return "secondary";
       case "InProgress":
         return "warning";
       case "Completed":
@@ -154,8 +146,6 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
 
   const getBadgeText = (status: string) => {
     switch (status) {
-      case "Draft":
-        return "Draft";
       case "InProgress":
         return "In Progress";
       case "Completed":
@@ -165,13 +155,18 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
     }
   };
 
+  const goToReviewDetails = (review: IReview) => {
+    navigate(`/myreviews/${review._id}`)
+  }
+
+
   return (
-    <Col md={8}>
+    <Col md={12}>
       <Row>
         {reviews.map((review, index) => (
-          <Col key={index} md={3} className="mt-4">
+          <Col key={index} md={3} className="mt-3 mb-2">
             <Card className="review">
-              <Card.Body>
+              <Card.Body className="review-card">
                 <Card.Title>{review.name}</Card.Title>
                 <Card.Text>
                   <Badge
@@ -181,20 +176,17 @@ const ReviewCardList = ({ reviews }: { reviews: IReview[] }) => {
                         : "white"
                     }
                     className="badge-text"
-                    bg={getBadgeVariant("Completed")}
+                    bg={getBadgeVariant(review.status)}
                   >
-                    {getBadgeText("Completed")}
+                    {getBadgeText(review.status)}
                   </Badge>
                 </Card.Text>
-                {review.name !== "Draft" && (
-                  <Button variant="primary">View Responses</Button>
-                )}
-                {review.name === "Draft" && (
-                  <Button variant="secondary">Edit</Button>
-                )}
-                <Button variant="danger" className="mx-2">
-                  Delete
-                </Button>
+                <Row>
+                  <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
+                  {review.status === "InProgress" && (
+                    <Button variant="secondary" className="my-1" onClick={() => showEmailBox(review)}>Send to Reviewer</Button>
+                  )}
+                </Row>
               </Card.Body>
             </Card>
           </Col>
