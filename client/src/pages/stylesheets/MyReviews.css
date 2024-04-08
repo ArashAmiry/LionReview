@@ -1,3 +1,11 @@
+.body-my-reviews{
+    background-image: none;
+    background-color: #1c274c;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
 .reviewforms{
     color: aliceblue;
     font-family: 'Roboto-Black';

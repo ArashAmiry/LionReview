@@ -67,6 +67,7 @@ const MyReviews = ({ username }: { username: string }) => {
   }
 
   return (
+    <body className="body-my-reviews">
     <Container fluid className="myReviewsContainer">
       <Row>
         <Col className="py-3">
@@ -104,6 +105,7 @@ const MyReviews = ({ username }: { username: string }) => {
         </Container>
       </Row>
     </Container>
+  </body>
   );
 };
 
