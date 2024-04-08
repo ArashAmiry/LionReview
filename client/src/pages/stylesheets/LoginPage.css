@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lexend');
+
 .login-container {
   height: 90vh;
 }
@@ -7,16 +9,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 500px;
-  top: 150px;
-  left: 10%;
+  
 }
 
 .log-in-to {
+  
   color: aliceblue;
-  font-family: serif;
-  font-size: 3em;
-  text-align: left;
+  font-size: 8em;
+  text-align: right;
 }
 
 .app-name {

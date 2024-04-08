@@ -20,7 +20,6 @@ const LoginPage: React.FC = () => {
         </Col>
       </Row>
     </Container>
-
   );
 };
 
