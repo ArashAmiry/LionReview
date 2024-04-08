@@ -5,6 +5,7 @@ import axios from "axios";
 import { ITemplate } from "../interfaces/ITemplate"
 import { Col, Row } from 'react-bootstrap';
 import NewTemplatePopup from '../components/NewTemplatePopup';
+import SaveTemplate from '../components/SaveTemplate';
 
 const TemplatePage: React.FC = () => {
 
@@ -81,7 +82,7 @@ const TemplatePage: React.FC = () => {
       </div>
       {newTemplatePopup && (
         <div className='popup-container'>
-          <NewTemplatePopup onClose={handleNewTemplateButton} />
+          <SaveTemplate onClose={handleNewTemplateButton} questions={savedTemplates[1].questions}></SaveTemplate>
         </div>
       )}
     </div>
@@ -90,3 +91,6 @@ const TemplatePage: React.FC = () => {
 
 
 export default TemplatePage;
+
+/* <SaveTemplate onClose={handleNewTemplateButton} questions={SaveTemplates[1].questions}></SaveTemplate> */
+/* <NewTemplatePopup onClose={handleNewTemplateButton} /> */

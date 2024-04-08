@@ -3,23 +3,20 @@ import { Col, Row, Form, ListGroup, Button } from 'react-bootstrap';
 import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
 import "./stylesheets/PresetQuestions.css";
-import TemplateCard from './TemplateCard';
 import { ITemplate } from '../interfaces/ITemplate';
 import axios from "axios";
 
 interface TemplateProps {
-
+  questions: {questionType: string, question: string}[];
+  setQuestions: (questions: {questionType: string, question: string}[]) => void;
 }
 
-function Template ({}: TemplateProps) {
+function Template ({ questions, setQuestions }: TemplateProps) {
   const [templates, setTemplates] = useState<ITemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<ITemplate>({_id:'exampleId', name:'Preview of Template', info:'select template to see a preview', questions:[{questionType:'binary', question:'check'}, {questionType:'text', question:'text'}]});
+  const [templateChosen, setTemplateChosen] = useState<boolean>(false);
 
-  const [textQuestions, setTextQuestions] = React.useState<{ questionType: string, question: string }[]>(
-    selectedTemplate.questions.filter(question => question.questionType === "text")
-  );
-
-
+  const textQuestions = selectedTemplate.questions.filter(question => question.questionType === "text");
   const binaryQuestions = selectedTemplate.questions.filter(question => question.questionType === "binary");
 
  /* 
@@ -57,15 +54,51 @@ function Template ({}: TemplateProps) {
     setSelectedQuestions([...selectedQuestions, addedQuestion]);
     setQuestions([...questions, addedQuestion]);
   }
+*/
+function handleSelect(template: ITemplate): void{
+  setSelectedTemplate(template);
+  console.log(selectedTemplate)
+}
 
-  function handleChange(question: {questionType: string, question: string}): void {
-    if (selectedQuestions.includes(question)) {
-        handleRemove(question);
+function handleRemove(questionsToRemove: {questionType: string, question: string}[]): void {
+  let updatedList = [...questions];
+
+  questionsToRemove.forEach(questionToRemove => {
+    const index = updatedList.findIndex(question => question.question === questionToRemove.question);
+    if (index !== -1) {
+      updatedList.splice(index, 1);
+    }
+  });
+
+  if (updatedList.length === 0) {
+    setQuestions([{questionType: "binary", question: ""}]);
+  } else {
+    setQuestions(updatedList);
+  }
+ }
+
+  function handleAdd(addedQuestions: {questionType: string, question: string}[]): void {
+    setQuestions([...questions, ...addedQuestions]);
+  }
+
+  function handleChosenTemplate(): void{
+
+    
+    if (templateChosen){
+      setTemplateChosen(!templateChosen)
+    }else{setTemplateChosen(templateChosen)}
+
+    if (templateChosen){
+      console.log(selectedTemplate.questions)
+      handleAdd(selectedTemplate.questions);
     } else {
-        handleAdd(question)
+      handleRemove(selectedTemplate.questions);
     }
   }
-*/
+
+  function addTemplateButton(){
+    
+  }
 
   useEffect(() => {
     fetchSavedTemplates();
@@ -104,7 +137,7 @@ function Template ({}: TemplateProps) {
           <QuestionList questions={binaryQuestions} />
           <TextfieldList textfields={textQuestions}/>
         </Form>
-        <Button>Use this template</Button>
+        <Button onClick={handleChosenTemplate}>Use this template</Button>
     </Col>
 
     <Col>
@@ -113,8 +146,8 @@ function Template ({}: TemplateProps) {
                 <ListGroup.Item
                     key={index + 1}
                     action
-                    //active={selectedTemplate.name}
-                    onClick={() => {setSelectedTemplate(templates[index]);}}
+                    active={templates[index] === selectedTemplate}
+                    onClick={() => {handleSelect(templates[index])}}
                 >
                     {templates[index].name}
                 </ListGroup.Item>

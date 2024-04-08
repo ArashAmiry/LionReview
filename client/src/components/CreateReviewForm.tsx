@@ -25,7 +25,7 @@ function CreateReviewForm({ questions, setQuestions, textfields, setTextfields }
         <Tab eventKey="home" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
         <Tab eventKey="profile" title="Textfields"><Textfields textfields={textfields} setTextfields={(textfields) => setTextfields(textfields)} /></Tab>
         <Tab eventKey="contact" title="Templates">
-          <Template></Template>
+          <Template questions={questions} setQuestions={(questions) => setQuestions(questions)}></Template>
         </Tab>
         <Tab eventKey="PresetQuestions" title="Preset questions">
           <PresetQuestions questions={questions} setQuestions={(questions) => setQuestions(questions)} categories={[

@@ -1,8 +1,5 @@
 import { Button, Card, CardBody, Row, Col, CloseButton} from "react-bootstrap";
-import QuestionList from "./QuestionListPreview";
-import TextfieldList from "./TextfieldListPreview";
-import './stylesheets/TemplatePopupField.css'
-import { useState, useEffect } from "react";
+import './stylesheets/newTemplatePopup.css';
 import { ITemplate } from "../interfaces/ITemplate";
 import axios from "axios";
 import React from "react";
@@ -17,8 +14,6 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
     const [updatedName, setUpdatedName] = React.useState<string>('');
 
     const [updatedInfo, setUpdatedInfo] = React.useState<string>('');
-
-    const [allQuestions, setAllQuestions] = React.useState<{ questionType: string, question: string }[]>();
     
     const [textQuestions, setTextQuestions] = React.useState<{ questionType: string, question: string }[]>(
         [{questionType: 'text', question: 'First text question'}]
@@ -98,7 +93,6 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
 
     function handleCreateNewTemplate() {
 
-        setAllQuestions(binaryQuestions && textQuestions)
         const newTemplateData: Partial<ITemplate> = {
             name: updatedName,
             info: updatedInfo,
@@ -109,7 +103,7 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
     };
 
     return(
-        <div className='editModeOn-container'>
+        <div className='popup-container'>
 
         <Card className="edit-question-cont">
             <CardBody className="sidebar-form">
@@ -164,6 +158,7 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
             <p className="intro-info">Short description:</p>
             <textarea   className="form-control" 
                         id="textId" 
+                        rows={6}
                         value={updatedInfo}
                         onChange={(e) => handleInfoChange(e.target.value)}/>
             </div>
