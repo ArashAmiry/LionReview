@@ -19,7 +19,7 @@ export class SendEmail {
                 secure: true,
                 auth: {
                     user: 'noreply.reviewtool@gmail.com', // fixa
-                    pass: EMAIL_PASSWORD // fixa 
+                    pass: process.env.EMAIL_PASSWORD // fixa 
                 }
             });
 
@@ -52,7 +52,7 @@ export class SendEmail {
             secure: true,
             auth: {
                 user: 'noreply.reviewtool@gmail.com',
-                pass: EMAIL_PASSWORD
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 

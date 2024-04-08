@@ -1,3 +1,4 @@
+require("dotenv").config();
 import express from "express";
 import cors from "cors";
 import { authenticationRouter } from "./router/authentication";
@@ -7,12 +8,13 @@ import session from 'express-session';
 import SECRET from "./session_secret";
 import PASSWORD from "./db/password";
 import { accessCodeRouter } from "./router/accessCode";
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo');
+
 
 export const app = express();
 
 const sessionStore = MongoStore.create({
-    mongoUrl: `mongodb+srv://boras:${PASSWORD}@kandidat.1uyabje.mongodb.net/?retryWrites=true&w=majority&appName=Kandidat`,
+    mongoUrl: `mongodb+srv://boras:${process.env.PASSWORD}@kandidat.1uyabje.mongodb.net/?retryWrites=true&w=majority&appName=Kandidat`,
     collectionName: 'sessions'
 })
 

@@ -23,7 +23,8 @@ const accountSchema: Schema = new Schema({
 
     active: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
 
     createdAt: {
@@ -37,5 +38,3 @@ const accountSchema: Schema = new Schema({
 accountSchema.index({ createdAt: 1 }, { expireAfterSeconds: 86400, partialFilterExpression: { active: false } });
 
 export const accountModel = conn.model<IAccount>("Account", accountSchema);
-
-

@@ -18,8 +18,7 @@ export class SignUpManager {
                 accountModel.create({
                     username: username,
                     email: email,
-                    password: hash,
-                    active: false
+                    password: hash
                 });
                 return true;
             })
