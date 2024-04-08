@@ -1,7 +1,7 @@
 import Slider from "@mui/material/Slider/Slider";
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import Form from "react-bootstrap/esm/Form";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 type RangeQuestionListReviewProps = {
     currentPageIndex: number,
@@ -15,6 +15,14 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
     const [isChecked, setIsChecked] = useState(false);
     const [slideValue, setSlideValue] = useState(1);
     //const rangeQuestions = answerPages[currentPageIndex].rangeQuestions;
+
+    useEffect(() => {
+        setAnswerPages((prevAnswerPage) => {
+            const updatedAnswerPage = [...prevAnswerPage];
+            updatedAnswerPage[currentPageIndex].questions[questionIndex].answer = slideValue.toString();
+            return updatedAnswerPage;
+        })
+    })
 
     function valuetext(value: number, max: number) {
         return `${value}/${max}`;

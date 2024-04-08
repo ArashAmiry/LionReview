@@ -50,7 +50,7 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
                 if (error.response?.status === 400){
                     setErrorPage({ isError: true, message: error.response.data, redirect: false });
                 } else {
-                    setErrorPage({ isError: true, message: "Internal server error.", redirect: true});
+                    setErrorPage({ isError: true, message: "Internal server error, try again.", redirect: true});
                 }
                 console.log(error);
             });

@@ -53,7 +53,7 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
                 backgroundColor: data.labels.map(label => {
                     if (label.toLowerCase() === 'yes') return 'blue';
                     if (label.toLowerCase() === "no") return 'red';
-                    return 'gray'; // Color for "Don't know"
+                    return 'gray';
                 })
 
             }

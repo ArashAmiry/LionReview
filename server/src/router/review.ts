@@ -68,19 +68,24 @@ reviewRouter.post("/answer", async (
                 return;
             } else if (reviewStatus === "Completed") {
                 res.status(400).send("Could not submit answers, review is already completed.");
+                return;
             }
 
             await reviewService.submitReview(req.body.reviewId, req.body.answers);
             await accessCodeService.setCodeUsed(req.session.accessCode);
             res.status(200).send("Answers to review successfully submitted.");
+            return;
         } else {
             res.status(400).send("Could not submit answers.");
+            return;
         }
     } catch (e: any) {
         if (e instanceof mongoose.Error.ValidationError) {
             res.status(400).send("At least one question has to be answered.");
+            return;
         } else {
             res.status(500).send(e.message);
+            return;
         }
     }
 });
