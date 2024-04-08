@@ -1,0 +1,22 @@
+.links-container {
+    border-radius: 14px;
+    border-color: gray;
+    border-style: groove;
+    padding: 10px;
+    width: 80%;
+    background-color: white;
+    margin-left: 0px;
+}
+
+.link-row {
+    border-radius: 14px;
+    border-width: 1px;
+    border-color: gray;
+    border-style: groove;
+    padding: 10px;
+    width: 80%;
+}
+
+.error-message {
+    color: red;
+}

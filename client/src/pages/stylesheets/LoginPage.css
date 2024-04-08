@@ -1,0 +1,30 @@
+.login-container {
+  height: 90vh;
+}
+
+.login-text-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 500px;
+  top: 150px;
+  left: 10%;
+}
+
+.log-in-to {
+  color: aliceblue;
+  font-family: serif;
+  font-size: 3em;
+  text-align: left;
+}
+
+.app-name {
+  color: aliceblue;
+  font-size: 5em;
+  text-align: left;
+}
+
+.text-container {
+  width: fit-content;
+}

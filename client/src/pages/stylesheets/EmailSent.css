@@ -1,0 +1,18 @@
+.email-sent-container {
+    height: 90vh;
+}
+
+.click-link {
+    color: aliceblue;
+    font-family: serif;
+    font-size: 3em;
+}
+
+.last-step {
+    color: aliceblue;
+    font-size: 5em;
+}
+
+.text-container {
+    width: fit-content;
+}

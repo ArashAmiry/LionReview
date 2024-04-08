@@ -1,0 +1,13 @@
+.participation-container {
+    height: 90vh;
+}
+
+.participation-text {
+    color: aliceblue;
+    font-size: 4em;
+}
+
+.answers-success {
+    color: aliceblue;
+    font-size: 3em;
+}
