@@ -13,8 +13,8 @@ const BinaryQuestionDetailsCard = ({ question, answers }:BinaryQuestionDetailsCa
         <Card id={question._id} className='bq-card my-3'>
             <Card.Body className='binary-card justify-content-center'>
                 <Card.Title className="binary-question-title">{question.question}</Card.Title>
-                <p className="binary-number-responses mt-1 mb-1">{answers?.length} responses</p>
-                {answers && <BinaryQuestionStatistics answers={answers} />}
+                <p className="binary-number-responses mt-1 mb-1">{answers?.filter(item => item !== "").length} responses</p>
+                {answers && <BinaryQuestionStatistics answers={answers.filter(item => item !== "")} />}
             </Card.Body>
         </Card>
     );

@@ -3,6 +3,7 @@ import { ReviewService } from "../service/review";
 import { IReview } from "../model/IReview";
 import { answerModel } from "../db/answer.db";
 import { AccessCode } from "../service/accessCode";
+import mongoose from "mongoose";
 
 const reviewService = new ReviewService();
 const accessCodeService = new AccessCode();
@@ -61,20 +62,31 @@ reviewRouter.post("/answer", async (
             const codeHasBeenUsed = (await accessCodeService.checkCodeStatus(req.session.accessCode, req.body.reviewId));
             const reviewStatus = await reviewService.getReviewStatus(req.body.reviewId);
 
-            if (codeHasBeenUsed || codeHasBeenUsed !== undefined) {
+            console.log("JOKEEEEEEEEEEEEE" + codeHasBeenUsed);
+            if (codeHasBeenUsed === undefined || codeHasBeenUsed === null || codeHasBeenUsed) {
                 res.status(400).send("Could not submit answers, code is not valid.");
-            } else if (reviewStatus === "Completed"){
+                return;
+            } else if (reviewStatus === "Completed") {
                 res.status(400).send("Could not submit answers, review is already completed.");
+                return;
             }
 
             await reviewService.submitReview(req.body.reviewId, req.body.answers);
             await accessCodeService.setCodeUsed(req.session.accessCode);
             res.status(200).send("Answers to review successfully submitted.");
+            return;
         } else {
             res.status(400).send("Could not submit answers.");
+            return;
         }
     } catch (e: any) {
-        res.status(500).send(e.message);
+        if (e instanceof mongoose.Error.ValidationError) {
+            res.status(400).send("At least one question has to be answered.");
+            return;
+        } else {
+            res.status(500).send(e.message);
+            return;
+        }
     }
 });
 
@@ -149,7 +161,7 @@ reviewRouter.delete("/:reviewID", async (
 })
 
 reviewRouter.put("/:reviewID", async (
-    req: Request<{reviewID: string}, {}, {}>,
+    req: Request<{ reviewID: string }, {}, {}>,
     res: Response<{}>
 ) => {
     try {

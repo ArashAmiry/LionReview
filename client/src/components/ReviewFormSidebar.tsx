@@ -2,7 +2,7 @@ import { Button, Card } from "react-bootstrap";
 import "./stylesheets/PreviewFormSidebar.css";
 import QuestionListReview from "./QuestionListReview";
 import TextfieldListReview from "./TextfieldListReview";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 import RangeQuestionListReview from "./RangeQuestionListReview";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ type ReviewFormSideBarProps = {
     answerPages: AnswerPage[],
     setAnswerPages: React.Dispatch<React.SetStateAction<AnswerPage[]>>,
     reviewId: string,
-    setErrorPage: (isError: boolean) => void;
+    setErrorPage: (error: {isError: boolean, message: string, redirect: boolean}) => void;
 }
 
 function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages, setAnswerPages, reviewId, setErrorPage }: ReviewFormSideBarProps) {
@@ -37,18 +37,23 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
             }));
         });
 
+        console.log(reviewAnswers);
+
         try {
             await axios.post('http://localhost:8080/review/answer', {
                 "reviewId": reviewId,
                 "answers": reviewAnswers
             }).then((res) => {
                 navigate("/thanks");
-            }).catch((error: Error) => {
-                setErrorPage(true);
+            }).catch((error) => {
+            
+                if (error.response?.status === 400){
+                    setErrorPage({ isError: true, message: error.response.data, redirect: false });
+                } else {
+                    setErrorPage({ isError: true, message: "Internal server error, try again.", redirect: true});
+                }
                 console.log(error);
             });
-
-
         } catch (error) {
             console.log("Error occurred when updating database: ", error)
         }

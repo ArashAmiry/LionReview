@@ -13,9 +13,9 @@ const RangeQuestionDetailsCard = ({ question, answers }:RangeQuestionDetailsCard
         <Card id={question._id} className='rq-card my-3 text-left'>
             <Card.Body className='range-card justify-content-center'>
                 <Card.Title className="range-question-title mb-0">{question.question}</Card.Title>
-                <p className="range-number-responses mt-1 mb-1">{answers?.length} responses</p>
+                <p className="range-number-responses mt-1 mb-1">{answers?.filter(item => item !== "").length} responses</p>
 
-                {answers && <RangeQuestionStatistics answers={answers} />}
+                {answers && <RangeQuestionStatistics answers={answers.filter(item => item !== "")} />}
             </Card.Body>
         </Card>
     );

@@ -37,6 +37,18 @@ function QuestionListPreview({ questions }: { questions: {questionType: string, 
                                     disabled={true}
                                 />
                             </Col>
+                            <Col md={12}>
+                                <Form.Check
+                                    inline
+                                    name="binary"
+                                    key={index}
+                                    id={`step-${index}`} // Add a unique id for each checkbox
+                                    type="radio"
+                                    label={<p>Don't know</p>}
+                                    className="text-start custom-checkbox"
+                                    disabled={true}
+                                />
+                            </Col>
                         </Row>
                     </Form>
                 ))}

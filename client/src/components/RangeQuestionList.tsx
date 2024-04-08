@@ -1,13 +1,13 @@
 import Slider from "@mui/material/Slider/Slider";
 import { Form } from "react-bootstrap";
 
-function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questionType: string, question: string}[] }) {
+function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: { questionType: string, question: string }[] }) {
     const maxValue = 5;
-    
+
     function valuetext(value: number, max: number) {
         return `${value}/${max}`;
     }
-    
+
     const marks = Array.from({ length: maxValue }, (_, index) => ({
         value: index + 1,
         label: `${index + 1}`
@@ -29,6 +29,14 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                             marks={marks}
                             min={1}
                             max={maxValue}
+                            disabled={true}
+                        />
+
+                        <Form.Check
+                            className="clear-checkbox"
+                            type="checkbox"
+                            id={`checkbox-${index}`}
+                            label={`Don't know`}
                             disabled={true}
                         />
                     </Form.Group>
