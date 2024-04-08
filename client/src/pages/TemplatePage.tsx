@@ -62,23 +62,51 @@ const TemplatePage: React.FC = () => {
       });
   };
 
+  const deleteTemplate = async (templateId: string) => {
+    const response = await axios.delete<Boolean>(`http://localhost:8080/template/deleteTemplate/${templateId}`) //ändra /templates/...
+        .then(function (response) {
+        //setSavedTemplates(response.data);
+        //handleDelete()
+        //onClose()
+        console.log(response);
+        fetchSavedTemplates();
+        })
+
+        .catch(function (error) {
+        if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else if (error.request) {
+
+            console.log(error.request);
+        } else {
+            console.log('Error', error.message);
+        }
+        console.log("error: " + error);
+        });
+};
+
 
   return (
     <div className='templateContainer'>
       <div className="saved_templates_container">
       <h1>Saved Templates</h1>
       <button type="button" className="btn btn-light" onClick={handleNewTemplateButton}>Create New Template</button>
-      {savedTemplates.length > 0 ? (
-        <Row className="justify-content-center">
+      <div className='d-flex align-center justify-content-center'>
+        {savedTemplates.length > 0 ? (
+        <Row className="mx-0 templates-row">
           {savedTemplates.map((template) => (
-            <Col key={template._id} xl={3} className='mt-4 px-4'>
-              <TemplateCard templateId={template._id} template={template}/>
+            <Col key={template._id} xl={3} className='d-flex align-center justify-content-center mt-4 px-4'>
+              <TemplateCard templateId={template._id} template={template} deleteTemplate={(id: string) => deleteTemplate(id)}/>
             </Col>
           ))}
         </Row>
       ) : (
         <p className='defaultMessage'>No templates have been saved. You can save templates when you create reviews and then access them from here or when creating a review.</p>
       )}
+      </div>
+      
       </div>
       {newTemplatePopup && (
         <div className='popup-container'>

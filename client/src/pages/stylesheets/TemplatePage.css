@@ -1,26 +1,32 @@
-.hello{
-    color: #ffffff;
-    font-size: 50px;
-  }
-  .grid {  
-      position: relative;
-      width: 100%;
-      margin-top: 20px;
-      margin-bottom: 20px;
-  
-    }
-    
-    /* Additional styling for the title, adjust as needed */
-    h1 {
-      color: #ffffff;
-      font-size: 50px;
-      margin-bottom: 10px;
-      margin-top: 30px;
-    }
-  
-    .defaultMessage{
-      color: #ffffff;
-      font-size: 24px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
+.hello {
+  color: #ffffff;
+  font-size: 50px;
+}
+
+.grid {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+/* Additional styling for the title, adjust as needed */
+h1 {
+  color: #ffffff;
+  font-size: 50px;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+
+.defaultMessage {
+  color: #ffffff;
+  font-size: 24px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.templates-row {
+  width: 67%;
+  align-self: center;
+}

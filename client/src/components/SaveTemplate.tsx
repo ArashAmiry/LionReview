@@ -30,7 +30,7 @@ interface SaveTemplateProps {
         const response = await axios.post<ITemplate[]>(`http://localhost:8080/template/savedTemplates`, newTemplateData) //ändra /templates/...
             .then(function (response) {
             //setSavedTemplates(response.data);
-            //onClose()
+            onClose()
             console.log(response);
             })
             .catch(function (error) {

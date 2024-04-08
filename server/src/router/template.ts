@@ -73,7 +73,6 @@ templateRouter.delete('/deleteTemplate/:templateId', async (
     res: Response) => {
     try {
         const deleteTemplate = await templateService.deleteTemplate(req.params.templateId);
-        res.json(deleteTemplate);
         res.sendStatus(204); // No content, successful deletion
     } catch (error) {
         console.error('Error deleting template:', error);

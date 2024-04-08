@@ -14,7 +14,6 @@ const templateSchema: Schema = new Schema({
   },
   info: {
     type: String,
-    required: true
   },
   questions: [{
     questionType: { type: String, required: true },
