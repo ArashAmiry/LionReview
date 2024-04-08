@@ -22,7 +22,7 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
             updatedAnswerPage[currentPageIndex].questions[questionIndex].answer = slideValue.toString();
             return updatedAnswerPage;
         })
-    })
+    }, [])
 
     function valuetext(value: number, max: number) {
         return `${value}/${max}`;
