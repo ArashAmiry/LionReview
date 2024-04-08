@@ -10,13 +10,7 @@ function Textfields({questions, setQuestions}: {questions: {questionType: string
       const deleteTextfield = (index: number) => {
         const updatedList = [...questions];
         updatedList.splice(index, 1);
-        const textfieldQuestions = updatedList.filter(question => question.questionType === "text");
-        if (textfieldQuestions.length === 0) {
-          setQuestions([...updatedList, {questionType: "text", question: ""}]);
-        }
-        else {
-          setQuestions(updatedList);
-        }
+        setQuestions(updatedList);
       }
     
       const handleChangeTextfield = (e: ChangeEvent, index: number) => {

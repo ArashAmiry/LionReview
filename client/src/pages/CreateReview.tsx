@@ -17,7 +17,7 @@ import PagesSidebar from "../components/PagesSidebar";
 const initialPagesState: CreateReviewPage[] = [
   {
     currentStep: 1,
-    questions: [{ questionType: "binary", question: "" }, { questionType: "text", question: "" }, { questionType: "range", question: "" }],
+    questions: [],
     reviewTitle: "Page 1",
     urls: [""],
     cachedFiles: {},
@@ -97,7 +97,7 @@ function CreateReview({isDarkMode} : {isDarkMode: boolean}) {
     setCurrentPageIndex((currentPageIndex) => currentPageIndex + 1);
   };
 
-  const handleDeletePage = (pageIndex: number) => { // Fixa 
+  const handleDeletePage = (pageIndex: number) => { 
     const updatedPagesData = [...pagesData];
     for (let i = pageIndex + 1; i < pagesData.length; i++) {
       if (updatedPagesData[i].reviewTitle === "Page " + (i+1)) {
@@ -147,7 +147,6 @@ function CreateReview({isDarkMode} : {isDarkMode: boolean}) {
         questions: getAllNonEmptyQuestions(index),
       };
     });
-    console.log(reviewPages);
     const review = await axios.post("http://localhost:8080/review/", {
       name: reviewName,
       createdBy: "username", // TODO ta bort
