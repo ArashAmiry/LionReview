@@ -1,17 +1,20 @@
+.body-my-reviews{
+    background-image: none;
+    background-color: #1c274c;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
 .reviewforms{
     color: aliceblue;
-    font-family: 'Roboto-Black';
     letter-spacing: 0.2em;
+    font-weight: 1000; 
     font-size: 6em;
 }
 .preset-templates{
     color: aliceblue;
     font-size: 3em;
-}
-
-@font-face {
-    font-family: 'Roboto-Black';
-    src: local('Roboto-Black'), url(../../fonts/Roboto-Black.ttf) format('truetype');
 }
 
 .myReviewsContainer {

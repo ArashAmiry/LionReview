@@ -80,6 +80,7 @@ const MyReviews = ({ username }: { username: string }) => {
   };
 
   return (
+    <body className="body-my-reviews">
     <Container fluid className="myReviewsContainer mx-0">
       <Row className="first-row">
         <Col className="py-3">
@@ -126,6 +127,7 @@ const MyReviews = ({ username }: { username: string }) => {
         </Toast>
       </div>
     </Container>
+  </body>
   );
 };
 
