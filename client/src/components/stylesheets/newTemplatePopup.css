@@ -1,0 +1,18 @@
+.box {
+    background-color: aliceblue;
+}
+
+.edit-question-cont{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.edit-name-info-cont{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.name-intro-cont{
+    height: 420px;
+}
+.form-control{
+    max-height: 257px;
+}

@@ -8,6 +8,7 @@ import MyReviews from "./pages/MyReviews";
 import RespondentReview from './pages/RespondentReview';
 import SignupPage from './pages/SignUpPage';
 import axios from 'axios';
+import TemplatePage from "./pages/TemplatePage";
 import AfterActivation from "./pages/AfterActivation";
 import EmailSent from "./pages/EmailSent";
 import { AuthProvider } from "./AuthContext";
@@ -46,6 +47,7 @@ function App() {
             <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
             <Route path='*' element={<NotFound />}/>
             <Route path="/thanks" element={<AfterParticipation />} />
+            <Route path='/Templates' element={<TemplatePage />} />
           </Routes>
         </div>
       </AuthProvider>

@@ -1,0 +1,24 @@
+.saveTemplateContainer{
+    background-color: aliceblue;
+    padding: 20px;
+    width: 500px;
+    height: 368px;
+    border-radius: 5px;
+}
+.missingInfoCont{
+    height: 30px;
+}
+.missingInfo{
+    color: rgb(214, 0, 0);
+}
+.btn-exit{
+    width: 70px;
+    margin: 10px;
+}
+.btn-create{
+    width: 200px;
+    margin: 10px;
+}
+.exampleFormControlTextarea1{
+    height: 200px;
+}

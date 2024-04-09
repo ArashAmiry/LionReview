@@ -1,0 +1,153 @@
+.edit-container{
+    display: flex;
+    flex-direction: row;
+    background-color: aliceblue;
+    margin-top: 67px;
+    width: 960px;
+    height: 580px;
+}
+
+.sidebar{
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+    margin: 0px;
+}
+
+.preview{
+    overflow: auto;
+    background-color: white;
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+}
+
+.name-intro-cont{
+    width: 440px;
+    height: 370px;
+}
+
+.intro-name{
+    margin-top: 1rem;
+}
+
+.name{
+    color: black;
+    font-size: 30px;
+    margin-bottom: 2rem;
+}
+
+.info-container{
+    padding: 10px;
+    height: 200px;
+    border: 1px solid rgb(205, 205, 205);
+}
+
+.info{
+    width: 420px;
+    font-size: 15px;
+}
+
+.edit-button{
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
+}
+.close-button {
+  width: 420px; /* Subtract padding from width */
+  border-radius: 0;
+}
+
+.editModeOn-container{
+    display: flex;
+    flex-direction: row;
+    background-color: aliceblue;
+    width: 960px;
+    height: 580px;
+}
+
+.edit-question-cont{
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+    margin: 0px;
+}
+
+.edit-name-info-cont{
+    background-color: white;
+    width: 480px;
+    height: 580px;
+    padding: 20px;
+}
+
+.save-button {
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
+}
+.exit-button {
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
+}
+.add{
+    margin-bottom: 30px;
+}
+.form-control{
+    margin-bottom: 10px;
+}
+.CardBody{
+    margin: 0px;
+}
+
+.deleteAlert{
+    background-color: rgb(250, 202, 202);
+    margin-left: 10px;
+    width: 420px;
+}
+.delete-button{
+    width: 420px; /* Subtract padding from width */
+    border-radius: 0;
+}
+.deleteRow{
+    width: 420px;
+    height: 48px;
+}
+.deleteAlertOn{
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 48px;
+}
+.alert-text{
+    color: #ab0000;
+    width: 278px;
+    margin-top: 14px;
+    margin-right: 10px;
+}
+.alertYes{
+    width: 60px;
+}
+.alertNo{
+    width: 60px;
+}
+.alert-button-yes{
+    border: 1px solid #ab0000; /* Example border style */
+    border-radius: 5px;
+    color: #ab0000;
+    width: 46.7px;
+    height: 38px;
+}
+.alert-button-yes:hover {
+    background-color: #c50000; /* Change background color on hover */
+    color: #ffffff; /* Change text color on hover */
+}
+.alert-button-no{
+    border: 1px solid #000; /* Example border style */
+    border-radius: 5px;
+    width: 46.7px;
+    height: 38px;
+}
+.alert-button-no:hover {
+    background-color: #474747; /* Change background color on hover */
+    color: #ffffff; /* Change text color on hover */
+}

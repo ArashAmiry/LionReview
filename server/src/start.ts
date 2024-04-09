@@ -7,6 +7,7 @@ import { reviewRouter } from "./router/review";
 import session from 'express-session';
 import SECRET from "./session_secret";
 import PASSWORD from "./db/password";
+import { templateRouter } from "./router/template";
 import { accessCodeRouter } from "./router/accessCode";
 const MongoStore = require('connect-mongo');
 
@@ -36,4 +37,5 @@ app.use(express.json());
 app.use("/fetch", fetchCodeRouter);
 app.use("/review", reviewRouter);
 app.use("/auth", authenticationRouter);
+app.use("/template", templateRouter);
 app.use("/access", accessCodeRouter)

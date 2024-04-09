@@ -6,6 +6,7 @@ import Question from "./Question";
 import PresetQuestions from "./PresetQuestions";
 import Textfields from "./Textfields";
 import RangeQuestions from "./RangeQuestions";
+import Template from "./Template";
 
 type AddFormQuestionsProps = {
   questions: { questionType: string, question: string }[], 
@@ -25,7 +26,7 @@ function AddFormQuestions({ questions, setQuestions}: AddFormQuestionsProps) {
         <Tab eventKey="textQuestions" title="Textfields"><Textfields questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
         <Tab eventKey="rangeQuestions" title="Range" ><RangeQuestions questions={questions} setQuestions={(rangeQuestions) => setQuestions(rangeQuestions)} /></Tab>
         <Tab eventKey="contact" title="Templates">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis atque quis, ratione dignissimos quae, voluptatem ex esse cum similique culpa repellat dicta ipsam? Ipsum facilis nesciunt unde et quibusdam porro natus corporis dolore, ipsa totam pariatur laborum enim perspiciatis adipisci possimus perferendis placeat magnam molestiae non ullam qui consectetur! Obcaecati quae debitis harum inventore placeat corporis eveniet iste modi nam assumenda perspiciatis ad, fugit ut adipisci illo aspernatur, enim consequatur totam temporibus aliquam architecto quis culpa asperiores velit. Cupiditate quas modi aliquid tempora vitae maxime a natus molestias expedita repellendus nesciunt mollitia nulla, autem odio, sapiente omnis voluptatum debitis maiores.
+          <Template questions={questions} setQuestions={(questions) => setQuestions(questions)}></Template>
         </Tab>
         <Tab eventKey="PresetQuestions" title="Preset questions">
           <PresetQuestions questions={questions} setQuestions={(questions) => setQuestions(questions)} categories={[
