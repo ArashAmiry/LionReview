@@ -14,7 +14,7 @@ function CreateReviewWizardButtons({pagesData, currentPageIndex, amountSteps, pr
     const currentStep = pagesData[currentPageIndex].currentStep;
 
     return (
-        <Col md={4} id="navButtons" className="my-4 d-flex justify-content-start px-0">
+        <Col md={4} id="navButtons" className="mt-3 d-flex justify-content-start px-0">
         {currentStep === 1 && (
           <Button size="lg" variant="danger"onClick={() => previousStep()}>Exit</Button>
         )}

@@ -125,13 +125,13 @@ function CreateReview() {
 
   return (
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
-      <Row className="mx-0">
-        <Col className="sidebar-col" md={2}>
+      <Row className={`mx-0 ${pagesData[currentPageIndex].currentStep === 3 ? 'full-height' : 'not-full-height'}`}>
+        <div className="sidebar-col">
           <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep}/>
-        </Col>
+        </div>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
-          <Col md={12} className="first-step">
+          <Col md={12} className="first-step center-add-code first-second-col">
             <AddCodeLink
                currentPageIndex={currentPageIndex}
                pagesData={pagesData}
@@ -142,7 +142,7 @@ function CreateReview() {
         )}
 
         {pagesData[currentPageIndex].currentStep === 2 && (
-          <Col md={7} className="second-step">
+          <Col md={12} className="second-step first-second-col">
             <ReviewFormEditor
               currentPageIndex={currentPageIndex}
               pagesData={pagesData}

@@ -4,21 +4,23 @@
 
 .container-create{
     height: 90vh;
-    padding-left: 80px !important;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.not-full-height {
+    height: 90%;
 }
 
 .form-box{
     background-color: white;
-    height: 60vh;
+    height: 72vh;
 /*     margin-top: 150px; */
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     border-radius: 7px;
-}
-
-.second-step{
-    margin-left: 25%;
-    margin-right: 20%;
 }
 
 .code-preview{
@@ -29,12 +31,12 @@
     height: 90vh;
     margin-right: 0px;
     margin-left: 0px;
-    padding-left: 0px;
+    padding-left: 80px;
     padding-right: 0px;
 }
 
 .form-row{
-    margin-right: 0px;
+    padding-left: 260px;
 }
 
 .sidebar-col {
@@ -44,10 +46,16 @@
     height: 90vh;
     z-index: 1000; /* Ensure it overlays the content */
     padding-left: 0;
+    width: 1px;
   }
   
   .first-step{
-    padding-left: 25%; /* Match the default collapsed sidebar width */
-    padding-right: 5%;
-    margin-left: 0px;
+    padding-right: 1%;
+    padding-left: 260px;
+    margin: 0;
+  }
+
+  .center-add-code {
+    height: 72vh;
+    align-content: center;
   }

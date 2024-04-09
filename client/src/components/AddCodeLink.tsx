@@ -76,10 +76,10 @@ const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmi
   }
 
     return (
-        <Col className='links-container'>
-            <div className="d-flex justify-content-center">
+        <Col className='links-container d-flex flex-column justify-content-center'>
+            {/* <div className="d-flex justify-content-center">
                 <h3>Add the link to one or two code files</h3>
-            </div>
+            </div> */}
             {urls.map((url, index) => (
                 <LinkRow key={index} githublink={url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} />
             ))}

@@ -35,6 +35,7 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
                     <SaveTemplate questions={questions} onClose={handleSaveTemplate}></SaveTemplate>
                 </div>
             ):(
+                <>
                 <Card className="preview-box">
                     <Card.Title className="m-3">{reviewTitle}</Card.Title>
                     <Card.Body className="mx-5 mt-2">       
@@ -52,11 +53,13 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
                             </div>
                         ))}
                     </Card.Body>
-                    <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success">Save Form as Template</Button>
+                    
                     {errorMessage && (  
                         <Card.Text className="fs-5 fw-bold text-danger">{errorMessage}</Card.Text>
                     )}
                 </Card>
+                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success">Save Form as Template</Button>
+                </>
             )}
 
         </div>
