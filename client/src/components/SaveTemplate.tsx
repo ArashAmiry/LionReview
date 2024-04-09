@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import TextfieldList from "./TextfieldListPreview";
 import QuestionList from "./QuestionListPreview";
-//import RangeQuestionListPreview from "./RangeQuestionList";
+import RangeQuestionListPreview from "./RangeQuestionList";
 import './stylesheets/SaveTemplate.css';
 import {Button, Card} from 'react-bootstrap';
 import { ITemplate } from "../interfaces/ITemplate";
@@ -99,6 +99,9 @@ interface SaveTemplateProps {
                     {question.questionType === "text" && (
                         <TextfieldList textfields={[question]} />
                     )}
+                    {question.questionType === "range" && (
+                        <RangeQuestionListPreview rangeQuestions={[question]} />
+                    )} 
                 </div>
             ))}
         </Card.Body>
