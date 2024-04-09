@@ -20,12 +20,12 @@ function CodeDisplay({ files}: CodeDisplayProps) {
     }, [files]);
 
     return (
-        <Row className='container-code'>
+        <Row className='container-code' style={{ width: files.length === 2 ? '90%' : '70%' }}>
             {files.length === 2 &&
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>
-                        <h1 className='header-code'>{file.name}</h1>
-                        <pre>
+                        <h2 className='header-code'>{file.name}</h2>
+                        <pre className="mb-0">
                             <code>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content}</code>
                         </pre>
                     </Col>
@@ -33,8 +33,8 @@ function CodeDisplay({ files}: CodeDisplayProps) {
             {files.length === 1 &&
                 files.map((file, index) => (
                     <Col key={index} md="12" className='p-0'>
-                        <h1 className='header-code'>{file.name}</h1>
-                        <pre>
+                        <h2 className='header-code'>{file.name}</h2>
+                        <pre className="mb-0">
                             <code>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content}</code>
                         </pre>
                     </Col>
