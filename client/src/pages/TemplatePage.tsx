@@ -89,6 +89,7 @@ const TemplatePage: React.FC = () => {
 
 
   return (
+    <body className= 'templatebody'>
     <div className='templateContainer'>
       <div className="saved_templates_container">
       <h1 className='saved-teamplates'>Saved Templates</h1>
@@ -114,6 +115,7 @@ const TemplatePage: React.FC = () => {
         </div>
       )}
     </div>
+    </body>
   );
 };
 
