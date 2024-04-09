@@ -3,7 +3,6 @@ import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
 import Row from "react-bootstrap/esm/Row";
 import '../stylesheets/review_details/TextfieldListAnswer.css'
-import { useEffect } from "react";
 
 
 function QuestionListAnswer({ binaryQuestion, answer }: { binaryQuestion: string, answer: string }) {
@@ -13,7 +12,7 @@ function QuestionListAnswer({ binaryQuestion, answer }: { binaryQuestion: string
                 <Form>
                     <Row>
                         <Col md={12} className="individual-binary-question">
-                            <FormLabel><p>{binaryQuestion}</p></FormLabel>
+                            <FormLabel className="individual-binary-question-label"><p>{binaryQuestion}</p></FormLabel>
                         </Col>
                     </Row>
                     <Row>

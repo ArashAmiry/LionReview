@@ -8,7 +8,7 @@ function TextfieldListAnswer({ textfieldQuestion, answer }: { textfieldQuestion:
 
     return (
         <Container className="individual-text-container mb-3 p-3">
-            <p className="mb-2">
+            <p className="mb-2 individual-text-container-label">
                 {textfieldQuestion}
             </p>
             <p className="individual-text">

@@ -31,3 +31,8 @@
 .range-slider {
     width: 100%;
 }
+
+.individual-binary-question-label, .individual-text-container-label, .individual-range-label{
+    width: 100%;
+    word-wrap: break-word;
+}

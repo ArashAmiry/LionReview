@@ -21,7 +21,7 @@ function RangeQuestionListAnswer({ rangeQuestion, answer }: { rangeQuestion: str
     return (
         <>
             <Form.Group className="mb-3 individual-range p-3">
-                <Form.Label>{rangeQuestion}</Form.Label>
+                <Form.Label className="individual-range-label">{rangeQuestion}</Form.Label>
                 {answer.length === 0 && <p>The question was not answered</p>}
                 {answer.length !== 0 && answer !== "Don't know" &&
                     <Slider

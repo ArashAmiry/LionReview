@@ -12,3 +12,8 @@
     padding: 20px;
     text-align: left;
 }
+
+.textfield-container > h5{
+    width: 100%;
+    word-wrap: break-word;
+}
