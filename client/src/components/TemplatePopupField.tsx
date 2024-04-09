@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, Row, Col, CloseButton } from "react-bootstrap";
 import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
+import RangeQuestionList from "./RangeQuestionList";
 import './stylesheets/TemplatePopupField.css'
 import { useState } from "react";
 import { ITemplate } from "../interfaces/ITemplate";
@@ -92,6 +93,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
     function Preview({ questions }: { questions: { questionType: string, question: string }[] }) {
         const binaryQuestions = questions.filter(question => question.questionType === "binary")
         const textQuestions = questions.filter(question => question.questionType === "text")
+        const rangeQuestions = questions.filter(question => question.questionType === "range")
         return (
 
             <Card className="template-sidebar">
@@ -99,7 +101,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                 <Card.Body className="mx-5 mt-2 sidebar-form">
                     <QuestionList questions={binaryQuestions} />
                     <TextfieldList textfields={textQuestions} />
-
+                    <RangeQuestionList rangeQuestions={rangeQuestions} />
                 </Card.Body>
             </Card>
         )
@@ -121,6 +123,9 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
     const [binaryQuestions, setBinaryQuestions] = React.useState<{ questionType: string, question: string }[]>(
         template.questions.filter(question => question.questionType === "binary")
     );
+    const [rangeQuestions, setRangeQuestions] = React.useState<{ questionType: string, question: string }[]>(
+        template.questions.filter(question => question.questionType === "range")
+    );
 
     const handleBinaryQuestionChange = (index: number, value: string) => {
         const updatedBinaryQuestions = [...binaryQuestions];
@@ -136,6 +141,13 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
         setIsSaved(false);
     };
 
+    const handleRangeQuestionChange = (index: number, value: string) => {
+        const updatedRangeQuestions = [...rangeQuestions];
+        updatedRangeQuestions[index].question = value;
+        setRangeQuestions(updatedRangeQuestions);
+        setIsSaved(false);
+    };
+
     // Function to add new binary question
     const addBinaryQuestion = () => {
         setBinaryQuestions([...binaryQuestions, { questionType: "binary", question: `` }]);
@@ -148,6 +160,11 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
         setIsSaved(false);
     };
 
+    const addRangeQuestion = () => {
+        setRangeQuestions([...rangeQuestions, { questionType: "range", question: `` }]);
+        setIsSaved(false);
+    };
+
     const deleteQuestion = (list: { questionType: string, question: string }[], index: number) => {
         const updatedList = [...list];
         const type = updatedList[index].questionType
@@ -155,10 +172,12 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
         updatedList.splice(index, 1);
         if (type === "binary") {
             setBinaryQuestions(updatedList)
-        }
-        else if (type === "text") {
+        } else if (type === "text") {
             setTextQuestions(updatedList)
+        } else if (type === "range") {
+            setRangeQuestions(updatedList)
         }
+
         setIsSaved(false);
     }
 
@@ -183,7 +202,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                 setIsSaved(true);
                 template.name = updatedName;
                 template.info = updatedInfo;
-                template.questions = [...binaryQuestions, ...textQuestions];
+                template.questions = [...binaryQuestions, ...textQuestions, ...rangeQuestions];
             })
             .catch(function (error) {
                 if (error.response) {
@@ -205,7 +224,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
 
     function saveTemplate() {
 
-        const allQuestionsUpdated = [...binaryQuestions, ...textQuestions];
+        const allQuestionsUpdated = [...binaryQuestions, ...textQuestions, ...rangeQuestions];
         console.log(allQuestionsUpdated)
         const updatedTemplateData: Partial<ITemplate> = {
             name: updatedName,
@@ -278,11 +297,31 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                 </Row>
                             ))}
                             <Button className="add" onClick={addTextQuestion}>Add Textfield Question</Button>
+
+                            <p className="question-heading">Range questions:</p>
+                            {rangeQuestions.map((question, index) => (
+                                <Row>
+                                    <Col className="col-md-11">
+                                        <input
+                                            key={`rangeQuestion${index}`} // Use index to create unique key
+                                            className="form-control"
+                                            id={`rangeQuestion${index}`} // Use index to create unique ID
+                                            placeholder="New range question..."
+                                            value={question.question} // Use question as placeholder
+                                            onChange={(e) => handleRangeQuestionChange(index, e.target.value)}
+                                        />
+                                    </Col>
+                                    <Col className="col-md-1">
+                                        <CloseButton className="pt-3" onClick={() => deleteQuestion(rangeQuestions, index)} />
+                                    </Col>
+                                </Row>
+                            ))}
+                            <Button className="add" onClick={addRangeQuestion}>Add Range Question</Button>
                         </CardBody>
                     </Card>
 
                     <div className="edit-name-info-cont">
-                        <div className="name-intro-cont">
+                        <div className="name-intro-cont-edit">
                             <p className="intro-name">Name of Template:</p>
                             <input className="form-control form-control-lg"
                                 id="nameId"
@@ -290,7 +329,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                 aria-label=".form-control-lg example"
                                 onChange={(e) => handleTitleChange(e.target.value)} />
                             <p className="intro-info">Short description:</p>
-                            <textarea className="form-control"
+                            <textarea className="form-control short-description"
                                 id="textId"
                                 value={updatedInfo}
                                 onChange={(e) => handleInfoChange(e.target.value)} />

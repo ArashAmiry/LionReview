@@ -80,6 +80,10 @@
     height: 580px;
     padding: 20px;
 }
+.name-intro-cont-edit{
+    width: 440px;
+    height: 370px;
+}
 
 .save-button {
     width: 420px; /* Subtract padding from width */
@@ -92,8 +96,10 @@
 .add{
     margin-bottom: 30px;
 }
-.form-control{
+.short-description{
     margin-bottom: 10px;
+    height: 205px;
+    resize: none;
 }
 .CardBody{
     margin: 0px;
