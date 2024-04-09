@@ -58,7 +58,7 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
     };
     return (
         <Form.Group key={questionIndex} className="mb-3 question p-3" controlId={`step-${questionIndex}`}>
-            <Form.Label>{question.question}</Form.Label>
+            <Form.Label className="range-label">{question.question}</Form.Label>
             <Slider
                 aria-label="Rating"
                 value={slideValue}

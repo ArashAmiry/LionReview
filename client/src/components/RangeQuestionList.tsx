@@ -19,7 +19,7 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: { questi
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestions, index) => (
                     <Form.Group key={index} className="mb-3 question p-3" controlId={`step-${index}`}>
-                        <Form.Label>{rangeQuestions.question}</Form.Label>
+                        <Form.Label className="range-label">{rangeQuestions.question}</Form.Label>
                         <Slider
                             aria-label="Rating"
                             defaultValue={3}

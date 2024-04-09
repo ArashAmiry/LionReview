@@ -23,7 +23,7 @@ function QuestionListReview({ currentPageIndex, question, questionIndex, setAnsw
                     <Form className="question p-3 mb-3">
                         <Row>
                             <Col md={12}>
-                                <FormLabel><p>{question.question}</p></FormLabel>
+                                <FormLabel className="question-label"><p>{question.question}</p></FormLabel>
                             </Col>
                         </Row>
                         <Row>
