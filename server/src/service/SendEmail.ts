@@ -19,7 +19,7 @@ export class SendEmail {
                 secure: true,
                 auth: {
                     user: 'noreply.reviewtool@gmail.com', // fixa
-                    pass: EMAIL_PASSWORD // fixa 
+                    pass: process.env.EMAIL_PASSWORD // fixa 
                 }
             });
 
@@ -42,9 +42,9 @@ export class SendEmail {
     */
     async sendAuthenticationEmail(email: string, activationLink: string) {
         const html = `
-        <h1> Hello World </h1>
-        <p>Click the following link to activate your account:</p>
-        <a href="${activationLink}">Activate Account</a>
+        <h1>Welcome to Our Community!</h1>
+        <p>We're excited to have you join us. To activate your account and start using our application, please click the link below:</p>
+        <p><a href="${activationLink}">Activate Account</a></p>
     `;
         const transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com', // kanske fixa
@@ -52,14 +52,14 @@ export class SendEmail {
             secure: true,
             auth: {
                 user: 'noreply.reviewtool@gmail.com',
-                pass: EMAIL_PASSWORD
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 
         const info = await transporter.sendMail({
             from: 'ReviewTool <noreply.reviewtool@gmail.com>',
             to: 'anton.boras1@gmail.com',
-            subject: 'Account activation',
+            subject: 'Activate Account',
             html: html
         })
 
