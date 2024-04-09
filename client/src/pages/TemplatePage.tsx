@@ -110,7 +110,7 @@ const TemplatePage: React.FC = () => {
       </div>
       {newTemplatePopup && (
         <div className='popup-container'>
-          <SaveTemplate onClose={handleNewTemplateButton} questions={savedTemplates[1].questions}></SaveTemplate>
+          <NewTemplatePopup onClose={handleNewTemplateButton} /> 
         </div>
       )}
     </div>
