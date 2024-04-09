@@ -27,7 +27,7 @@ function handleSelect(template: ITemplate): void{
 
 function handleRemove(removeTemplate: ITemplate): void {
   const index = addedTemplate.findIndex((addedTemplate) => addedTemplate === removeTemplate);
-  const newAddedTemplates = addedTemplate
+  const newAddedTemplates = [...addedTemplate]
   newAddedTemplates.splice(index, 1);
   setAddedTemplate(newAddedTemplates);
 
@@ -40,11 +40,7 @@ function handleRemove(removeTemplate: ITemplate): void {
     }
   });
 
-  if (updatedList.length === 0) {
-    setQuestions([{questionType: "", question: ""}]);
-  } else {
     setQuestions(updatedList);
-  }
  }
 
   function handleAdd(selectedTemplate: ITemplate): void {
@@ -93,6 +89,7 @@ function handleRemove(removeTemplate: ITemplate): void {
     const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getSavedTemplate`) //ändra /templates/...
       .then(function (response) {
         setTemplates(response.data); //ändra (setTemplates, rad 60)
+        setSelectedTemplate(response.data[0])
         console.log(response);
       })
       .catch(function (error) {
