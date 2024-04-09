@@ -1,3 +1,19 @@
+.templateContainer{
+  position: absolute;
+}
+.templatebody::before{
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(28, 39, 76, 0.25);
+} 
+
+
+
 .hello {
   color: #ffffff;
   font-size: 50px;
@@ -5,8 +21,11 @@
 
 /* Additional styling for the title, adjust as needed */
 .saved-teamplates {
-  color: #ffffff;
-  font-size: 50px;
+  color: #ffffff;color: aliceblue;
+  letter-spacing: 0.2em;
+  font-weight: 1000; 
+
+  font-size: 80px;
   margin-bottom: 10px;
   margin-top: 30px;
 }
