@@ -3,16 +3,8 @@
   font-size: 50px;
 }
 
-.grid {
-  position: relative;
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-
-}
-
 /* Additional styling for the title, adjust as needed */
-h1 {
+.saved-teamplates {
   color: #ffffff;
   font-size: 50px;
   margin-bottom: 10px;

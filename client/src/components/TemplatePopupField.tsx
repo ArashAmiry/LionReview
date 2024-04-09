@@ -94,7 +94,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
         const textQuestions = questions.filter(question => question.questionType === "text")
         return (
 
-            <Card className="sidebar">
+            <Card className="template-sidebar">
                 <p className="questions-text">Questions:</p>
                 <Card.Body className="mx-5 mt-2 sidebar-form">
                     <QuestionList questions={binaryQuestions} />

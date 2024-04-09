@@ -91,7 +91,7 @@ const TemplatePage: React.FC = () => {
   return (
     <div className='templateContainer'>
       <div className="saved_templates_container">
-      <h1>Saved Templates</h1>
+      <h1 className='saved-teamplates'>Saved Templates</h1>
       <button type="button" className="btn btn-light" onClick={handleNewTemplateButton}>Create New Template</button>
       <div className='d-flex align-center justify-content-center'>
         {savedTemplates.length > 0 ? (

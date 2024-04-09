@@ -35,26 +35,22 @@ const TemplateCard: React.FC<CardProps> = ({templateId, template, deleteTemplate
   }, [isPopupOpen]);
 
   return (
+    <>
     <div 
-      className={`card ${isHovered ? 'hovered' : ''}`}
+      className={`template-card`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handlePreviewEditClick}
     >
-      <h2 className='title'>{template.name}</h2>
-      {!isHovered && (<h3 className='card-info'>{template.info}</h3>)}
-      {isHovered && (
-        <div className="button">
-        <Button type="button" className="btn btn-primary" onClick={handlePreviewEditClick}>Preview and Edit</Button>
-      </div>
-      )}
-      {isPopupOpen && (
-        <div className='popup-container'>
-          <TemplatePopupField templateId={templateId} template={template} onClose={() => setIsPopupOpen(false)}  deleteTemplate={(id: string) => deleteTemplate(id)}/>
-        </div>
-      )}
-
-      
+      <h4 className='title'>{template.name}</h4>
+      <p className='card-info'>{template.info}</p>      
     </div>
+    {isPopupOpen && (
+      <div className='popup-container'>
+        <TemplatePopupField templateId={templateId} template={template} onClose={() => setIsPopupOpen(false)}  deleteTemplate={(id: string) => deleteTemplate(id)}/>
+      </div>
+    )}</>
+    
   );
 };
 

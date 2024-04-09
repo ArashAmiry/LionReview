@@ -5,9 +5,11 @@
     margin-top: 67px;
     width: 960px;
     height: 580px;
+    border-radius: 20px 0px;
+    border-color: none;
 }
 
-.sidebar{
+.template-sidebar{
     width: 480px;
     height: 580px;
     padding: 20px;
