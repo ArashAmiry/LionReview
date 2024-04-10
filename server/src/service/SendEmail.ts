@@ -58,7 +58,7 @@ export class SendEmail {
 
         const info = await transporter.sendMail({
             from: 'ReviewTool <noreply.reviewtool@gmail.com>',
-            to: 'anton.boras1@gmail.com',
+            to: email,
             subject: 'Activate Account',
             html: html
         })
