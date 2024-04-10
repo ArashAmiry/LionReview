@@ -1,4 +1,4 @@
-import { Card, Form } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import './stylesheets/PreviewForm.css';
 import TextfieldList from "./TextfieldListPreview";
 import QuestionList from "./QuestionListPreview";

@@ -1,7 +1,7 @@
     import { Menu, MenuItem, Sidebar, sidebarClasses } from "react-pro-sidebar";
     import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
     import { useEffect, useState } from "react";
-    import { Col, Image, Row } from "react-bootstrap";
+    import { Button, Col, Image, Modal, Row } from "react-bootstrap";
     import deleteBlack from "../images/deleteBlack.svg";
     import deleteWhite from "../images/deleteWhite.svg";
 
@@ -16,6 +16,7 @@
 
     function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex, isDarkMode, currentStep, handleDeletePage}: PagesSidebarProps) {
         const [collapsed, setCollapsed] = useState(false);
+        const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
         // Function to toggle the collapse state
         const toggleSidebar = () => setCollapsed(!collapsed);
@@ -60,20 +61,40 @@
                                     >
                                     <Row className="d-flex justify-content-center align-items-center">
                                         <Col></Col>
-                                        <Col style={{ fontSize: "20px" }}>{title}</Col>
-                                  
+                                        <Col style={{ fontSize: "20px" }}>{title}</Col>                 
                                         <Col>
                                             {handleDeletePage &&                         
                                                 <Image 
                                                 className="justify-content-end" 
-                                                onClick={(e) => { e.stopPropagation(); handleDeletePage(index); }} 
+                                                onClick={(e) => { e.stopPropagation(); setShowDeletePrompt(true); }} 
                                                 src={isDarkMode ? deleteWhite : deleteBlack} width={30}/>
                                             }
                                         </Col>
                                     </Row>
+                                    <Modal show={showDeletePrompt} onHide={() => setShowDeletePrompt(false)}>
+                                        <Modal.Header closeButton>
+                                        <Modal.Title>This Page Is About to Be Deleted</Modal.Title>
+                                        </Modal.Header>
+
+                                        <Modal.Body>Are you sure you want to delete this page? This action cannot be undone.</Modal.Body>
+
+                                        <Modal.Footer>
+                                        <Button variant="secondary" onClick={() => setShowDeletePrompt(false)}>
+                                            No, Close!
+                                        </Button>
+                                        {handleDeletePage && (
+                                            <Button variant="danger" onClick={() => { handleDeletePage(index); setShowDeletePrompt(false);}}>
+                                                Yes, Delete!
+                                            </Button>
+                                        )}
+                                        </Modal.Footer>
+                                    </Modal>
                                 </MenuItem>
+                                
                             );
+                            
                         })}
+
                 </Menu>
             </Sidebar>
         )
