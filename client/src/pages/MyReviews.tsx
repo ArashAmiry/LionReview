@@ -80,54 +80,52 @@ const MyReviews = ({ username }: { username: string }) => {
   };
 
   return (
-    <body className="body-my-reviews">
-    <Container fluid className="myReviewsContainer mx-0">
-      <Row className="first-row">
-        <Col className="py-3">
-          <h1 className="reviewforms">Review forms </h1>
-          <ToggleButtonGroup
-            type="radio"
-            name="statusGroup"
-            value={statusFilter}
-            onChange={handleChange}
-          >
-            {(
-              Object.keys(ReviewStatusFilter) as Array<
-                keyof typeof ReviewStatusFilter
-              >
-            ).map((status, index) => (
-              <ToggleButton
-                variant="light"
-                id={"tbg-btn-" + index}
-                value={ReviewStatusFilter[status]}
-                key={index}
-              >
-                {ReviewStatusFilter[status]}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Container className="card-container">
-          <Row>
-            <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} setReviews={(reviews) => setUserReviews(reviews)}/>
-          </Row>
-        </Container>
-      </Row>
-      <EnterEmails reviewID={reviewID} showEmail={showEmail} setShowEmail={(show) => setShowEmail(show)} displayToast={handleShowToast}/>
+      <Container fluid className="myReviewsContainer mx-0">
+        <Row className="first-row">
+          <Col className="py-3">
+            <h1 className="reviewforms">Review forms </h1>
+            <ToggleButtonGroup
+              type="radio"
+              name="statusGroup"
+              value={statusFilter}
+              onChange={handleChange}
+            >
+              {(
+                Object.keys(ReviewStatusFilter) as Array<
+                  keyof typeof ReviewStatusFilter
+                >
+              ).map((status, index) => (
+                <ToggleButton
+                  variant="light"
+                  id={"tbg-btn-" + index}
+                  value={ReviewStatusFilter[status]}
+                  key={index}
+                >
+                  {ReviewStatusFilter[status]}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Container className="card-container">
+            <Row>
+              <ReviewCardList reviews={filterReviews(userReviews, statusFilter)} showEmailBox={(review) => handleShowEmailBox(review)} setReviews={(reviews) => setUserReviews(reviews)}/>
+            </Row>
+          </Container>
+        </Row>
+        <EnterEmails reviewID={reviewID} showEmail={showEmail} setShowEmail={(show) => setShowEmail(show)} displayToast={handleShowToast}/>
 
-      {/* Fixed position Toast at the top of screen */}
-      <div style={{ position: 'fixed', top: '11vh', left: '50%', transform: 'translateX(-50%)', zIndex: 9999 }}>
-        <Toast onClose={() => setShowConfirmation(false)} show={showConfirmation} delay={4000} autohide bg="light">
-          <Toast.Header>
-            <strong className="me-auto">Email sent</strong>
-          </Toast.Header>
-          <Toast.Body className="text-black">The review has now been sent to the reviewers</Toast.Body>
-        </Toast>
-      </div>
-    </Container>
-  </body>
+        {/* Fixed position Toast at the top of screen */}
+        <div style={{ position: 'fixed', top: '11vh', left: '50%', transform: 'translateX(-50%)', zIndex: 9999 }}>
+          <Toast onClose={() => setShowConfirmation(false)} show={showConfirmation} delay={4000} autohide bg="light">
+            <Toast.Header>
+              <strong className="me-auto">Email sent</strong>
+            </Toast.Header>
+            <Toast.Body className="text-black">The review has now been sent to the reviewers</Toast.Body>
+          </Toast>
+        </div>
+      </Container>
   );
 };
 

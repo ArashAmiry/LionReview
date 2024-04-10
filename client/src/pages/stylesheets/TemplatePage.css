@@ -1,9 +1,4 @@
 .templateContainer{
-  position: absolute;
-  width: 100%;
-}
-
-.templatebody{
   background-image: url(reviewtoolmypagestemplates.jpg);
   background-size: cover;
   background-repeat: no-repeat;
