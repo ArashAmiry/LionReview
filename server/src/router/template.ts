@@ -8,13 +8,13 @@ const templateService = new TemplateService();
 export const templateRouter = express.Router();
 
 
-templateRouter.post("/savedTemplates", async (
-    req: Request<{}, {}, Omit<ITemplate, 'category'>>,
+templateRouter.post("/createTemplate", async (
+    req: Request<{}, {}, Omit<ITemplate, 'createdBy'>>,
     res: Response<String>
 ) => {
     try {
         if (req.session.user !== undefined) {
-            await templateService.createSavedTemplate(req.body, req.session.user);
+            await templateService.createTemplate(req.body, req.session.user);
             res.status(200).send("Saved Template created successfully.");
         }
     } catch (e: any) {
@@ -23,14 +23,14 @@ templateRouter.post("/savedTemplates", async (
 });
 
 
-templateRouter.get("/getSavedTemplate", async (
+templateRouter.get("/getTemplates", async (
     req: Request<{}, {}, {}>,
     res: Response<ITemplate[] | string>
 ) => {
     try {
         if (req.session.user !== undefined) {
             console.log(req.session.user);
-            const reviews = await templateService.getTemplates("saved");
+            const reviews = await templateService.getTemplates(req.session.user);
             res.status(200).send(reviews);
         } else {
             res.status(400).send("You are not logged in.");

@@ -42,7 +42,7 @@ const TemplatePage: React.FC = () => {
   
 
   const fetchSavedTemplates = async () => {
-    const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getSavedTemplate`) //ändra /templates/...
+    const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getTemplates`) //ändra /templates/...
       .then(function (response) {
         setSavedTemplates(response.data); //ändra (setTemplates, rad 60)
         console.log(response);

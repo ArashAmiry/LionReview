@@ -3,26 +3,11 @@ import { ITemplate } from "../model/ITemplate";
 
 export class TemplateService {
     
-
-    async createPresetTemplate(template: Omit<ITemplate, 'category'>, category: string) {
+    async createTemplate(template: Omit<ITemplate, 'createdBy'>, createdBy: string) {
         try {
             await templateModel.create({
-                category: "preset", // Set the category to "presetTemplates"
-                name: template.name,
-                info: template.info,
-                questions: template.questions
-            });
-        } catch (error) {
-            console.error('An error occurred while creating the preset template:', error);
-            // Handle the error appropriately
-            throw error;
-        }
-    }
-
-    async createSavedTemplate(template: Omit<ITemplate, 'category'>, category: string) {
-        try {
-            await templateModel.create({
-                category: "saved", // Set the category to "presetTemplates"
+                //category: "saved", // Set the category to "presetTemplates"
+                createdBy: createdBy,
                 name: template.name,
                 info: template.info,
                 questions: template.questions
@@ -35,9 +20,9 @@ export class TemplateService {
     }
 
 
-    async getTemplates(category: string) {
+    async getTemplates(username: string) {
         try {
-            const templates = await templateModel.find({ category: category }).exec();
+            const templates = await templateModel.find({ createdBy: username }).exec();
             return templates;
         } catch (error) {
             console.error('Error fetching reviews:', error);

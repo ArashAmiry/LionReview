@@ -1,5 +1,6 @@
 export interface ITemplate {
-    category: string;
+    createdBy: string;
+    //category: string;
     name: string;
     info: string;
     questions:{

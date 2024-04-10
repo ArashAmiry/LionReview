@@ -4,10 +4,14 @@ import { ITemplate } from "../model/ITemplate";
 
 // Define the schema
 const templateSchema: Schema = new Schema({
-  category: {
+  createdBy: {
+    type: String,
+    required: true,
+  },
+  /*category: {
     type: String,
     required: true
-  },
+  },*/
   name: {
     type: String,
     required: true
