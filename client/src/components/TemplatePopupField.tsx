@@ -31,6 +31,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
             setUpdatedInfo(template.info)
             setBinaryQuestions(template.questions.filter(question => question.questionType === "binary"))
             setTextQuestions(template.questions.filter(question => question.questionType === "text"))
+            setRangeQuestions(template.questions.filter(question => question.questionType === "range"))
             setIsSaved(true)
         }
     }
@@ -90,18 +91,21 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
 
 
 
-    function Preview({ questions }: { questions: { questionType: string, question: string }[] }) {
-        const binaryQuestions = questions.filter(question => question.questionType === "binary")
-        const textQuestions = questions.filter(question => question.questionType === "text")
-        const rangeQuestions = questions.filter(question => question.questionType === "range")
+    function Preview({ questions }: { questions: { questionType: string, question: string }[] }) {  
         return (
-
             <Card className="template-sidebar">
                 <p className="questions-text">Questions:</p>
                 <Card.Body className="mx-5 mt-2 sidebar-form">
-                    <QuestionList questions={binaryQuestions} />
-                    <TextfieldList textfields={textQuestions} />
-                    <RangeQuestionList rangeQuestions={rangeQuestions} />
+                    {questions.map((question) => (
+                        <>{question.questionType === "binary" &&
+                            (<QuestionList questions={[question]} />)}
+                            {question.questionType === "text" &&
+                                (<TextfieldList textfields={[question]} />)}
+                            {question.questionType === "range" &&
+                                (<RangeQuestionList rangeQuestions={[question]} />)}
+                        </>
+
+                    ))}
                 </Card.Body>
             </Card>
         )
@@ -260,13 +264,13 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                         <CardBody className="sidebar-form">
                             <p className="question-heading">Checkbox questions:</p>
                             {binaryQuestions.map((question, index) => (
-                                <Row>
+                                <Row className="mt-2">
                                     <Col className="col-md-11">
                                         <input
                                             key={`binaryQuestion${index}`} // Use index to create unique key
                                             className="form-control"
                                             id={`binaryQuestion${index}`} // Use index to create unique ID
-                                            placeholder="new Yes/No question..."
+                                            placeholder="New Yes/No question..."
                                             value={question.question} // Use question as placeholder
                                             onChange={(e) => handleBinaryQuestionChange(index, e.target.value)}
                                         />
@@ -276,17 +280,17 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                     </Col>
                                 </Row>
                             ))}
-                            <Button className="add" onClick={addBinaryQuestion}>Add Checkbox Question</Button>
+                            <Button className="add mt-2" onClick={addBinaryQuestion}>Add Checkbox Question</Button>
 
                             <p className="question-heading">Textfield questions:</p>
                             {textQuestions.map((question, index) => (
-                                <Row>
+                                <Row className="mt-2">
                                     <Col className="col-md-11">
                                         <input
                                             key={`binaryQuestion${index}`} // Use index to create unique key
                                             className="form-control"
                                             id={`binaryQuestion${index}`} // Use index to create unique ID
-                                            placeholder="new text question..."
+                                            placeholder="New text question..."
                                             value={question.question} // Use question as placeholder
                                             onChange={(e) => handleTextQuestionChange(index, e.target.value)}
                                         />
@@ -296,11 +300,11 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                     </Col>
                                 </Row>
                             ))}
-                            <Button className="add" onClick={addTextQuestion}>Add Textfield Question</Button>
+                            <Button className="add mt-2" onClick={addTextQuestion}>Add Textfield Question</Button>
 
                             <p className="question-heading">Range questions:</p>
                             {rangeQuestions.map((question, index) => (
-                                <Row>
+                                <Row className="mt-2">
                                     <Col className="col-md-11">
                                         <input
                                             key={`rangeQuestion${index}`} // Use index to create unique key
@@ -316,7 +320,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                     </Col>
                                 </Row>
                             ))}
-                            <Button className="add" onClick={addRangeQuestion}>Add Range Question</Button>
+                            <Button className="add mt-2" onClick={addRangeQuestion}>Add Range Question</Button>
                         </CardBody>
                     </Card>
 
