@@ -20,7 +20,7 @@ function CodeReview({ files }: { files: { name: string, content: string }[] }) {
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>
-                        <pre>
+                        <pre className="mb-0">
                             <code>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content}</code>
                         </pre>
                     </Col>
@@ -29,7 +29,7 @@ function CodeReview({ files }: { files: { name: string, content: string }[] }) {
                 files.map((file, index) => (
                     <Col key={index} md="12" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>
-                        <pre>
+                        <pre className="mb-0">
                             <code>{typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}</code>
                         </pre>
                     </Col>

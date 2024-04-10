@@ -10,10 +10,9 @@ interface TextfieldQuestionDetailsProps {
 const TextfieldQuestionDetails = ({ question, answers }:TextfieldQuestionDetailsProps) => {
     return ( 
         <Container className="textfield-container my-4 bg-body">
-            <h3>{question.question}</h3>
-            <hr className='divider' />
-            <p className="my-1 number-responses">{answers?.length} responses</p>
-            {answers && answers.map((answer, index) => (
+            <h5 className="mb-0">{question.question}</h5>
+            <p className="mt-1 mb-3">{answers?.filter(item => item !== "").length} responses</p>
+            {answers && answers.filter(item => item !== "").map((answer, index) => (
                     <TextfieldAnswer key={index} answer={answer}/>
             ))}
         </Container>

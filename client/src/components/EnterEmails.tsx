@@ -6,7 +6,7 @@ import './stylesheets/EnterEmails.css';
 import 'react-multi-email/dist/style.css';
 import axios from "axios";
 
-const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, showEmail: boolean, setShowEmail: (show: boolean) => void }) => {
+const EnterEmails = ({ reviewID, showEmail, setShowEmail, displayToast }: { reviewID: string, showEmail: boolean, setShowEmail: (show: boolean) => void, displayToast: () => void }) => {
     const [emails, setEmails] = useState<string[]>([]);
     const [invalidEmails, setInvalidEmails] = useState<string[]>([]);
 
@@ -20,6 +20,8 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
             }).catch((error: Error) => {
                 console.log(error);
             });
+        setShowEmail(false);
+        displayToast();
     }
 
     useEffect(() => {
@@ -37,12 +39,12 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail }: { reviewID: string, 
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Enter Email
+                    Enter Email Addresses
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <ReactMultiEmail
-                    placeholder="Paste however many email addresses"
+                    placeholder="Enter the email addresses of the reviewers"
                     emails={emails}
                     validateEmail={(email: string) => {
                         const isValid = emailRegex.test(email);

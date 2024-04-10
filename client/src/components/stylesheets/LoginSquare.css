@@ -3,7 +3,7 @@
     padding: 20px;
     /* border: 1px solid #ccc; */
     border-radius: 8px;
-    background-color: #3b525c;
+    background-color: #1c71a6;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     top: 150px;
     left: 150px;
@@ -33,12 +33,12 @@
 
 .loginsquare-input input:focus {
     background-color: #d9d9d9; /* Keep the same color when focused */
-  }
+}
 
 .create-new-account {
     background-color: #ffffff;
     color: #000000;
-    border-color: #ffae12;
+    border-color: #f2a20c;
     border-radius: 30px;
     cursor: pointer;
     font-size: 1.2rem;
@@ -49,7 +49,7 @@
 .create-new-account:hover {
     background-color: #c9c9c9;
     color: #000000;
-    border-color: #ffae12;
+    border-color: #f2a20c;
 }
 
 .forgot-password {
@@ -62,10 +62,10 @@
 }
 
 .login-button{
-    background-color: #ffae12;
-    color: #000000;
+    background-color: #f2a20c;
+    color: #f2f2f2;
     border-color: #000000;
-    border-width: 2px;
+    border-width: 0px;
     border-radius: 30px;
     cursor: pointer;
     font-size: 1.5rem;

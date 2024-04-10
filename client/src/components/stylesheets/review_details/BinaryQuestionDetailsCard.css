@@ -1,0 +1,18 @@
+.binary-card {    
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.bq-card {
+    align-items: center;
+    height: fit-content;
+}
+
+.binary-question-title {
+    text-align: left;
+}
+
+.binary-number-responses {
+    text-align: left;
+}

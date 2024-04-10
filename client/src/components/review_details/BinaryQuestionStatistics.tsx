@@ -16,7 +16,7 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
         labels: string[];
         values: number[];
     } {
-        const counts: { [key: string]: number } = {};
+        const counts: { [key: string]: number } = {}; // Initialize "Don't know" with a count of 0
 
         arr.forEach(label => {
             counts[label] = (counts[label] || 0) + 1;
@@ -28,11 +28,10 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
         let labeledCounts = answerLabels.map((label, index) => ({ label, count: answerValues[index] }));
 
         labeledCounts.sort((a, b) => {
-            if (a.label.toLowerCase() === "yes") return -1;
-            if (b.label.toLowerCase() === "yes") return 1;
-            if (a.label.toLowerCase() === "no") return 1;
-            if (b.label.toLowerCase() === "no") return -1;
-            return 0;
+            const order = ["yes", "no", "don't know"]; // Define your preferred order
+            const indexA = order.indexOf(a.label.toLowerCase());
+            const indexB = order.indexOf(b.label.toLowerCase());
+            return indexA - indexB;
         });
 
         answerValues = labeledCounts.map(({ count }) => count);
@@ -51,7 +50,11 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
         datasets: [
             {
                 data: data.values,
-                backgroundColor: data.labels.map(label => label.toLowerCase() === 'yes' ? 'blue' : 'red')
+                backgroundColor: data.labels.map(label => {
+                    if (label.toLowerCase() === 'yes') return 'blue';
+                    if (label.toLowerCase() === "no") return 'red';
+                    return 'gray';
+                })
 
             }
         ]
@@ -59,7 +62,7 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
 
     return (
         <Container className="pie-chart-container d-flex flex-column justify-content-center">
-            <p className="mb-0">svar: {answers.length}</p>
+            
             <Pie className="pie-chart" data={chartData} />
         </Container>
     );

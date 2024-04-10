@@ -1,0 +1,38 @@
+.individual-text-container {
+    text-align: left;
+    border-radius: 10px;
+    width: 20rem;
+    background-color: rgb(238, 238, 238);
+}
+
+.individual-text {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+.individual-binary {
+    border-radius: 10px;
+    width: 20rem;
+    background-color: rgb(238, 238, 238);
+}
+
+.individual-binary-question {
+    text-align: left;
+}
+
+.individual-range {
+    border-radius: 10px;
+    width: 20rem;
+    background-color: rgb(238, 238, 238);
+    text-align: left;
+}
+.range-slider {
+    width: 100%;
+}
+
+.individual-binary-question-label, .individual-text-container-label, .individual-range-label{
+    width: 100%;
+    word-wrap: break-word;
+}

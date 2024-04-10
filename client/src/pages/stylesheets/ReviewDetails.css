@@ -13,14 +13,16 @@
     border-radius: 10px;
     width: 100%;
     margin-bottom: 20px;
-    
+
 }
+
 .toggle-code-answers {
     width: 20%;
     align-self: center;
 }
 
-.review-name, .review-page{
+.review-name,
+.review-page {
     color: white;
 }
 
@@ -29,10 +31,11 @@
 }
 
 .big-container {
-    width: 60%;
+    width: 55%;
     background-color: white;
     border-radius: 10px;
-    overflow-y: scroll; /* Hide overflow content */
+    overflow-y: scroll;
+    /* Hide overflow content */
     margin-bottom: 12px;
     height: calc(100% - 100px);
 }
@@ -41,19 +44,48 @@
     position: sticky;
     top: 0;
     background-color: white;
-    z-index: 1; /* Ensure the tab list appears above other content */
+    z-index: 1;
+    /* Ensure the tab list appears above other content */
 }
 
 .page-change {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     background-color: var(--bs-secondary-bg);
     border-radius: 10px;
-    font-size: 20px;
+    border: none;
+    color: black;
+}
+
+.page-change.page-change-disabled {
+    background-color: rgb(241, 241, 241);
+    color: darkgray;
+    /* Set text color for disabled state */
+}
+
+.page-change.page-change-enabled:hover {
+    cursor: pointer;
+    background-color: rgb(213, 213, 213);
+    border-radius: 10px;
+    color: black;
 }
 
 .action-container {
     width: 60%;
 }
 
-.delete-btn, .complete-btn {
+.delete-btn,
+.complete-btn {
     width: 100%;
+}
+
+.buttons-row {
+    width: fit-content;
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
+    font-size: 20px;
+    align-content: center;
+    padding: 0;
 }

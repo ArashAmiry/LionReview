@@ -25,3 +25,11 @@
     height: 90vh;
     border-radius: 0px;
 }
+
+.clear-checkbox{
+    text-align: left;
+}
+
+.question-label, .textfield-label, .range-label{
+    width: 100%;
+}

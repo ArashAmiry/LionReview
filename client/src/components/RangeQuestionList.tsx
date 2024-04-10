@@ -1,13 +1,13 @@
 import Slider from "@mui/material/Slider/Slider";
 import { Col, Container, Form, Row } from "react-bootstrap";
 
-function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questionType: string, question: string}[] }) {
+function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: { questionType: string, question: string }[] }) {
     const maxValue = 5;
-    
+
     function valuetext(value: number, max: number) {
         return `${value}/${max}`;
     }
-    
+
     const marks = Array.from({ length: maxValue }, (_, index) => ({
         value: index + 1,
         label: `${index + 1}`
@@ -19,7 +19,7 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestions, index) => (
                     <Form.Group key={index} className="mb-3 questionBox p-3" controlId={`step-${index}`}>
-                        <p>{rangeQuestions.question}</p>
+                        <Form.Label className="range-label">{rangeQuestions.question}</Form.Label>
                         <Slider
                             aria-label="Rating"
                             defaultValue={3}
@@ -34,6 +34,14 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: {questio
                                   color: "var(--text-color)",
                                 },
                             }}
+                            disabled={true}
+                        />
+
+                        <Form.Check
+                            className="clear-checkbox"
+                            type="checkbox"
+                            id={`checkbox-${index}`}
+                            label={`Don't know`}
                             disabled={true}
                         />
                     </Form.Group>

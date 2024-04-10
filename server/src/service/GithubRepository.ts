@@ -11,7 +11,7 @@ export class GithubRepository {
             const response: AxiosResponse = await axios.get(url, {
                 headers: {
                     'Accept': 'application/vnd.github.v3.raw',
-                    'Authorization': 'Bearer ' + GITHUB_TOKEN,
+                    'Authorization': 'Bearer ' + process.env.GITHUB_TOKEN,
                 },
             });
 

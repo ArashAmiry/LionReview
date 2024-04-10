@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Chart, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar} from 'react-chartjs-2';
 import { Container } from "react-bootstrap";
-//import '../stylesheets/review_details/BinaryQuestionStatistics.css'
+import '../stylesheets/review_details/RangeQuestionStatistics.css'
 Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 
@@ -14,6 +14,7 @@ const RangeQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
 
     function generateChartData(arr: string[]) {
         const countsMap: { [label: string]: number } = {
+            "Don't know": 0,
             "1": 0,
             "2": 0,
             "3": 0,
@@ -42,18 +43,14 @@ const RangeQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
             ]
         };
     
-        // Calculate the total count of answers displayed in the chart
-        const totalCount = Object.values(countsMap).reduce((sum, count) => sum + count, 0);
-    
-        return { chartData, totalCount };
+        return { chartData };
     }
     
-    const { chartData, totalCount } = generateChartData(answers);
+    const { chartData } = generateChartData(answers);
     
     return (
-        <Container className="pie-chart-container d-flex flex-column justify-content-center">
-            <p className="mb-0">answers: {totalCount}</p>
-            <Bar className="pie-chart" data={chartData} />
+        <Container className="bar-chart-container d-flex flex-column justify-content-center">
+            <Bar className="bar-chart" data={chartData} />
         </Container>
     );
 };

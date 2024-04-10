@@ -11,14 +11,13 @@ import "./stylesheets/RespondentReview.css";
 export interface QuestionAnswer {
     id: string,
     question: string,
+    questionType: string,
     answer: string
 }
 
 export interface AnswerPage {
     formName: string,
-    binaryQuestions: QuestionAnswer[],
-    textfieldQuestions: QuestionAnswer[],
-    rangeQuestions: QuestionAnswer[],
+    questions: QuestionAnswer[],
     files: {
         name: string,
         content: string
@@ -33,7 +32,7 @@ function RespondentReview() {
     const [accessCode, setAccessCode] = useState("");
     const [errorAccess, setErrorAccess] = useState<boolean>(false);
     const [errorAccessMessage, setErrorAccessMessage] = useState("");
-    const [errorSubmit, setErrorSubmit] = useState<boolean>(false);
+    const [errorSubmit, setErrorSubmit] = useState<{isError: boolean, message: string, redirect: boolean}>({isError: false, message: "", redirect: false});
     const { reviewId } = useParams<{ reviewId: string }>();
     const navigate = useNavigate();
 
@@ -80,30 +79,19 @@ function RespondentReview() {
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
-                response.pages.sort(() => Math.random() - 0.5);
+                if (response.randomize) {
+                    response.pages.sort(() => Math.random() - 0.5);
+                }
+
                 setReview(response);
 
                 const newAnswerPages: AnswerPage[] = response.pages.map(page => ({
                     formName: page.formName,
-                    binaryQuestions: page.questions
-                        .filter(question => question.questionType === 'binary')
-                        .map(({ _id, question }) => ({
+                    questions: page.questions
+                        .map(({ _id, question, questionType }) => ({
                             id: _id,
                             question,
-                            answer: ''
-                        })),
-                    textfieldQuestions: page.questions
-                        .filter(question => question.questionType === 'text')
-                        .map(({ _id, question }) => ({
-                            id: _id,
-                            question,
-                            answer: ''
-                        })),
-                    rangeQuestions: page.questions
-                        .filter(question => question.questionType === 'range')
-                        .map(({ _id, question }) => ({
-                            id: _id,
-                            question,
+                            questionType,
                             answer: ''
                         })),
                     files: page.codeSegments.map(segment => ({
@@ -118,7 +106,11 @@ function RespondentReview() {
     }, [reviewId]); // This effect runs when `reviewId` changes
 
     const exitReview = () => {
-        navigate("/");
+        if (errorSubmit.redirect){
+            navigate("/");
+        } else {
+            setErrorSubmit({isError: false, message: "", redirect: false});
+        }
     }
 
     if (typeof reviewId !== 'string' || reviewId.length == 0) {
@@ -128,7 +120,7 @@ function RespondentReview() {
     if (!answerPages || !review) {
         return <div>Loading...</div>
     };
-    
+
     if (!authenticated) {
         return (
             <Container className="access-container d-flex flex-column justify-content-center">
@@ -168,17 +160,18 @@ function RespondentReview() {
                         currentPageIndex={currentPageIndex}
                         setCurrentPageIndex={(index) => setCurrentPageIndex(index)}
                         reviewId={reviewId}
-                        setErrorPage={(isError: boolean) => setErrorSubmit(isError)}
+                        setErrorPage={(error: {isError: boolean, message: string, redirect: boolean}) => setErrorSubmit(error)}
                     />
                 </Col>
             </Row>
-            <Modal show={errorSubmit} onHide={() => exitReview()}>
+            <Modal show={errorSubmit.isError} onHide={() => exitReview()}>
                 <Modal.Header closeButton>
                     <Modal.Title>Review</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>This code has already been used.</p>
-                    <p>You will be directed to the home page.</p>
+                    <p>{errorSubmit.message}</p>
+                    {errorSubmit.redirect && <p>You will be directed to the home page.</p>}
+                    
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => exitReview()}>

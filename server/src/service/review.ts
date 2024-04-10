@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { accessModel } from "../db/accessCode.db";
 import { answerModel } from "../db/answer.db";
 import { reviewModel } from "../db/review";
@@ -58,6 +59,9 @@ export class ReviewService {
                 answers: answers
             })
         } catch (error) {
+            if(error instanceof mongoose.Error.ValidationError){
+                throw new mongoose.Error.ValidationError(error);
+            }
             console.error('An error occured while updating the database: ', error);
             throw new Error('An error occured while updating the database: ' + error);
         }

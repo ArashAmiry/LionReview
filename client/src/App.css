@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Lexend');
+  
+
 .App {
   text-align: center;
   color: var(--text-color); 
@@ -16,7 +19,13 @@
 }
 
 body {
-  background-color: var(--background-color);
+  background-image: url(images/reviewtoollogin.jpg);
+  background-color: #1c274c;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Lexend', lexend;
 }
 
 
