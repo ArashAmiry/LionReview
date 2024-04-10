@@ -35,7 +35,7 @@ const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles, isDarkMode }: C
                 return cachedFiles[url];
             }
             try {
-                const response = await axios.get('http://localhost:8080/fetch', {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/fetch`, {
                     params: {
                         path: url
                     }

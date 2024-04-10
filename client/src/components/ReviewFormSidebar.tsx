@@ -40,7 +40,7 @@ function ReviewFormSidebar({ currentPageIndex, setCurrentPageIndex, answerPages,
         console.log(reviewAnswers);
 
         try {
-            await axios.post('http://localhost:8080/review/answer', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/review/answer`, {
                 "reviewId": reviewId,
                 "answers": reviewAnswers
             }).then((res) => {

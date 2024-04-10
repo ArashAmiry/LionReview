@@ -28,8 +28,8 @@ const SignupSquare: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const usernameResponse = await axios.get('http://localhost:8080/auth/usernameExists/' + username);
-    const emailResponse = await axios.get('http://localhost:8080/auth/emailExists/' + email);
+    const usernameResponse = await axios.get(`${process.env.REACT_APP_API_URL}/auth/usernameExists/` + username);
+    const emailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/auth/emailExists/` + email);
 
     let newErrors = { username: "", email: ""};
 
@@ -48,7 +48,7 @@ const SignupSquare: React.FC = () => {
         return;
     }
 
-    const res = await axios.post('http://localhost:8080/auth/signUp', {
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signUp`, {
       "username": username,
       "email": email,
       "password": password

@@ -18,7 +18,7 @@ const Header = ({isDarkMode, toggleDarkMode} : HeaderProps) => {
 
   const logOut = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
-    await axios.delete('http://localhost:8080/auth/logOut')
+    await axios.delete(`${process.env.REACT_APP_API_URL}/auth/logOut`)
       .catch(function (error) {
         console.log(error);
       });
