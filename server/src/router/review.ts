@@ -62,7 +62,6 @@ reviewRouter.post("/answer", async (
             const codeHasBeenUsed = (await accessCodeService.checkCodeStatus(req.session.accessCode, req.body.reviewId));
             const reviewStatus = await reviewService.getReviewStatus(req.body.reviewId);
 
-            console.log("JOKEEEEEEEEEEEEE" + codeHasBeenUsed);
             if (codeHasBeenUsed === undefined || codeHasBeenUsed === null || codeHasBeenUsed) {
                 res.status(400).send("Could not submit answers, code is not valid.");
                 return;
