@@ -71,7 +71,7 @@
                                             }
                                         </Col>
                                     </Row>
-                                    <Modal show={showDeletePrompt} onHide={() => setShowDeletePrompt(false)}>
+                                    <Modal centered show={showDeletePrompt} onHide={() => setShowDeletePrompt(false)}>
                                         <Modal.Header closeButton>
                                         <Modal.Title>This Page Is About to Be Deleted</Modal.Title>
                                         </Modal.Header>
