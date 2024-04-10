@@ -20,20 +20,23 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
     const [isSavedActive, setIsSavedActive] = useState<boolean>(false);
     
     const handleSaveTemplate = () => {
-        if (isSavedActive){
-        setIsSavedActive(false);
+        if (!isSavedActive && questions.length > 0){
+        setIsSavedActive(true);
         }
         else{
-        setIsSavedActive(true);
+        setIsSavedActive(false);
         }
     }
 
     return (
         <div>
             {isSavedActive ?(
-                <div popup-container>
+                <>
+                <Card className="preview-box">
                     <SaveTemplate questions={questions} onClose={handleSaveTemplate}></SaveTemplate>
-                </div>
+                </Card>
+                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="light">Exit</Button>
+                </>
             ):(
                 <>
                 <Card className="preview-box">

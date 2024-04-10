@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Form, ListGroup, Button } from 'react-bootstrap';
 import QuestionList from "./QuestionListPreview";
 import TextfieldList from "./TextfieldListPreview";
+import RangeQuestionList from "./RangeQuestionList";
 import "./stylesheets/PresetQuestions.css";
 import { ITemplate } from '../interfaces/ITemplate';
 import axios from "axios";
@@ -13,12 +14,13 @@ interface TemplateProps {
 
 function Template ({ questions, setQuestions }: TemplateProps) {
   const [templates, setTemplates] = useState<ITemplate[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<ITemplate>({_id:'exampleId', name:'Preview of Template', info:'select template to see a preview', questions:[{questionType:'binary', question:'check'}, {questionType:'text', question:'text'}]});
+  const [selectedTemplate, setSelectedTemplate] = useState<ITemplate>({_id:'exampleId', name:'select template to see a preview', info:'', questions:[{questionType:'binary', question:''}]});
   const [addedTemplate, setAddedTemplate] = useState<ITemplate[]>([]);
-  const [isAdded, setIsAdded]=useState<boolean>(false)
+  const [saveButtonText, setSavebuttonText] = useState<string>("Add Template")
 
   const textQuestions = selectedTemplate.questions.filter(question => question.questionType === "text");
   const binaryQuestions = selectedTemplate.questions.filter(question => question.questionType === "binary");
+  const rangeQuestions = selectedTemplate.questions.filter(question => question.questionType === "range")
 
 function handleSelect(template: ITemplate): void{
   setSelectedTemplate(template);
@@ -27,7 +29,7 @@ function handleSelect(template: ITemplate): void{
 
 function handleRemove(removeTemplate: ITemplate): void {
   const index = addedTemplate.findIndex((addedTemplate) => addedTemplate === removeTemplate);
-  const newAddedTemplates = [...addedTemplate]
+  const newAddedTemplates = addedTemplate
   newAddedTemplates.splice(index, 1);
   setAddedTemplate(newAddedTemplates);
 
@@ -40,7 +42,11 @@ function handleRemove(removeTemplate: ITemplate): void {
     }
   });
 
+  if (updatedList.length === 0) {
+    setQuestions([{questionType: "", question: ""}]);
+  } else {
     setQuestions(updatedList);
+  }
  }
 
   function handleAdd(selectedTemplate: ITemplate): void {
@@ -56,28 +62,12 @@ function handleRemove(removeTemplate: ITemplate): void {
 
     if (addedTemplate?.some(template => template._id === selectedTemplate._id)){ //Template already added, remove
       handleRemove(selectedTemplate);
+      setSavebuttonText("Add Template")
     }
     else{ //AddTemplate
       handleAdd(selectedTemplate)
+      setSavebuttonText("Remove Template")
     }
-  }
-
-
-  function addTemplateButton(){
-   //not added
-    if (addedTemplate?.some(template => template._id === selectedTemplate._id)){ //Template already added, remove
-      setIsAdded(true)
-      return(
-        <Button onClick={handleAddTemplate}>Remove Template</Button>
-      )
-    }
-    else{ //AddTemplate
-      setIsAdded(false)
-      return(
-          <Button onClick={handleAddTemplate}>Add Template</Button>
-        )
-    }
-    
   }
 
   useEffect(() => {
@@ -89,7 +79,6 @@ function handleRemove(removeTemplate: ITemplate): void {
     const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getSavedTemplate`) //ändra /templates/...
       .then(function (response) {
         setTemplates(response.data); //ändra (setTemplates, rad 60)
-        setSelectedTemplate(response.data[0])
         console.log(response);
       })
       .catch(function (error) {
@@ -113,16 +102,16 @@ function handleRemove(removeTemplate: ITemplate): void {
     <Row>
     <Col className="presetQuestionSelectionBox">
         <h4>{selectedTemplate.name}</h4>
-        <p>Info: {selectedTemplate.info}</p>
+        <p>{selectedTemplate.info}</p>
         <Form>
           <QuestionList questions={binaryQuestions} />
           <TextfieldList textfields={textQuestions}/>
+          <RangeQuestionList rangeQuestions={rangeQuestions}></RangeQuestionList>
         </Form>
-        {selectedTemplate._id == "exampleId" ?(
-          <Button disabled>Add Template</Button>
-        ):(
-          <Button onClick={handleAddTemplate}>Add Template</Button>
+        {selectedTemplate._id !== 'exampleId' &&(
+          <Button onClick={handleAddTemplate}>{saveButtonText}</Button>
         )}
+
     </Col>
 
     <Col>
@@ -189,6 +178,12 @@ export default Template;
       setQuestions(updatedList);
     }
   }
+
+          {addedTemplate?.some(template => template._id === selectedTemplate._id) ?(
+          <Button onClick={handleAddTemplate}>Remove Template</Button>
+        ):(
+          <Button onClick={handleAddTemplate}>Add Template</Button>
+        )}
 
 
   function handleAdd(addedQuestion: {questionType: string, question: string}): void {

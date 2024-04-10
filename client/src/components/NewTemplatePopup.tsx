@@ -23,6 +23,10 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
         [{questionType: 'binary', question: 'First Yes/No question'}]
     );
 
+    const [rangeQuestions, setRangeQuestions] = React.useState<{ questionType: string, question: string }[]>(
+        [{questionType: 'range', question: 'First Range question'}]
+    );
+
     const handleBinaryQuestionChange = (index: number, value: string) => {
         const updatedBinaryQuestions = [...binaryQuestions];
         updatedBinaryQuestions[index].question = value;
@@ -33,6 +37,12 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
         const updatedTextQuestions = [...textQuestions];
         updatedTextQuestions[index].question = value;
         setTextQuestions(updatedTextQuestions);
+    };
+
+    const handleRangeQuestionChange = (index: number, value: string) => {
+        const updatedRangeQuestions = [...rangeQuestions];
+        updatedRangeQuestions[index].question = value;
+        setRangeQuestions(updatedRangeQuestions);
     };
 
     // Function to add new binary question
@@ -46,6 +56,10 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
 
     };
 
+    const addRangeQuestion = () => {
+        setRangeQuestions([...rangeQuestions, { questionType: "range", question: `Range question` }]);
+    };
+
     const deleteQuestion = (list:{ questionType: string, question: string }[], index: number) => {
         const updatedList = [...list];
         updatedList.splice(index, 1);
@@ -54,6 +68,9 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
         }
         else if(list[0].questionType === "text"){
             setTextQuestions(updatedList)
+        }
+        else if(list[0].questionType === "range"){
+            setRangeQuestions(updatedList)
         }
     }
 
@@ -107,7 +124,7 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
 
         <Card className="edit-question-cont">
             <CardBody className="sidebar-form">
-                <p className="question-heading">Checkbox questions:</p>
+                <p className="question-heading">Yes/No questions:</p>
                 {binaryQuestions.map((question, index) => (
                     <Row>
                         <Col className="col-md-11">
@@ -124,7 +141,7 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
                         </Col>
                     </Row>
                 ))}
-                <Button className="add" onClick={addBinaryQuestion}>Add Checkbox Question</Button>
+                <Button className="add" onClick={addBinaryQuestion}>Add Yes/No Question</Button>
 
                 <p className="question-heading">Textfield questions:</p>
                 {textQuestions.map((question, index) => (
@@ -144,6 +161,25 @@ const NewTemplatePopup:  React.FC<NewTemplatePopupProps> = ({onClose}) => {
                     </Row>
                 ))}
                 <Button className="add" onClick={addTextQuestion}>Add Textfield Question</Button>
+
+                <p className="question-heading">Range questions:</p>
+                {rangeQuestions.map((question, index) => (
+                    <Row>
+                        <Col className="col-md-11">
+                        <input
+                            key={`rangeQuestion${index}`} // Use index to create unique key
+                            className="form-control"
+                            id={`rangeQuestion${index}`} // Use index to create unique ID
+                            value={question.question} // Use question as placeholder
+                            onChange={(e) => handleRangeQuestionChange(index, e.target.value)}
+                        />
+                        </Col>
+                        <Col className="col-md-1">
+                        <CloseButton className="pt-3" onClick={() => deleteQuestion(rangeQuestions, index)} />
+                        </Col>
+                    </Row>
+                ))}
+                <Button className="add" onClick={addRangeQuestion}>Add Checkbox Question</Button>
             </CardBody>
         </Card>
         

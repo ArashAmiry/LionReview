@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextfieldList from "./TextfieldListPreview";
 import QuestionList from "./QuestionListPreview";
 import RangeQuestionListPreview from "./RangeQuestionList";
@@ -109,7 +109,6 @@ interface SaveTemplateProps {
                 {missingInfo && ( <p className="missingInfo">Please fill in name to create new template</p> )}
         </div>
         <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success">Create new Template</Button>
-        <Button className="save-btn" size="lg" onClick={onClose} variant="light">Exit</Button>
         </Card>
     );
   }
