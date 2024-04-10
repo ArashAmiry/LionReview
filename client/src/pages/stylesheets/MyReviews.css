@@ -1,14 +1,5 @@
 
-.body-my-reviews::before{
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(28, 39, 76, 0.25);
-}
+
 .reviewforms{
     color: aliceblue;
     letter-spacing: 0.2em;
