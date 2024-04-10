@@ -138,12 +138,13 @@ function handleRemove(removeTemplate: ICreateTemplate): void {
 
     <Col>
         <ListGroup>
-        {templates.map((name, index) => (
+        {templates.map((template, index) => (
                 <ListGroup.Item
                     key={index + 1}
                     action
-                    active={templates[index] === selectedTemplate}
-                    onClick={() => {handleSelect(templates[index])}}
+                    active={template === selectedTemplate && !template.isAdded}
+                    onClick={() => {handleSelect(template)}}
+                    variant={`${template.isAdded ? 'success' : ''}`}
                 >
                     {templates[index].template.name}
                 </ListGroup.Item>
