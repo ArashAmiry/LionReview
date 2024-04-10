@@ -1,19 +1,11 @@
 .templateContainer{
-  position: absolute;
+  background-image: url(reviewtoolmypagestemplates.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  height: 90vh;
 }
-.templatebody::before{
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(28, 39, 76, 0.25);
-} 
-
-
-
 .hello {
   color: #ffffff;
   font-size: 50px;
@@ -27,7 +19,6 @@
 
   font-size: 80px;
   margin-bottom: 10px;
-  margin-top: 30px;
 }
 
 .defaultMessage {
