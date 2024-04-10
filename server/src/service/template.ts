@@ -63,6 +63,7 @@ export class TemplateService {
     async updateTemplate(TemplateId: string, updatedTemplate: Partial<ITemplate>) {
         try {
             const result = await templateModel.findOneAndUpdate({_id: TemplateId}, updatedTemplate, { new: true }).exec();
+            if(result?.toObject().name.length === 0) throw new Error("Template need a name.")
             if (result) {
                 console.log(result);
                 return result.toObject();   

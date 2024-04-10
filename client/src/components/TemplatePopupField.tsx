@@ -8,6 +8,7 @@ import { ITemplate } from "../interfaces/ITemplate";
 import axios from "axios";
 import React from "react";
 import Template from "./Template";
+import { updateNamedExports } from "typescript";
 
 interface PreviewTemplateProps {
     templateId: string;
@@ -91,7 +92,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
 
 
 
-    function Preview({ questions }: { questions: { questionType: string, question: string }[] }) {  
+    function Preview({ questions }: { questions: { questionType: string, question: string }[] }) {
         return (
             <Card className="template-sidebar">
                 <p className="questions-text">Questions:</p>
@@ -117,6 +118,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
 
     const [updatedName, setUpdatedName] = React.useState<string>(
         template.name);
+    const [showNameError, setShowNameError] = React.useState<boolean>(false);
 
     const [updatedInfo, setUpdatedInfo] = React.useState<string>(
         template.info);
@@ -186,7 +188,8 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
     }
 
     const handleTitleChange = (value: string) => {
-        const updatedName = value
+        const updatedName = value;
+        setShowNameError(false);
         setUpdatedName(updatedName);
         setIsSaved(false);
     };
@@ -209,6 +212,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                 template.questions = [...binaryQuestions, ...textQuestions, ...rangeQuestions];
             })
             .catch(function (error) {
+                if(updatedName.length === 0) setShowNameError(true);
                 if (error.response) {
                     console.log(error.response.data);
                     console.log(error.response.status);
@@ -327,11 +331,15 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                     <div className="edit-name-info-cont">
                         <div className="name-intro-cont-edit">
                             <p className="intro-name">Name of Template:</p>
-                            <input className="form-control form-control-lg"
+                            <input
+                                className="form-control form-control-lg"
                                 id="nameId"
-                                type="text" value={updatedName}
+                                type="text"
+                                value={updatedName}
                                 aria-label=".form-control-lg example"
-                                onChange={(e) => handleTitleChange(e.target.value)} />
+                                onChange={(e) => handleTitleChange(e.target.value)}
+                                style={{ borderColor: showNameError ? 'red' : '', boxShadow: showNameError ? '0 0 0 0.2rem rgba(255, 0, 0, 0.25)' : '' }}
+                            />
                             <p className="intro-info">Short description:</p>
                             <textarea className="form-control short-description"
                                 id="textId"
