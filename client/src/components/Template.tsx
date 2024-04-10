@@ -12,29 +12,35 @@ interface TemplateProps {
   setQuestions: (questions: {questionType: string, question: string}[]) => void;
 }
 
+interface ICreateTemplate {
+  template: ITemplate, 
+  isAdded: boolean
+}
+
 function Template ({ questions, setQuestions }: TemplateProps) {
-  const [templates, setTemplates] = useState<ITemplate[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<ITemplate>({_id:'exampleId', name:'select template to see a preview', info:'', questions:[{questionType:'binary', question:''}]});
-  const [addedTemplate, setAddedTemplate] = useState<ITemplate[]>([]);
+  const [templates, setTemplates] = useState<ICreateTemplate[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<ICreateTemplate>({template: {_id:'exampleId', name:'select template to see a preview', info:'', questions:[{questionType:'binary', question:''}]}, isAdded: false});
+  const [addedTemplate, setAddedTemplate] = useState<ICreateTemplate[]>([]);
   const [saveButtonText, setSavebuttonText] = useState<string>("Add Template")
 
-  const textQuestions = selectedTemplate.questions.filter(question => question.questionType === "text");
+/*   const textQuestions = selectedTemplate.questions.filter(question => question.questionType === "text");
   const binaryQuestions = selectedTemplate.questions.filter(question => question.questionType === "binary");
-  const rangeQuestions = selectedTemplate.questions.filter(question => question.questionType === "range")
+  const rangeQuestions = selectedTemplate.questions.filter(question => question.questionType === "range") */
 
-function handleSelect(template: ITemplate): void{
+function handleSelect(template: ICreateTemplate): void{
   setSelectedTemplate(template);
   console.log(selectedTemplate)
 }
 
-function handleRemove(removeTemplate: ITemplate): void {
+function handleRemove(removeTemplate: ICreateTemplate): void {
   const index = addedTemplate.findIndex((addedTemplate) => addedTemplate === removeTemplate);
+  removeTemplate.isAdded = false;
   const newAddedTemplates = addedTemplate
   newAddedTemplates.splice(index, 1);
   setAddedTemplate(newAddedTemplates);
 
   let updatedList = [...questions];
-  const questionsToRemove = removeTemplate.questions
+  const questionsToRemove = removeTemplate.template.questions
   questionsToRemove.forEach(questionToRemove => {
     const index = updatedList.findIndex(question => question.question === questionToRemove.question);
     if (index !== -1) {
@@ -49,18 +55,19 @@ function handleRemove(removeTemplate: ITemplate): void {
   }
  }
 
-  function handleAdd(selectedTemplate: ITemplate): void {
+  function handleAdd(selectedTemplate: ICreateTemplate): void {
+    selectedTemplate.isAdded = true;
     const newAddedTemplates = ([...addedTemplate, selectedTemplate]);
     setAddedTemplate(newAddedTemplates);
     console.log(addedTemplate)
 
-    const addedQuestions = selectedTemplate.questions;
+    const addedQuestions = selectedTemplate.template.questions;
     setQuestions([...questions, ...addedQuestions]);
   }
 
   function handleAddTemplate(): void{
 
-    if (addedTemplate?.some(template => template._id === selectedTemplate._id)){ //Template already added, remove
+    if (addedTemplate?.some(template => template.template._id === selectedTemplate.template._id)){ //Template already added, remove
       handleRemove(selectedTemplate);
       setSavebuttonText("Add Template")
     }
@@ -78,7 +85,12 @@ function handleRemove(removeTemplate: ITemplate): void {
   const fetchSavedTemplates = async () => {
     const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getSavedTemplate`) //ändra /templates/...
       .then(function (response) {
-        setTemplates(response.data); //ändra (setTemplates, rad 60)
+        let list: {template: ITemplate, isAdded: boolean}[] = [];
+        response.data.map((res) => {
+          list = [...list, {template: res, isAdded: false}]
+        })
+        setTemplates(list); //ändra (setTemplates, rad 60)
+        setSelectedTemplate(list[0]);
         console.log(response);
       })
       .catch(function (error) {
@@ -101,16 +113,26 @@ function handleRemove(removeTemplate: ITemplate): void {
 
     <Row>
     <Col className="presetQuestionSelectionBox">
-        <h4>{selectedTemplate.name}</h4>
-        <p>{selectedTemplate.info}</p>
+        <h4>{selectedTemplate.template.name}</h4>
+        <p>{selectedTemplate.template.info}</p>
         <Form>
-          <QuestionList questions={binaryQuestions} />
+          {selectedTemplate.template.questions.map((question) => (
+                        <>{question.questionType === "binary" &&
+                            (<QuestionList questions={[question]} />)}
+                          {question.questionType === "text" && 
+                          (<TextfieldList textfields={[question]} />)}  
+                          {question.questionType === "range" && 
+                          (<RangeQuestionList rangeQuestions={[question]} />)}
+                        </>
+
+                    ))}
+{/*           <QuestionList questions={binaryQuestions} />
           <TextfieldList textfields={textQuestions}/>
-          <RangeQuestionList rangeQuestions={rangeQuestions}></RangeQuestionList>
+          <RangeQuestionList rangeQuestions={rangeQuestions}></RangeQuestionList> */}
         </Form>
-        {selectedTemplate._id !== 'exampleId' &&(
-          <Button onClick={handleAddTemplate}>{saveButtonText}</Button>
-        )}
+        {selectedTemplate.isAdded ? <Button onClick={handleAddTemplate}>{"Remove template"}</Button> :
+        <Button onClick={handleAddTemplate}>{"Add template"}</Button>}
+          
 
     </Col>
 
@@ -123,7 +145,7 @@ function handleRemove(removeTemplate: ITemplate): void {
                     active={templates[index] === selectedTemplate}
                     onClick={() => {handleSelect(templates[index])}}
                 >
-                    {templates[index].name}
+                    {templates[index].template.name}
                 </ListGroup.Item>
             ))}
         </ListGroup>
