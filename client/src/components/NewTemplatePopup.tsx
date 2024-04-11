@@ -242,8 +242,10 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
 
                     {showNoQuestionsError && <p className="pt-3">You need at least 1 question.</p>}
                 </div>
+                <div className="change-buttons">
                 <Button className="edit-button" size="lg" variant="success" onClick={handleCreateNewTemplate}>Create New Template</Button>
                 <Button className="close-button" size="lg" variant="light" onClick={onClose}>Close</Button>
+                </div>
             </div>
         </div>
     )

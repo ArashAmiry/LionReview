@@ -1,4 +1,18 @@
 .presetQuestionSelectionBox {
     border-right: 1px solid #1c274c;
-    margin-left: 1rem;
+    padding-left: 1rem;
+    max-width: 50%;
+}
+
+.templates-col-adds{
+    width: 50%;
+    max-width: 50%;
+}
+
+.template-items{
+    word-wrap: break-word;
+}
+
+.template-name-title{
+    word-wrap: break-word;
 }
