@@ -79,7 +79,8 @@ function RespondentReview() {
     useEffect(() => {
         fetchReview().then((response) => {
             if (response) {
-                if (response.randomize) {
+                if (JSON.parse(response.randomize.toString())) {
+                    console.log(JSON.parse(response.randomize.toString()));
                     response.pages.sort(() => Math.random() - 0.5);
                 }
 
