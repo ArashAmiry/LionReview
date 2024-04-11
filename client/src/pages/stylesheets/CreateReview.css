@@ -1,8 +1,8 @@
-#navButtons > *  {
+#navButtons>* {
     margin-right: 1rem;
 }
 
-.container-create{
+.container-create {
     height: 90vh;
 }
 
@@ -14,20 +14,20 @@
     height: 90%;
 }
 
-.form-box{
+.form-box {
     background-color: white;
     height: 72vh;
-/*     margin-top: 150px; */
+    /*     margin-top: 150px; */
     overflow-y: auto;
     overflow-x: hidden;
     border-radius: 7px;
 }
 
-.code-preview{
+.code-preview {
     background-color: white;
 }
 
-.code-row{
+.code-row {
     height: 90vh;
     margin-right: 0px;
     margin-left: 0px;
@@ -35,7 +35,7 @@
     padding-right: 0px;
 }
 
-.form-row{
+.form-row {
     padding-left: 260px;
 }
 
@@ -44,18 +44,26 @@
     top: 10vh;
     left: 0;
     height: 90vh;
-    z-index: 1000; /* Ensure it overlays the content */
+    z-index: 1000;
+    /* Ensure it overlays the content */
     padding-left: 0;
     width: 1px;
-  }
-  
-  .first-step{
+}
+
+.first-step {
     padding-right: 180px;
     padding-left: 260px;
     margin: 0;
-  }
+}
 
-  .center-add-code {
+.center-add-code {
     height: 72vh;
     align-content: center;
-  }
+}
+
+.sidebar-page-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: "20px";
+}

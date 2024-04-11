@@ -61,9 +61,8 @@
                                     style={currentPageIndex === index ? { backgroundColor: "var(--active-color)" } : {}}
                                     >
                                     <Row className="d-flex justify-content-center align-items-center">
-                                        <Col></Col>
-                                        <Col style={{ fontSize: "20px" }}>{title}</Col>                 
-                                        <Col>
+                                        <Col xs={9} className="sidebar-page-title" style={{ fontSize: "20px" }}>{title}</Col>                 
+                                        <Col xs={3}>
                                             {handleDeletePage &&                         
                                                 <Image 
                                                 className="justify-content-end" 
