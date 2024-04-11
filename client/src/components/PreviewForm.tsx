@@ -19,9 +19,20 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
 
     const [isSavedActive, setIsSavedActive] = useState<boolean>(false);
     
+    const questionsNotEmpty = () => {
+        for (let i = 0; i < questions.length; i++) {
+            if (questions[i].question.length > 0 ){
+                return true
+            }
+        }
+    }
+
     const handleSaveTemplate = () => {
-        if (!isSavedActive && questions.length > 0){
+        if (!isSavedActive && questions.length > 0 && questionsNotEmpty()){
         setIsSavedActive(true);
+        }
+        else if(questions.length < 0 || !questionsNotEmpty()){
+
         }
         else{
         setIsSavedActive(false);
@@ -61,7 +72,12 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
                         <Card.Text className="fs-5 fw-bold text-danger">{errorMessage}</Card.Text>
                     )}
                 </Card>
-                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success" style={{backgroundColor: "#F1A30D",borderColor:"#F1A30D"}}>Save Form as Template</Button>
+                {(questions.length > 0 && questionsNotEmpty())? (
+                    <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success" style={{backgroundColor: "#F1A30D",borderColor:"#F1A30D"}}>Save Form as Template</Button>
+                ):(
+                    <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="btn btn-light" disabled >Save Form as Template</Button>
+                )}
+                
                 </>
             )}
 
