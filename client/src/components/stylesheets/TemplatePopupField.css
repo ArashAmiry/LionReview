@@ -51,12 +51,16 @@
     font-size: 15px;
 }
 
+.change-buttons{
+    padding-top: 10px;
+}
+
 .edit-button{
-    width: 420px; /* Subtract padding from width */
+    width: 100%; /* Subtract padding from width */
     border-radius: 0;
 }
 .close-button {
-  width: 420px; /* Subtract padding from width */
+  width: 100%; /* Subtract padding from width */
   border-radius: 0;
 }
 
@@ -87,11 +91,11 @@
 }
 
 .save-button {
-    width: 420px; /* Subtract padding from width */
+    width: 100%; /* Subtract padding from width */
     border-radius: 0;
 }
 .exit-button {
-    width: 420px; /* Subtract padding from width */
+    width: 100%; /* Subtract padding from width */
     border-radius: 0;
 }
 .add{
@@ -108,11 +112,10 @@
 
 .deleteAlert{
     background-color: rgb(250, 202, 202);
-    margin-left: 10px;
-    width: 420px;
+    width: 100%;
 }
 .delete-button{
-    width: 420px; /* Subtract padding from width */
+    width: 100%; /* Subtract padding from width */
     border-radius: 0;
 }
 .deleteRow{

@@ -82,7 +82,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                     <div className="deleteAlertOn">
                         <p className="alert-text">You sure you want to delete template?</p>
                         <div className="alertYesCol"><button type="button" className="alert-button-yes" onClick={handleDeleteTemplate}>Yes</button></div>
-                        <div className="alertNoCol"><button type="button"  className="alert-button-no" onClick={handleDeleteAlert}>No</button></div>
+                        <div className="alertNoCol"><button type="button" className="alert-button-no" onClick={handleDeleteAlert}>No</button></div>
                     </div>
                 )}
             </div>
@@ -287,8 +287,10 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                             <p className="intro-info">Short description:</p>
                             <div className="info-container"><p className="info">{template.info}</p></div>
                         </div>
-                        <Button className="edit-button" size="lg" variant="orang" onClick={handleEditModeButton}>Edit</Button>
-                        <Button className="close-button" size="lg" variant="btn btn-light" onClick={onClose}>Close</Button>
+                        <div className="change-buttons">
+                            <Button className="edit-button" size="lg" variant="orang" onClick={handleEditModeButton}>Edit</Button>
+                            <Button className="close-button" size="lg" variant="btn btn-light" onClick={onClose}>Close</Button>
+                        </div>
                     </div></>
             ) : (
                 <div className='editModeOn-container'>
@@ -309,11 +311,11 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                         />
                                     </Col>
                                     <Col className="col-md-1">
-                                        <CloseButton className="pt-3"  onClick={() => deleteQuestion(binaryQuestions, index)} />
+                                        <CloseButton className="pt-3" onClick={() => deleteQuestion(binaryQuestions, index)} />
                                     </Col>
                                 </Row>
                             ))}
-                            <Button className="add mt-2" variant = "lightblue" onClick={addBinaryQuestion}>Add Checkbox Question</Button>
+                            <Button className="add mt-2" variant="lightblue" onClick={addBinaryQuestion}>Add Checkbox Question</Button>
 
                             <p className="question-heading">Textfield questions:</p>
                             {textQuestions.map((question, index) => (
@@ -333,7 +335,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                     </Col>
                                 </Row>
                             ))}
-                            <Button className="add mt-2" variant="lightblue"onClick={addTextQuestion}>Add Textfield Question</Button>
+                            <Button className="add mt-2" variant="lightblue" onClick={addTextQuestion}>Add Textfield Question</Button>
 
                             <p className="question-heading">Range questions:</p>
                             {rangeQuestions.map((question, index) => (
@@ -353,7 +355,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                     </Col>
                                 </Row>
                             ))}
-                            <Button className="add mt-2" variant = "lightblue" onClick={addRangeQuestion}>Add Range Question</Button>
+                            <Button className="add mt-2" variant="lightblue" onClick={addRangeQuestion}>Add Range Question</Button>
                         </CardBody>
                     </Card>
 
