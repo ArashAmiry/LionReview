@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/esm/Container";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Col from "react-bootstrap/esm/Col";
 import { useNavigate } from "react-router-dom";
 import "./stylesheets/CreateReview.css";
@@ -11,6 +11,7 @@ import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
 import PagesSidebar from "../components/PagesSidebar";
+import { CodeFile } from "../components/CodePreview";
 
 
 const initialPagesState: CreateReviewPage[] = [
@@ -18,7 +19,7 @@ const initialPagesState: CreateReviewPage[] = [
     currentStep: 1,
     questions: [],
     reviewTitle: "Page 1",
-    urls: [""],
+    files: [{ url: "", content: "", name: "" }],
     cachedFiles: {},
     triedToSubmit: false,
     invalidURLExists: true,
@@ -65,7 +66,26 @@ function CreateReview() {
     });
   };
 
-  const nextStep = () => {
+  const validateFiles = () => {
+    let isValid = true;
+    pagesData[currentPageIndex].files.map((file) => {
+      if(!file.name || !file.content) {
+        console.log(file)
+        isValid = false;
+      }
+    })
+    
+    return isValid;
+  }
+
+  const nextStep = async () => {
+    await fetchAllFiles();
+    console.log(pagesData)
+    if(!validateFiles()) {
+      pagesData[currentPageIndex].invalidURLExists = true;
+    } else {
+      pagesData[currentPageIndex].invalidURLExists = false;
+    }
     if (pagesData[currentPageIndex].currentStep === 1) {
       setTriedToSubmit(true); // Kom på nytt variabelnamn
       if (pagesData[currentPageIndex].invalidURLExists) {
@@ -86,16 +106,73 @@ function CreateReview() {
     if (pagesData[currentPageIndex].currentStep === 1) {
       navigate("/");
     }
+    if (pagesData[currentPageIndex].currentStep === 2) {
+      pagesData[currentPageIndex].invalidURLExists = false;
+    }
     setCurrentStep(pagesData[currentPageIndex].currentStep - 1);
   };
 
   const addNewPage = () => {
-    const newPage : CreateReviewPage = JSON.parse(JSON.stringify(initialPagesState[0]));
+    const newPage: CreateReviewPage = JSON.parse(JSON.stringify(initialPagesState[0]));
     newPage.reviewTitle = "Page " + (pagesData.length + 1);
     setPagesData((prevPageData) => [...prevPageData, newPage]);
     setCurrentPageIndex((currentPageIndex) => currentPageIndex + 1);
   };
-  
+
+  const extractFileName = (url: string): string => {
+    const parts = url.split('/');
+    return parts[parts.length - 1];
+  };
+
+  const updateCachedFiles = (url: string, fileData: CodeFile) => {
+    setPagesData((prevPagesData) => {
+      const updatedPagesData = [...prevPagesData]; // Create a copy of the array of page states
+      const currentPage = updatedPagesData[currentPageIndex]; // Get the current page state
+      const updatedCurrentPage = {
+        ...currentPage,
+        cachedFiles: { ...currentPage.cachedFiles, [url]: fileData },
+      }; // Update the cachedFiles of the current page
+      updatedPagesData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
+      return updatedPagesData; // Return the updated array of page states
+    });
+  };
+
+    const fetchCode = async (url: string): Promise<CodeFile> => {
+      const cachedFiles = pagesData[currentPageIndex].cachedFiles;
+      if (cachedFiles[url]) {
+        return cachedFiles[url];
+      }
+      try {
+        const response = await axios.get('http://localhost:8080/fetch', {
+          params: {
+            path: url
+          }
+        });
+        const newFile: CodeFile = {
+          url: url,
+          content: response.data,
+          name: extractFileName(url)
+        };
+        updateCachedFiles(url, newFile);
+        console.log("kommer vi hit")
+        return newFile;
+      } catch (error) {
+        console.error('Error fetching file content:', error);
+        return {
+          url: "",
+          content: "",
+          name: "File not found"
+        }
+      }
+    };
+
+    const fetchAllFiles = async () => {
+      const filesPromises = pagesData[currentPageIndex].files.map(file => fetchCode(file.url));
+      const fetchedFiles = await Promise.all(filesPromises);
+      pagesData[currentPageIndex].files = fetchedFiles;
+
+    };
+
   const submitReview = async () => {
     const reviewPages = pagesData.map((pageData, index) => {
       const codeSegments: { filename: string; content: string }[] = [];
@@ -127,16 +204,16 @@ function CreateReview() {
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className={`mx-0 ${pagesData[currentPageIndex].currentStep === 3 ? 'full-height' : 'not-full-height'}`}>
         <div className="sidebar-col">
-          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep}/>
+          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep} />
         </div>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
           <Col md={12} className="first-step center-add-code">
             <AddCodeLink
-               currentPageIndex={currentPageIndex}
-               pagesData={pagesData}
-               setPagesData={(e) => setPagesData(e)}
-               setTriedToSubmit={(e) => setTriedToSubmit(e)}
+              currentPageIndex={currentPageIndex}
+              pagesData={pagesData}
+              setPagesData={(e) => setPagesData(e)}
+              setTriedToSubmit={(e) => setTriedToSubmit(e)}
             />
           </Col>
         )}
@@ -153,29 +230,28 @@ function CreateReview() {
 
         {pagesData[currentPageIndex].currentStep === 3 && (
           <Col md={12} className="px-0">
-            <ReviewPreview 
-            pagesData={pagesData} 
-            currentPageIndex={currentPageIndex} 
-            setPagesData={(e) => setPagesData(e)}
-            submitReview={() => submitReview()}
-            setRandomize={(randomize: Boolean) => setRandomize(randomize)}
-            addNewPage={() => addNewPage()}
-            setReviewName={(name) => setReviewName(name)}
-            previousStep={() => previousStep()}
+            <ReviewPreview
+              pagesData={pagesData}
+              currentPageIndex={currentPageIndex}
+              submitReview={() => submitReview()}
+              setRandomize={(randomize: Boolean) => setRandomize(randomize)}
+              addNewPage={() => addNewPage()}
+              setReviewName={(name) => setReviewName(name)}
+              previousStep={() => previousStep()}
             />
-            
+
           </Col>
         )}
 
         {pagesData[currentPageIndex].currentStep !== 3 && (
           <Row className="first-step">
-           <CreateReviewWizardButtons 
-            pagesData={pagesData}
-            currentPageIndex={currentPageIndex}
-            amountSteps={amountSteps}
-            previousStep={() => previousStep()}
-            nextStep={() => nextStep()}
-           />
+            <CreateReviewWizardButtons
+              pagesData={pagesData}
+              currentPageIndex={currentPageIndex}
+              amountSteps={amountSteps}
+              previousStep={() => previousStep()}
+              nextStep={() => nextStep()}
+            />
           </Row>
         )}
       </Row>

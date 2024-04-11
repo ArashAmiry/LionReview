@@ -7,7 +7,6 @@ import PreviewFormSidebar from "./PreviewFormSidebar";
 type ReviewPreviewProps = {
     pagesData: CreateReviewPage[],
     currentPageIndex: number,
-    setPagesData: React.Dispatch<React.SetStateAction<CreateReviewPage[]>>;
     submitReview: () => void,
     addNewPage: () => void,
     setReviewName: (name: string) => void,
@@ -15,28 +14,15 @@ type ReviewPreviewProps = {
     setRandomize: (randomize: Boolean) => void,
 }
 
-function ReviewPreview ({pagesData, currentPageIndex, setPagesData, submitReview, addNewPage, setReviewName, previousStep, setRandomize} : ReviewPreviewProps) {
+function ReviewPreview ({pagesData, currentPageIndex, submitReview, addNewPage, setReviewName, previousStep, setRandomize} : ReviewPreviewProps) {
 
-    const updateCachedFiles = (url: string, fileData: CodeFile) => {
-        setPagesData((prevPagesData) => {
-          const updatedPagesData = [...prevPagesData]; // Create a copy of the array of page states
-          const currentPage = updatedPagesData[currentPageIndex]; // Get the current page state
-          const updatedCurrentPage = {
-            ...currentPage,
-            cachedFiles: { ...currentPage.cachedFiles, [url]: fileData },
-          }; // Update the cachedFiles of the current page
-          updatedPagesData[currentPageIndex] = updatedCurrentPage; // Update the current page state in the copied array
-          return updatedPagesData; // Return the updated array of page states
-        });
-      };
+    
 
     return (
         <Row className="code-row">
             <Col className="code-preview" md={9}>
             <CodePreviewPage
-                urls={pagesData[currentPageIndex].urls}
-                cachedFiles={pagesData[currentPageIndex].cachedFiles}
-                updateCachedFiles={updateCachedFiles}
+                files={pagesData[currentPageIndex].files}
             />
             </Col>
             <Col md={3} className="p-0">

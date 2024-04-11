@@ -4,7 +4,7 @@ export interface CreateReviewPage {
     currentStep: number;
     questions: { questionType: string; question: string }[];
     reviewTitle: string;
-    urls: string[];
+    files: CodeFile[];
     cachedFiles: Record<string, CodeFile>;
     triedToSubmit: boolean;
     invalidURLExists: boolean;

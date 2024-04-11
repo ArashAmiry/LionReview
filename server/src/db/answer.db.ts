@@ -22,7 +22,7 @@ const answerSchema: Schema = new Schema({
                 // Check that there is at least one non-empty answer
                 return answers.some(answer => answer.answer.trim().length > 0);
             },
-            message: 'You have to answer atleast 1 question.'
+            message: 'You have to answer at least 1 question.'
         }
     }
     /////
