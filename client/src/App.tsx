@@ -21,13 +21,11 @@ import NotFound from "./pages/NotFound";
 axios.defaults.withCredentials = true;
 
 function App() {
-  const isBrowserDefaultDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
-
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
     const localStorageTheme = localStorage.getItem('default-theme');
-    if (((localStorageTheme !== null && localStorageTheme === 'dark')) || (localStorageTheme == null && isBrowserDefaultDark() && !darkMode)) {
+    if (((localStorageTheme !== null && localStorageTheme === 'dark'))) {
         setDarkMode(true);
         setDarkModeTheme();
     }
