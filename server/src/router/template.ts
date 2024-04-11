@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { TemplateService } from "../service/template";
 import { ITemplate } from "../model/ITemplate";
 import { log } from "console";
+import mongoose from "mongoose";
 
 const templateService = new TemplateService();
 
@@ -18,7 +19,13 @@ templateRouter.post("/createTemplate", async (
             res.status(200).send("Saved Template created successfully.");
         }
     } catch (e: any) {
-        res.status(500).send(e.message);
+        if (e instanceof mongoose.Error.ValidationError) {
+            res.status(400).send("At least one question is needed.");
+            return;
+        } else {
+            res.status(500).send(e.message);
+            return;
+        }
     }
 });
 
@@ -55,9 +62,9 @@ templateRouter.get("/single/:templateId", async (
 })
 
 templateRouter.put('/editTemplate/:templateId', async (
-    req: Request<{templateId: string}, {}, Partial<ITemplate>>,
+    req: Request<{ templateId: string }, {}, Partial<ITemplate>>,
     res: Response
-    ) => {
+) => {
     try {
         const updatedTemplateData = req.body;
         const updatedTemplate = await templateService.updateTemplate(req.params.templateId, updatedTemplateData);
@@ -69,7 +76,7 @@ templateRouter.put('/editTemplate/:templateId', async (
 });
 
 templateRouter.delete('/deleteTemplate/:templateId', async (
-    req: Request<{templateId: string}, {}, {}>, 
+    req: Request<{ templateId: string }, {}, {}>,
     res: Response) => {
     try {
         const deleteTemplate = await templateService.deleteTemplate(req.params.templateId);

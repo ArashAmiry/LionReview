@@ -2,7 +2,7 @@ import { templateModel } from "../db/template";
 import { ITemplate } from "../model/ITemplate";
 
 export class TemplateService {
-    
+
     async createTemplate(template: Omit<ITemplate, 'createdBy'>, createdBy: string) {
         try {
             await templateModel.create({
@@ -47,11 +47,24 @@ export class TemplateService {
 
     async updateTemplate(TemplateId: string, updatedTemplate: Partial<ITemplate>) {
         try {
-            const result = await templateModel.findOneAndUpdate({_id: TemplateId}, updatedTemplate, { new: true }).exec();
-            if(result?.toObject().name.length === 0) throw new Error("Template need a name.")
+            if ((updatedTemplate.name && updatedTemplate.name.length === 0) || !updatedTemplate.name) throw new Error("Template need a name.")
+            if ((updatedTemplate.questions && updatedTemplate.questions.length === 0) || !updatedTemplate.questions) throw new Error("No questions exists.")
+            const result = await templateModel.findOneAndUpdate({ _id: TemplateId }, updatedTemplate, { new: true }).exec();
+           
+            let hasQuestions = false;
+            result?.toObject().questions.map(question => {
+                if (question.question.length !== 0) {
+                    hasQuestions = true;
+                    return;
+                }
+            }
+            )
+            if (!hasQuestions) throw new Error("No questions exists.")
+            
+
             if (result) {
                 console.log(result);
-                return result.toObject();   
+                return result.toObject();
             } else {
                 throw new Error("No template was found with id: " + TemplateId);
             }
@@ -77,6 +90,6 @@ export class TemplateService {
         }
     }
 
-    
+
 }
 
