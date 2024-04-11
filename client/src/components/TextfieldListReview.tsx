@@ -31,7 +31,7 @@ function TextfieldListReview({ currentPageIndex, question, questionIndex, setAns
     };
 
     return (
-        <Form.Group key={questionIndex} className="mb-3 question textfield-group p-3" controlId={`step-${questionIndex}`}>
+        <Form.Group key={questionIndex} className="mb-3 questionBox textfield-group p-3" controlId={`step-${questionIndex}`}>
             <Form.Label className="textfield-label">{question.question}</Form.Label>
             <Form.Control
                 as="textarea"

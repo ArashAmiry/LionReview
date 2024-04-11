@@ -10,6 +10,7 @@ import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
 import ReviewFormEditor from "../components/ReviewFormEditor";
 import ReviewPreview from "../components/ReviewPreview";
 import CreateReviewWizardButtons from "../components/CreateReviewWizardButtons";
+import useStateCallBack from "../components/UseStateCallBack";
 import PagesSidebar from "../components/PagesSidebar";
 import { CodeFile } from "../components/CodePreview";
 
@@ -27,8 +28,8 @@ const initialPagesState: CreateReviewPage[] = [
   },
 ];
 
-function CreateReview() {
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+function CreateReview({isDarkMode} : {isDarkMode: boolean}) {
+  const [currentPageIndex, setCurrentPageIndex] = useStateCallBack(0);
   const [pagesData, setPagesData] = useState<CreateReviewPage[]>(JSON.parse(JSON.stringify(initialPagesState)));
   const [reviewName, setReviewName] = useState("");
   const [randomize, setRandomize] = useState<Boolean>(false);
@@ -173,6 +174,40 @@ function CreateReview() {
 
     };
 
+  const handleDeletePage = (pageIndex: number) => { 
+    const updatedPagesData = [...pagesData];
+    for (let i = pageIndex + 1; i < pagesData.length; i++) {
+      if (updatedPagesData[i].reviewTitle === "Page " + (i+1)) {
+        updatedPagesData[i].reviewTitle = "Page " + i;
+      }   
+    }
+    setPagesData(updatedPagesData);
+
+    if (currentPageIndex !== pageIndex && (pageIndex > currentPageIndex)) {
+      deletePage(pageIndex);
+    } else if (currentPageIndex !== pageIndex && (pageIndex < currentPageIndex)) {
+      setCurrentPageIndex(currentPageIndex - 1, () => deletePage(pageIndex));
+    } else if (currentPageIndex === pageIndex) {
+      if (pageIndex > 0) { 
+        if (pagesData.length > 1) { 
+          setCurrentPageIndex(pageIndex - 1, () => deletePage(pageIndex));
+        } 
+      } else if (pageIndex === 0 && pagesData.length > 1) {
+          deletePage(pageIndex);
+        } else {
+          setPagesData(JSON.parse(JSON.stringify(initialPagesState)));
+      }
+    }
+  };
+
+  const deletePage = (pageIndex: number) => {
+    setPagesData((prevPagesData) => {
+      const updatedPagesData = [...prevPagesData];
+      updatedPagesData.splice(pageIndex, 1); 
+      return updatedPagesData;
+    });
+  }
+
   const submitReview = async () => {
     const reviewPages = pagesData.map((pageData, index) => {
       const codeSegments: { filename: string; content: string }[] = [];
@@ -189,7 +224,6 @@ function CreateReview() {
         questions: getAllNonEmptyQuestions(index),
       };
     });
-    console.log(reviewPages);
     const review = await axios.post("http://localhost:8080/review/", {
       name: reviewName,
       createdBy: "username", // TODO ta bort
@@ -204,7 +238,7 @@ function CreateReview() {
     <Container fluid className="container-create m-0 p-0 d-flex flex-column justify-content-center">
       <Row className={`mx-0 ${pagesData[currentPageIndex].currentStep === 3 ? 'full-height' : 'not-full-height'}`}>
         <div className="sidebar-col">
-          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} currentStep={pagesData[currentPageIndex].currentStep} />
+          <PagesSidebar pagesTitles={pagesData.map(pageData => pageData.reviewTitle)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} isDarkMode={isDarkMode} currentStep={pagesData[currentPageIndex].currentStep} handleDeletePage={(index) => handleDeletePage(index)} />
         </div>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
@@ -214,6 +248,7 @@ function CreateReview() {
               pagesData={pagesData}
               setPagesData={(e) => setPagesData(e)}
               setTriedToSubmit={(e) => setTriedToSubmit(e)}
+              isDarkMode={isDarkMode}
             />
           </Col>
         )}
@@ -238,6 +273,7 @@ function CreateReview() {
               addNewPage={() => addNewPage()}
               setReviewName={(name) => setReviewName(name)}
               previousStep={() => previousStep()}
+              isDarkMode={isDarkMode}
             />
 
           </Col>

@@ -1,4 +1,4 @@
-import { Col, Form, FormLabel, Row } from "react-bootstrap";
+import { Col, Container, Form, FormLabel, Row } from "react-bootstrap";
 import './stylesheets/PreviewForm.css'
 import { AnswerPage, QuestionAnswer } from "../pages/RespondentReview";
 
@@ -20,7 +20,7 @@ function QuestionListReview({ currentPageIndex, question, questionIndex, setAnsw
     };
     
     return (
-                    <Form className="question p-3 mb-3">
+                    <Form className="questionBox p-3 mb-3">
                         <Row>
                             <Col md={12}>
                                 <FormLabel className="question-label"><p>{question.question}</p></FormLabel>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
 import { Col, Row } from 'react-bootstrap';
 import './stylesheets/CodePreview.css';
 
@@ -12,23 +11,35 @@ export interface CodeFile {
 
 interface CodePreviewPageProps {
     files: CodeFile[];
+    isDarkMode: boolean;
 }
 
-const CodePreviewPage = ({ files }: CodePreviewPageProps) => {
+const CodePreviewPage = ({ files, isDarkMode }: CodePreviewPageProps) => {
 
     useEffect(() => {
-        // Highlight code when the 'files' state updates
+        if (isDarkMode) {
+            require('highlight.js/styles/github-dark.css')
+        } else {
+            require('highlight.js/styles/github.css')
+        }
+    }, [isDarkMode]);
+
+    useEffect(() => {
+        // Highlight code when the 'files' state updates      
         files.forEach(({ content }) => {
             if (content) {
                 document.querySelectorAll('pre code').forEach((block) => {
+                    block.removeAttribute('data-highlighted');
+                    block.textContent = content;
                     hljs.highlightAll();
                 });
             }
         });
-    }, [files]);
+    }, [files, isDarkMode]);
 
     return (
-        <Row className='code-container'>
+        
+        <Row className='code-container bg-body'>
             {files.length === 2 &&
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>

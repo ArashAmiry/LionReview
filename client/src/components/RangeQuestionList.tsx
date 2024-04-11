@@ -1,5 +1,5 @@
 import Slider from "@mui/material/Slider/Slider";
-import { Form } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 
 function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: { questionType: string, question: string }[] }) {
     const maxValue = 5;
@@ -18,7 +18,7 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: { questi
             {rangeQuestions
                 .filter(rangeQuestions => rangeQuestions.question !== "")
                 .map((rangeQuestions, index) => (
-                    <Form.Group key={index} className="mb-3 question p-3" controlId={`step-${index}`}>
+                    <Form.Group key={index} className="mb-3 questionBox p-3" controlId={`step-${index}`}>
                         <Form.Label className="range-label">{rangeQuestions.question}</Form.Label>
                         <Slider
                             aria-label="Rating"
@@ -29,6 +29,11 @@ function RangeQuestionListPreview({ rangeQuestions }: { rangeQuestions: { questi
                             marks={marks}
                             min={1}
                             max={maxValue}
+                            sx={{
+                                '& .MuiSlider-markLabel': {
+                                  color: "var(--text-color)",
+                                },
+                            }}
                             disabled={true}
                         />
 
