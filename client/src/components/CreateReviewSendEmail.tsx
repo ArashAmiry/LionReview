@@ -74,8 +74,8 @@ const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail, setShowT
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={(e) => handleSkip(e)}>Send later</Button>
-                <Button variant= "orang" onClick={(e) => handleSendEmails(e)} >Send emails</Button>
+                <Button variant="lightblue" onClick={(e) => handleSkip(e)}>Send later</Button>
+                <Button variant= "completeform" onClick={(e) => handleSendEmails(e)} >Send emails</Button>
             </Modal.Footer>
         </Modal>
     );

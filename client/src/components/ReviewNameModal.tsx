@@ -51,10 +51,10 @@ const ReviewNameModal = ({ show, handleClose, handleCreateForm, setReviewName, s
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="btn btn-light" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={handleCreateForm}>
+                <Button variant="completeform" onClick={handleCreateForm}>
                     Create Form
                 </Button>
             </Modal.Footer>

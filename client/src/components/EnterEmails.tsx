@@ -66,7 +66,7 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail, displayToast }: { revi
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => handleSubmit()}>Send emails</Button>
+                <Button variant= "completeform" onClick={() => handleSubmit()}>Send emails</Button>
             </Modal.Footer>
         </Modal>
     );
