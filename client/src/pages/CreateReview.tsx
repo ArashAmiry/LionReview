@@ -131,7 +131,7 @@ function CreateReview() {
         </div>
 
         {pagesData[currentPageIndex].currentStep === 1 && (
-          <Col md={12} className="first-step center-add-code first-second-col">
+          <Col md={12} className="first-step center-add-code">
             <AddCodeLink
                currentPageIndex={currentPageIndex}
                pagesData={pagesData}

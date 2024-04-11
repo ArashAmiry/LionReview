@@ -76,7 +76,7 @@ const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmi
   }
 
     return (
-        <Col className='links-container d-flex flex-column justify-content-center'>
+        <Col className='links-container'>
             {/* <div className="d-flex justify-content-center">
                 <h3>Add the link to one or two code files</h3>
             </div> */}
@@ -105,13 +105,13 @@ const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
     return (
         <Container className="link-row my-3">
             <Row className="align-items-center">
-                <Col sm={1} className="d-flex justify-content-center align-items-center">
+                <Col xl={1} className="d-flex justify-content-center align-items-center">
                     <Image alt='image of github logo' src={img} width={30} height={30} roundedCircle />
                 </Col>
-                <Col sm={5} className="d-flex justify-content-center align-items-center">
+                <Col xl={5} className="d-flex justify-content-center align-items-center">
                     <p className="mb-0">Link to the file in your GitHub repository:</p>
                 </Col>
-                <Col sm={4} className="d-flex justify-content-center align-items-center">
+                <Col xl={4} className="d-flex justify-content-center align-items-center">
                     <Form.Control
                         data-testid="name-input"
                         name="link" type="text"
@@ -123,7 +123,7 @@ const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
                             setLink(value);
                         }} />
                 </Col>
-                <Col sm={2} className="d-flex justify-content-center align-items-center">
+                <Col xl={2} className="d-flex justify-content-center align-items-center">
                     <Button variant="dangerdark" onClick={() => deleteLink()} > Remove</Button>
                 </Col>
             </Row>
