@@ -57,7 +57,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: rgb(241, 241, 241);
+    background-color: var(--bs-secondary-bg);
     border-radius: 10px;
     border: none;
     color: black;

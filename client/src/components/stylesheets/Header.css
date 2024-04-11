@@ -1,6 +1,16 @@
 .navbar{
-    height: 10vh;
+    height: 10vh; 
     position: sticky;
     top: 0;
     z-index: 1000;
 }
+
+.loginButton {
+    color: var(--text-color); 
+}
+
+.white-image {
+    filter: brightness(0) invert(1);
+  }
+  
+

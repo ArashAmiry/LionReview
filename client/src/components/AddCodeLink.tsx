@@ -1,7 +1,8 @@
 import { Form, Col, Container, Row, Image, Button } from "react-bootstrap";
 import './stylesheets/AddCodeLink.css';
-import img from '../images/github-logo.png';
 import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
+import darkModeImage from '../images/github-mark-white.svg';
+import lightModeImage from '../images/github-mark.svg';
 import { CodeFile } from "./CodePreview";
 
 interface AddCodeLinkProps {
@@ -9,9 +10,10 @@ interface AddCodeLinkProps {
     pagesData: CreateReviewPage[]; 
     setPagesData: React.Dispatch<React.SetStateAction<CreateReviewPage[]>>;
     setTriedToSubmit: (triedToSubmit: boolean) => void;
+    isDarkMode: boolean;
 }
 
-const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmit}: AddCodeLinkProps) => {
+const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmit, isDarkMode}: AddCodeLinkProps) => {
     const files = pagesData[currentPageIndex].files;
     const triedToSubmit = pagesData[currentPageIndex].triedToSubmit;
     const invalidURLExists = pagesData[currentPageIndex].invalidURLExists;
@@ -46,9 +48,9 @@ const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmi
     }
 
     return (
-        <Col className='links-container'>
+        <Col className='links-container bg-body'>
             {files.map((file, index) => (
-                <LinkRow key={index} githublink={file.url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} />
+                <LinkRow key={index} githublink={file.url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} isDarkMode={isDarkMode} />
             ))}
 
             {!(files.length === 2) &&
@@ -66,14 +68,15 @@ interface LinkRowProps {
     githublink: string;
     setLink: (link: string) => void;
     deleteLink: () => void;
+    isDarkMode: boolean;
 }
 
-const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
+const LinkRow = ({ githublink, setLink, deleteLink, isDarkMode}: LinkRowProps) => {
     return (
         <Container className="link-row my-3">
             <Row className="align-items-center">
                 <Col xl={1} className="d-flex justify-content-center align-items-center">
-                    <Image alt='image of github logo' src={img} width={30} height={30} roundedCircle />
+                    <Image alt='image of github logo' src={isDarkMode ? darkModeImage : lightModeImage} width={30} height={30} roundedCircle />
                 </Col>
                 <Col xl={5} className="d-flex justify-content-center align-items-center">
                     <p className="mb-0">Link to the file in your GitHub repository:</p>

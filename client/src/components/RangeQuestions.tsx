@@ -3,20 +3,14 @@ import QuestionRow from "./QuestionRow";
 import { ChangeEvent } from "react";
 
 function RangeQuestions({questions, setQuestions}: {questions: {questionType: string, question: string}[], setQuestions: (questions: {questionType: string, question: string}[]) => void}) {
-    const addQuestion = () => {
+      const addQuestion = () => {
         setQuestions([...questions, {questionType: "range", question: ""}]);
       }
     
       const deleteQuestion = (index: number) => {
         const updatedList = [...questions];
         updatedList.splice(index, 1);
-        const rangeQuestions = updatedList.filter(question => question.questionType === "range");
-        if (rangeQuestions.length === 0) {
-          setQuestions([...updatedList, {questionType: "range", question: ""}]);
-        }
-        else {
-          setQuestions(updatedList);
-        }
+        setQuestions(updatedList);
       }
     
       const handleChangeQuestion = (e: ChangeEvent, index: number) => {

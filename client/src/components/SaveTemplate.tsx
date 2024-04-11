@@ -108,7 +108,7 @@ interface SaveTemplateProps {
         <div className="missingInfoCont">
                 {missingInfo && ( <p className="missingInfo">Please fill in name to create new template</p> )}
         </div>
-        <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success">Create new Template</Button>
+        <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="completeform">Create new Template</Button>
         </Card>
     );
   }

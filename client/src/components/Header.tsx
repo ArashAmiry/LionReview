@@ -1,12 +1,18 @@
 import { Container, Image, Navbar, Nav } from "react-bootstrap";
-import img from "../images/logo.png";
+import img from "../images/logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import './stylesheets/Header.css';
 import axios from 'axios';
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { useAuthContext } from "../AuthContext";
 
 
-const Header = () => {
+type HeaderProps = {
+  isDarkMode: boolean,
+  toggleDarkMode: () => void
+}
+
+const Header = ({isDarkMode, toggleDarkMode} : HeaderProps) => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuthContext();
 
@@ -21,10 +27,11 @@ const Header = () => {
     navigate('/');
   };
 
+
   return (
-    <Navbar bg="light" data-bs-theme="light" className="navbar">
+    <Navbar className="navbar bg-body">
       <Container>
-        <Navbar.Brand as={NavLink} to="/"><Image width={50} src={img} /></Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/"><Image width={90} src={img} className={isDarkMode ? 'white-image' : ''} /></Navbar.Brand>
         <Nav className="me-auto">
         {isLoggedIn && (<>
           <Nav.Link as={NavLink} to="/create">Create Review Session</Nav.Link>
@@ -37,6 +44,16 @@ const Header = () => {
             (<Nav.Link as={NavLink} to="/logIn" className="mx-2">Log In</Nav.Link>)
           }
         </Nav>
+        <Nav className="justify-content-end">
+          <Nav.Item>
+            <DarkModeSwitch
+              style={{}}
+              checked={isDarkMode}
+              onChange={toggleDarkMode}
+              size={40}
+              />
+          </Nav.Item>
+       </Nav>
       </Container>
     </Navbar>
   );

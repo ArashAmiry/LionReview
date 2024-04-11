@@ -176,7 +176,7 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
                             </Col>
                         </Row>
                     ))}
-                    <Button className="add" onClick={addBinaryQuestion}>Add Yes/No Question</Button>
+                    <Button className="add" variant = "lightblue" onClick={addBinaryQuestion}>Add Yes/No Question</Button>
 
                     <p className="question-heading">Textfield questions:</p>
                     {textQuestions.map((question, index) => (
@@ -196,7 +196,7 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
                             </Col>
                         </Row>
                     ))}
-                    <Button className="add" onClick={addTextQuestion}>Add Textfield Question</Button>
+                    <Button className="add" variant = "lightblue" onClick={addTextQuestion}>Add Textfield Question</Button>
 
                     <p className="question-heading">Range questions:</p>
                     {rangeQuestions.map((question, index) => (
@@ -216,7 +216,7 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
                             </Col>
                         </Row>
                     ))}
-                    <Button className="add" onClick={addRangeQuestion}>Add Checkbox Question</Button>
+                    <Button className="add" variant = "lightblue" onClick={addRangeQuestion}>Add Checkbox Question</Button>
                 </CardBody>
             </Card>
 

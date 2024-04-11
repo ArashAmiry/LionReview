@@ -67,7 +67,7 @@ const SignupSquare: React.FC = () => {
         <Form className="signup-square-form" onSubmit={handleSubmit}>
           <Form.Group className="signup-square-input">
             <Form.Control
-              className='mb-3'
+              className='mb-3 bg-body'
               type="text"
               value={username}
               onChange={handleUsernameChange}
@@ -75,7 +75,7 @@ const SignupSquare: React.FC = () => {
               required
             />
             <Form.Control
-              className='mb-3'
+              className='mb-3 bg-body'
               type="email"
               value={email}
               onChange={handleEmailChange}
@@ -84,14 +84,14 @@ const SignupSquare: React.FC = () => {
             />
             <InputGroup>
               <Form.Control
-                className='mb-3'
+                className='mb-3 bg-body'
                 type={passwordVisible ? "text" : "password"}
                 value={password}
                 onChange={handlePasswordChange}
                 placeholder="Password"
                 required
               />
-              {password && <InputGroup.Text className='mb-3 visibility' onClick={() => setPasswordVisible(!passwordVisible)}>
+              {password && <InputGroup.Text className='mb-3 visibility bg-body' onClick={() => setPasswordVisible(!passwordVisible)}>
                 {passwordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
               </InputGroup.Text>}
             </InputGroup>

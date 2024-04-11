@@ -56,6 +56,7 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
             return updatedAnswerPage;
         })
     };
+
     return (
         <Form.Group key={questionIndex} className="mb-3 question p-3" controlId={`step-${questionIndex}`}>
             <Form.Label className="range-label">{question.question}</Form.Label>
@@ -70,6 +71,11 @@ function RangeQuestionListReview({ currentPageIndex, question, questionIndex, se
                 max={maxValue}
                 onChange={(event, value) => handleSliderChange(value as number)} // Why is type number | number[] ?
                 disabled={isChecked}
+                sx={{
+                    '& .MuiSlider-markLabel': {
+                      color: "var(--text-color)",
+                    },
+                }}
             />
             <Form.Check
                 checked={isChecked}
