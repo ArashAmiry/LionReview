@@ -19,10 +19,21 @@ const templateSchema: Schema = new Schema({
   info: {
     type: String,
   },
-  questions: [{
-    questionType: { type: String, required: true },
-    question: { type: String, required: true }
-  }]
+  questions: {
+    type: [{
+      questionType: { type: String, required: true },
+      question: { type: String, required: true }
+    }],
+    validate: {
+      validator: function (questions: { question: string }[]) {
+        console.log(questions);
+        // Check that there is at least one non-empty answer
+        return questions.some(question => question.question.trim().length > 0);
+      },
+      message: 'You need at least 1 question.'
+    }
+
+  }
 });
 
 

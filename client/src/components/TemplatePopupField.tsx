@@ -28,12 +28,12 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
         }
         else {
             setIsEditModeOn(true);
-            setUpdatedName(template.name)
-            setUpdatedInfo(template.info)
-            setBinaryQuestions(template.questions.filter(question => question.questionType === "binary"))
-            setTextQuestions(template.questions.filter(question => question.questionType === "text"))
-            setRangeQuestions(template.questions.filter(question => question.questionType === "range"))
-            setIsSaved(true)
+            // setUpdatedName(template.name)
+            // setUpdatedInfo(template.info)
+            // setBinaryQuestions(template.questions.filter(question => question.questionType === "binary"))
+            // setTextQuestions(template.questions.filter(question => question.questionType === "text"))
+            // setRangeQuestions(template.questions.filter(question => question.questionType === "range"))
+            setIsSaved(false);
         }
     }
 
@@ -119,6 +119,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
     const [updatedName, setUpdatedName] = React.useState<string>(
         template.name);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
+    const [showNoQuestionsError, setShowNoQuestionsError] = React.useState<boolean>(false);
 
     const [updatedInfo, setUpdatedInfo] = React.useState<string>(
         template.info);
@@ -134,23 +135,26 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
     );
 
     const handleBinaryQuestionChange = (index: number, value: string) => {
-        const updatedBinaryQuestions = [...binaryQuestions];
+        const updatedBinaryQuestions = JSON.parse(JSON.stringify(binaryQuestions));
         updatedBinaryQuestions[index].question = value;
         setBinaryQuestions(updatedBinaryQuestions);
+        setShowNoQuestionsError(false);
         setIsSaved(false);
     };
 
     const handleTextQuestionChange = (index: number, value: string) => {
-        const updatedTextQuestions = [...textQuestions];
+        const updatedTextQuestions = JSON.parse(JSON.stringify(textQuestions));
         updatedTextQuestions[index].question = value;
         setTextQuestions(updatedTextQuestions);
+        setShowNoQuestionsError(false);
         setIsSaved(false);
     };
 
     const handleRangeQuestionChange = (index: number, value: string) => {
-        const updatedRangeQuestions = [...rangeQuestions];
+        const updatedRangeQuestions = JSON.parse(JSON.stringify(rangeQuestions));
         updatedRangeQuestions[index].question = value;
         setRangeQuestions(updatedRangeQuestions);
+        setShowNoQuestionsError(false);
         setIsSaved(false);
     };
 
@@ -212,7 +216,9 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                 template.questions = [...binaryQuestions, ...textQuestions, ...rangeQuestions];
             })
             .catch(function (error) {
-                if(updatedName.length === 0) setShowNameError(true);
+                errorValidateQuestions(binaryQuestions, textQuestions, rangeQuestions);
+                if (updatedName.length === 0) setShowNameError(true);
+                if (binaryQuestions.length === 0 && textQuestions.length === 0 && rangeQuestions.length === 0) setShowNoQuestionsError(true);
                 if (error.response) {
                     console.log(error.response.data);
                     console.log(error.response.status);
@@ -228,8 +234,6 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
 
     //updateTemplates();
 
-
-
     function saveTemplate() {
 
         const allQuestionsUpdated = [...binaryQuestions, ...textQuestions, ...rangeQuestions];
@@ -244,7 +248,32 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
         updateTemplate(templateId, updatedTemplateData)
     };
 
+    function errorValidateQuestions(binaryQuestions: { question: string }[], textQuestions: { question: string }[], rangeQuestions: { question: string }[]) {
+        if (binaryQuestions.length === 0 && textQuestions.length === 0 && rangeQuestions.length === 0) {
+            setShowNoQuestionsError(true);
+            return;
+        }
 
+        setShowNoQuestionsError(true);
+        binaryQuestions.map(question => {
+            if (question.question.length !== 0) {
+                setShowNoQuestionsError(false);
+                return;
+            }
+        })
+
+        textQuestions.map(question => {
+            if (question.question.length !== 0) {
+                setShowNoQuestionsError(false);
+            }
+        })
+
+        rangeQuestions.map(question => {
+            if (question.question.length !== 0) {
+                setShowNoQuestionsError(false);
+            }
+        })
+    }
 
 
     return (
@@ -258,8 +287,10 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                             <p className="intro-info">Short description:</p>
                             <div className="info-container"><p className="info">{template.info}</p></div>
                         </div>
-                        <Button className="edit-button" size="lg" variant="success" onClick={handleEditModeButton}>Edit</Button>
-                        <Button className="close-button" size="lg" variant="light" onClick={onClose}>Close</Button>
+                        <div className="pt-1">
+                            <Button className="edit-button" size="lg" variant="success" onClick={handleEditModeButton}>Edit</Button>
+                            <Button className="close-button" size="lg" variant="light" onClick={onClose}>Close</Button>
+                        </div>
                     </div></>
             ) : (
                 <div className='editModeOn-container'>
@@ -345,6 +376,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                                 id="textId"
                                 value={updatedInfo}
                                 onChange={(e) => handleInfoChange(e.target.value)} />
+                            {showNoQuestionsError && <p>You need at least 1 question.</p>}
                         </div>
                         <SaveButton isSaved={isSaved}></SaveButton>
                         <DeleteButton isDeleteAlert={isDeleteAlert}></DeleteButton>

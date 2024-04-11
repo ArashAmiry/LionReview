@@ -13,6 +13,7 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
 
     const [updatedName, setUpdatedName] = React.useState<string>('');
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
+    const [showNoQuestionsError, setShowNoQuestionsError] = React.useState<boolean>(false);
     const [updatedInfo, setUpdatedInfo] = React.useState<string>('');
 
     const [textQuestions, setTextQuestions] = React.useState<{ questionType: string, question: string }[]>(
@@ -31,29 +32,32 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
         const updatedBinaryQuestions = [...binaryQuestions];
         updatedBinaryQuestions[index].question = value;
         setBinaryQuestions(updatedBinaryQuestions);
+        setShowNoQuestionsError(false);
     };
 
     const handleTextQuestionChange = (index: number, value: string) => {
         const updatedTextQuestions = [...textQuestions];
         updatedTextQuestions[index].question = value;
         setTextQuestions(updatedTextQuestions);
+        setShowNoQuestionsError(false);
     };
 
     const handleRangeQuestionChange = (index: number, value: string) => {
         const updatedRangeQuestions = [...rangeQuestions];
         updatedRangeQuestions[index].question = value;
         setRangeQuestions(updatedRangeQuestions);
+        setShowNoQuestionsError(false);
     };
 
     // Function to add new binary question
     const addBinaryQuestion = () => {
         setBinaryQuestions([...binaryQuestions, { questionType: "binary", question: `` }]);
+
     };
 
     // Function to add new text question
     const addTextQuestion = () => {
         setTextQuestions([...textQuestions, { questionType: "text", question: `` }]);
-
     };
 
     const addRangeQuestion = () => {
@@ -94,6 +98,8 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
                 console.log(response);
             })
             .catch(function (error) {
+                errorValidateQuestions(binaryQuestions, textQuestions, rangeQuestions);
+
                 if (updatedName.length === 0) setShowNameError(true);
                 if (error.response) {
                     console.log(error.response.data);
@@ -109,6 +115,32 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
             });
     };
 
+    function errorValidateQuestions(binaryQuestions: { question: string }[], textQuestions: { question: string }[], rangeQuestions: { question: string }[]) {
+        if (binaryQuestions.length === 0 && textQuestions.length === 0 && rangeQuestions.length === 0){
+            setShowNoQuestionsError(true);
+            return;
+        } 
+
+        setShowNoQuestionsError(true);
+        binaryQuestions.map(question => {
+            if (question.question.length !== 0) {
+                setShowNoQuestionsError(false);
+                return;
+            }
+        })
+
+        textQuestions.map(question => {
+            if (question.question.length !== 0) {
+                setShowNoQuestionsError(false);
+            }
+        })
+
+        rangeQuestions.map(question => {
+            if (question.question.length !== 0) {
+                setShowNoQuestionsError(false);
+            }
+        })
+    }
 
     function handleCreateNewTemplate() {
 
@@ -207,6 +239,8 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
                         rows={6}
                         value={updatedInfo}
                         onChange={(e) => handleInfoChange(e.target.value)} />
+
+                    {showNoQuestionsError && <p className="pt-3">You need at least 1 question.</p>}
                 </div>
                 <Button className="edit-button" size="lg" variant="success" onClick={handleCreateNewTemplate}>Create New Template</Button>
                 <Button className="close-button" size="lg" variant="light" onClick={onClose}>Close</Button>
