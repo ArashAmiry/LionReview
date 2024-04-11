@@ -34,7 +34,7 @@
             <Sidebar className="sidebar" collapsed={collapsed} style={{borderWidth: 0}}
                 rootStyles={{
                     [`.${sidebarClasses.container}`]: {
-                    backgroundColor: 'var(--bs-body-bg)'
+                    backgroundColor: `${isDarkMode ? 'var(--bs-body-bg)' : 'rgb(242, 242, 242, 1)'}`
                     },
                 }}
             >
