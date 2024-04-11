@@ -166,7 +166,7 @@ const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IRevie
             <Card className="review">
               <Card.Body className="review-card">
                 <div className="arash">
-                  <Card.Title>{review.name}</Card.Title>
+                  <Card.Title style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{review.name}</Card.Title>
                   <Card.Text>
                     <Badge
                       text={
