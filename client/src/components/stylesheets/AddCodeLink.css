@@ -1,12 +1,9 @@
 .links-container {
     border-radius: 14px;
-    border-color: gray;
-    border-style: groove;
     padding: 10px;
     width: 100%;
     background-color: white;
     margin-left: 0px;
-    height: 100%;
 }
 
 .link-row {
