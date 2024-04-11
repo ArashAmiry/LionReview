@@ -16,7 +16,7 @@ type AddFormQuestionsProps = {
 
 function AddFormQuestions({ questions, setQuestions}: AddFormQuestionsProps) {
   return (
-    <Col md={12} className="box rounded">
+    <Col md={12} className="box border-radius: 0 0 25px 25px; bg-body">
       <Tabs
         defaultActiveKey="binaryQuestions"
         id="uncontrolled-tab-example"

@@ -37,7 +37,7 @@ function ReviewFormEditor({currentPageIndex, pagesData, setPagesData} : ReviewFo
 
     return (
     <Row className="form-row">
-      <Col md={7} className="form-box pt-2">
+      <Col md={7} className="form-box bg-body">
         <Row className="pb-3">
           <Col md={12}>
             <Form.Control

@@ -11,12 +11,7 @@ function Question({questions, setQuestions}: {questions: {questionType: string, 
       const deleteQuestion = (index: number) => {
         const updatedList = [...questions];
         updatedList.splice(index, 1);
-        const binaryQuestions = updatedList.filter(question => question.questionType === "binary");
-        if (binaryQuestions.length === 0) {
-          setQuestions([...updatedList, {questionType: "binary", question: ""}]);
-        } else {
-          setQuestions(updatedList);
-        }
+        setQuestions(updatedList);
       }
 
       

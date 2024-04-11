@@ -14,25 +14,63 @@ import EmailSent from "./pages/EmailSent";
 import { AuthProvider } from "./AuthContext";
 import PrivateRoute from "./PrivateRoute";
 import ReviewDetails from "./pages/ReviewDetails";
+import { useEffect, useState } from "react";
 import AfterParticipation from "./pages/AfterParticipation";
 import NotFound from "./pages/NotFound";
 
 axios.defaults.withCredentials = true;
 
 function App() {
+  const isBrowserDefaultDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const localStorageTheme = localStorage.getItem('default-theme');
+    if (((localStorageTheme !== null && localStorageTheme === 'dark')) || (localStorageTheme == null && isBrowserDefaultDark() && !darkMode)) {
+        setDarkMode(true);
+        setDarkModeTheme();
+    }
+  }, []);
+
+  const setDarkModeTheme = () => {
+    localStorage.setItem('default-theme', 'dark');
+    document.documentElement.classList.add('dark-mode');
+    const htmlElement = document.documentElement;
+    htmlElement.setAttribute('data-bs-theme', 'dark');
+  };
+  
+  const setLightModeTheme = () => {
+    localStorage.setItem('default-theme', 'light');
+    document.documentElement.classList.remove('dark-mode');
+    const htmlElement = document.documentElement;
+    htmlElement.removeAttribute('data-bs-theme');
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(prevMode => {
+      const newMode = !prevMode;
+      if (newMode) {
+        setDarkModeTheme();
+      } else {
+        setLightModeTheme();
+      }
+      return newMode;
+    });
+  };
+  
   return (
     <Router>
       <AuthProvider>
         <div className="App">
-          <Header />
+          <Header isDarkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
           <Routes>
             <Route path="/" element={<StartPage />} />
             <Route path="/logIn" element={<LoginPage />} />
             <Route path="/signUp" element={<SignupPage />} />
             <Route path="/create" element={
               <PrivateRoute>
-                <CreateReview />
+                <CreateReview isDarkMode={darkMode}/>
               </PrivateRoute>
             }
             />
@@ -44,7 +82,7 @@ function App() {
                 <MyReviews username={"username"} />
               </PrivateRoute>
             } />
-            <Route path="/myReviews/:reviewId" element={<ReviewDetails />} />
+            <Route path="/myReviews/:reviewId" element={<ReviewDetails isDarkMode={darkMode}/>} />
             <Route path='*' element={<NotFound />}/>
             <Route path="/thanks" element={<AfterParticipation />} />
             <Route path='/Templates' element={<TemplatePage />} />

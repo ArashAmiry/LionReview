@@ -3,7 +3,19 @@
 
 .App {
   text-align: center;
-  
+  color: var(--text-color); 
+}
+
+:root {
+  --background-color: #243945;
+  --text-color: #000000;
+  --active-color: #D6D6D6;
+}
+
+.dark-mode {
+  --background-color: #243945;
+  --text-color: #ffffff;
+  --active-color: #49525B;
 }
 
 body {
@@ -18,7 +30,6 @@ body {
 
 
 
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -30,7 +41,7 @@ body {
   }
 }
 
-.App-header {
+.App-header { 
 
   min-height: 100vh;
   display: flex;

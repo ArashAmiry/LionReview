@@ -50,7 +50,7 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
                 </>
             ):(
                 <>
-                <Card className="preview-box">
+                <Card className="preview-box bg-body">
                     <Card.Title className="m-3">{reviewTitle}</Card.Title>
                     <Card.Body className="mx-5 mt-2">       
                     {questions.map((question, index) => (

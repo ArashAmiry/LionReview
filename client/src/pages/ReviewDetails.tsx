@@ -33,7 +33,7 @@ type DetailsPage = {
     }[];
 };
 
-const ReviewDetails = () => {
+const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
     const navigate = useNavigate();
     const [reviewName, setReviewName] = useState<string>("")
     const [reviewPages, setReviewPages] = useState<DetailsPage[]>()
@@ -208,6 +208,7 @@ const ReviewDetails = () => {
                     <Container className="container-details mt-2">
                         <CodeDisplay
                             files={reviewPages[currentPageIndex].codeSegments}
+                            isDarkMode={isDarkMode}
                         />
                     </Container>
                     <ActionButtons reviewStatus={reviewStatus} deleteReview={() => deleteReview()} completeReview={() => completeReview()} />
@@ -216,20 +217,20 @@ const ReviewDetails = () => {
                 <>
                     {isThereQuestionsForThisPage ? (
                         <>
-                            <Container className="big-container">
-                                <div className="tab-list-container">
+                            <Container className="big-container bg-body">
+                                <div className="tab-list-container bg-body">
                                     <TabContext value={value}>
-                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                        <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                                             <TabList onChange={handleChange} aria-label="lab API tabs example" centered className="tab-list">
-                                                <Tab label="Summary" value="1" style={{fontFamily: "Lexend" }} />
-                                                <Tab label="Individual" value="2" style={{fontFamily: "Lexend" }} />
+                                                <Tab label="Summary" value="1" style={{fontFamily: "Lexend" }} sx={{ color: 'var(--text-color)' }}/>
+                                                <Tab label="Individual" value="2" style={{fontFamily: "Lexend" }} sx={{ color: 'var(--text-color)' }}/>
                                             </TabList>
                                         </Box>
                                     </TabContext>
                                 </div>
                                 <TabContext value={value}>
                                     <TabPanel value="1">
-                                        <Container className="container-statistics mt-2">
+                                        <Container className="container-statistics mt-2 bg-body">
                                             {reviewPages[currentPageIndex].questions
                                                 .map((question) => (
                                                     <Row>

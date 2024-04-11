@@ -9,7 +9,7 @@ interface TextfieldQuestionDetailsProps {
 
 const TextfieldQuestionDetails = ({ question, answers }:TextfieldQuestionDetailsProps) => {
     return ( 
-        <Container className="textfield-container my-4">
+        <Container className="textfield-container my-4 bg-body">
             <h5 className="mb-0">{question.question}</h5>
             <p className="mt-1 mb-3">{answers?.filter(item => item !== "").length} responses</p>
             {answers && answers.filter(item => item !== "").map((answer, index) => (

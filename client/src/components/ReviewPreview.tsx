@@ -11,18 +11,20 @@ type ReviewPreviewProps = {
     addNewPage: () => void,
     setReviewName: (name: string) => void,
     previousStep: () => void,
+    isDarkMode: boolean,
     setRandomize: (randomize: Boolean) => void,
 }
 
-function ReviewPreview ({pagesData, currentPageIndex, submitReview, addNewPage, setReviewName, previousStep, setRandomize} : ReviewPreviewProps) {
+function ReviewPreview ({pagesData, currentPageIndex, submitReview, addNewPage, setReviewName, previousStep, isDarkMode, setRandomize} : ReviewPreviewProps) {
 
     
 
     return (
         <Row className="code-row">
-            <Col className="code-preview" md={9}>
+            <Col className="code-preview bg-body" md={9}>
             <CodePreviewPage
                 files={pagesData[currentPageIndex].files}
+                isDarkMode={isDarkMode}
             />
             </Col>
             <Col md={3} className="p-0">
