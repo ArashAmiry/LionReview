@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <Navbar bg="light" data-bs-theme="light" className="navbar">
       <Container>
-        <Navbar.Brand as={NavLink} to="/"><Image width={50} src={img} /></Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/"><Image width={90} src={img} /></Navbar.Brand>
         <Nav className="me-auto">
         {isLoggedIn && (<>
           <Nav.Link as={NavLink} to="/create">Create Review Session</Nav.Link>
