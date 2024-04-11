@@ -5,8 +5,6 @@ import { authenticationRouter } from "./router/authentication";
 import { fetchCodeRouter } from "./router/fetchCode";
 import { reviewRouter } from "./router/review";
 import session from 'express-session';
-import SECRET from "./session_secret";
-import PASSWORD from "./db/password";
 import { accessCodeRouter } from "./router/accessCode";
 const MongoStore = require('connect-mongo');
 

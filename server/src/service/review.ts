@@ -29,6 +29,9 @@ export class ReviewService {
 
     async getReview(reviewId: string): Promise<IReview | undefined> {
         try {
+            if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+                return undefined;
+            }
             const review = await reviewModel.findOne({ _id: reviewId }).exec();
             if (review !== null) { // since findById returns null if no document is found
                 return review.toObject();
