@@ -329,7 +329,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
                     ) : (
                         <>
                             <Container style={{ height: "65vh" }} className="d-flex flex-column justify-content-center align-items-center">
-                                <h1 className="no-answers">Oh no, there are no answers submitted for this page.</h1>
+                                <h2 className="no-answers">Oh no, there are no answers submitted for this page.</h2>
                             </Container>
                             <ActionButtons reviewStatus={reviewStatus} deleteReview={() => deleteReview()} completeReview={() => completeReview()} />
                         </>
