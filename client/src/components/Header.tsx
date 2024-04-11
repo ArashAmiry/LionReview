@@ -29,7 +29,7 @@ const Header = ({isDarkMode, toggleDarkMode} : HeaderProps) => {
 
 
   return (
-    <Navbar className="navbar bg-body">
+    <Navbar bg={`${isDarkMode ? 'dark' : 'light'}`} className="navbar">
       <Container>
         <Navbar.Brand as={NavLink} to="/"><Image width={90} src={img} className={isDarkMode ? 'white-image' : ''} /></Navbar.Brand>
         <Nav className="me-auto">
