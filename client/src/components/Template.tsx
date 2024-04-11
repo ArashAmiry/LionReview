@@ -7,6 +7,7 @@ import "./stylesheets/PresetQuestions.css";
 import { ITemplate } from '../interfaces/ITemplate';
 import axios from "axios";
 
+
 interface TemplateProps {
   questions: { questionType: string, question: string }[];
   setQuestions: (questions: { questionType: string, question: string }[]) => void;
@@ -130,8 +131,8 @@ function Template({ questions, setQuestions }: TemplateProps) {
           <TextfieldList textfields={textQuestions}/>
           <RangeQuestionList rangeQuestions={rangeQuestions}></RangeQuestionList> */}
         </Form>
-        {selectedTemplate.isAdded ? <Button onClick={handleAddTemplate}>{"Remove template"}</Button> :
-          <Button onClick={handleAddTemplate}>{"Add template"}</Button>}
+        {selectedTemplate.isAdded ? <Button onClick={handleAddTemplate}variant="dangerdark">{"Remove template"}</Button> :
+          <Button onClick={handleAddTemplate} variant= "completeform" >{"Add template"}</Button>}
 
 
       </Col>

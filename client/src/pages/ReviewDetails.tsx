@@ -18,6 +18,7 @@ import TextfieldListAnswer from "../components/review_details/TextfieldListAnswe
 import RangeQuestionListAnswer from "../components/review_details/RangeQuestionListAnswer";
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import ActionButtons from "../components/review_details/ActionButtons";
+import { inherits } from "util";
 
 type DetailsPage = {
     formName: string;
@@ -201,7 +202,7 @@ const ReviewDetails = () => {
                 <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
             </Col>
             <h1 className="review-name">{reviewName}</h1>
-            <Button className="toggle-code-answers m-1" onClick={() => setShowCode(!showCode)}>{showCode ? "Show answers" : "Show code"}</Button>
+            <Button className="toggle-code-answers m-1" variant="lightblue" onClick={() => setShowCode(!showCode)} >{showCode ? "Show answers" : "Show code"}</Button>
             {showCode ?
                 <>
                     <Container className="container-details mt-2">
@@ -220,8 +221,8 @@ const ReviewDetails = () => {
                                     <TabContext value={value}>
                                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                             <TabList onChange={handleChange} aria-label="lab API tabs example" centered className="tab-list">
-                                                <Tab label="Summary" value="1" />
-                                                <Tab label="Individual" value="2" />
+                                                <Tab label="Summary" value="1" style={{fontFamily: "Lexend" }} />
+                                                <Tab label="Individual" value="2" style={{fontFamily: "Lexend" }} />
                                             </TabList>
                                         </Box>
                                     </TabContext>

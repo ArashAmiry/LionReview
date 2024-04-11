@@ -53,3 +53,61 @@ body {
     transform: rotate(360deg);
   }
 }
+.nav-tabs .nav-link{
+  color:#2180bc;
+}
+.list-group-item.active{
+  background-color: #2180bc ;
+  border-color: #2180bc;
+}
+
+.btn-completeform{
+  background-color: #02B35F; /* this is the primary color in Bootstrap 5 */
+  border-color: #02B35F;
+  color: #fff; /* white text */
+}
+.btn-completeform:hover,.btn-completeform:focus {
+  background-color: #058449; /* this is the primary color in Bootstrap 5 */
+  border-color: #058449;
+  color: #fff; /* white text */
+}
+.btn-lightblue{
+  background-color: #2AA5F1  ;
+  border-color:#2AA5F1;
+  color: #FFFFFF;
+}
+.btn-lightblue:hover, .btn-lightblue:focus{
+  background-color: #2180bc  ;
+  border-color:#2180bc;
+  color: #FFFFFF;
+}
+.btn-dangerdark{
+  background-color: #CD2635  ;
+  border-color:#CD2635;
+  color: #FFFFFF;
+}
+.btn-dangerdark:hover, .btn-dangerdark:focus{
+  background-color: #981b25  ;
+  border-color:#981b25 ;
+  color: #FFFFFF;
+}
+.btn-orang{
+  background-color: #f2a20c  ;
+  border-color:#f2a20c ;
+  color: #FFFFFF;
+}
+.btn-orang:hover,.btn-orang:focus{
+  background-color: #dc940f  ;
+  border-color:#d08c0f ;
+  color: #FFFFFF;
+}
+.btn-secondary{
+  background-color: #1875d1d1  ;
+  border-color:#1875d1d1  ;
+  color: #FFFFFF;
+}
+.btn-secondary:hover, .btn-secondary:focus{
+  background-color: #11589e  ;
+  border-color:#11589e ;
+  color: #FFFFFF;
+}

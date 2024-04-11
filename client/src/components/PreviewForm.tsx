@@ -35,7 +35,7 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
                 <Card className="preview-box">
                     <SaveTemplate questions={questions} onClose={handleSaveTemplate}></SaveTemplate>
                 </Card>
-                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="light">Exit</Button>
+                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="light" style={{backgroundColor: "#CD2635 " ,borderColor:"#CD2635", color: "#FFFFFF"}}>Exit</Button>
                 </>
             ):(
                 <>
@@ -61,7 +61,7 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
                         <Card.Text className="fs-5 fw-bold text-danger">{errorMessage}</Card.Text>
                     )}
                 </Card>
-                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success">Save Form as Template</Button>
+                <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="success" style={{backgroundColor: "#F1A30D",borderColor:"#F1A30D"}}>Save Form as Template</Button>
                 </>
             )}
 

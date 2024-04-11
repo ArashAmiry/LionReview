@@ -12,7 +12,7 @@ const SignupPage: React.FC = () => {
         <Col sm={7} className="d-flex flex-column justify-content-center">
           <Container className='text-container'>
             <p className='log-in-to'>Sign up to</p>
-            <p className='app-name'>ReviewTool</p>
+            <p className='app-name'>LionReview</p>
           </Container>
         </Col>
         <Col sm={5}>

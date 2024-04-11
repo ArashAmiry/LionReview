@@ -56,8 +56,8 @@ function PreviewFormSidebar({ submitReview, addNewPage, setReviewName, reviewTit
                 ))}
             </Card.Body>
 
-            <Button className="step-3-btn" size="lg" onClick={handleShow} variant="success">Finalize Form</Button>
-            <Button className="step-3-btn" size="lg" variant="primary" onClick={addNewPage}>Add New Page</Button>
+            <Button className="step-3-btn" size="lg" onClick={handleShow} variant="completeform">Finalize Form</Button>
+            <Button className="step-3-btn" size="lg" variant="lightblue" onClick={addNewPage}>Add New Page</Button>
             <Button className="step-3-btn" size="lg" variant="light" onClick={() => previousStep()}>Back</Button>
 
             <CreateReviewSendEmail submitReview={submitReview} showEmail={showEmailModal} setShowEmail={setShowEmailModal} setShowToast={setShowToast} />

@@ -8,12 +8,12 @@ function ActionButtons({ reviewStatus, deleteReview, completeReview }: { reviewS
                 {reviewStatus !== "Completed" && (
                     <>
                         <Col md={3}>
-                            <Button className="delete-btn" onClick={() => deleteReview()} variant="danger">
+                            <Button className="delete-btn" variant= "dangerdark" onClick={() => deleteReview()} >
                                 Delete
                             </Button>
                         </Col>
                         <Col md={3}>
-                            <Button className="complete-btn" onClick={() => completeReview()}>Complete review</Button>
+                            <Button className="complete-btn" variant="completeform" onClick={() => completeReview()}>Complete review </Button>
                         </Col>
                     </>
                 )}

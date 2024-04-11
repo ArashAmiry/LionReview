@@ -51,9 +51,9 @@ const BinaryQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
             {
                 data: data.values,
                 backgroundColor: data.labels.map(label => {
-                    if (label.toLowerCase() === 'yes') return 'blue';
-                    if (label.toLowerCase() === "no") return 'red';
-                    return 'gray';
+                    if (label.toLowerCase() === 'yes') return "#00B35E";
+                    if (label.toLowerCase() === "no") return '#FC2604';
+                    return '#256E7D';
                 })
 
             }

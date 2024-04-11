@@ -180,7 +180,7 @@ const ReviewCardList = ({ reviews, setReviews, showEmailBox }: { reviews: IRevie
                   </Badge>
                 </Card.Text>
                 <Row>
-                  <Button onClick={() => goToReviewDetails(review)} variant="primary">View Responses</Button>
+                  <Button onClick={() => goToReviewDetails(review)} variant="lightblue">View Responses</Button>
                   {review.status === "InProgress" && (
                     <Button variant="secondary" className="my-1" onClick={() => showEmailBox(review)}>Send to Reviewer</Button>
                   )}

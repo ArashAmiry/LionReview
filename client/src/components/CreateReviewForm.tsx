@@ -22,7 +22,7 @@ function AddFormQuestions({ questions, setQuestions}: AddFormQuestionsProps) {
         id="uncontrolled-tab-example"
         className="mb-3"
       >
-        <Tab eventKey="binaryQuestions" title="Questions"><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
+        <Tab eventKey="binaryQuestions" title="Questions" ><Question questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
         <Tab eventKey="textQuestions" title="Textfields"><Textfields questions={questions} setQuestions={(questions) => setQuestions(questions)} /></Tab>
         <Tab eventKey="rangeQuestions" title="Range" ><RangeQuestions questions={questions} setQuestions={(rangeQuestions) => setQuestions(rangeQuestions)} /></Tab>
         <Tab eventKey="contact" title="Templates">

@@ -2,7 +2,7 @@ import React from 'react';
 import './stylesheets/StartPage.css'
 
 const StaticTextComponent: React.FC = () => {
-  const appName = "ReviewTool";
+  const appName = "LionReview";
 
   return (
     <body className='body-main'>

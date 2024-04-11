@@ -99,10 +99,11 @@ function PresetQuestions ({ categories, questions, setQuestions }: PresetQuestio
                         <ListGroup.Item
                             key={index + 1}
                             action
-                            active={selectedCategory.name === category.name}
+                            active={selectedCategory.name === category.name} 
                             onClick={() => {
                                 setSelectedCategory(category);
                             }}
+                            
                         >
                             {category.name}
                         </ListGroup.Item>

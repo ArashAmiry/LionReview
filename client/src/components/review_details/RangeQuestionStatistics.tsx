@@ -36,7 +36,7 @@ const RangeQuestionStatistics = ({ answers }: QuestionStatisticsProps) => {
                 {
                     label: 'Counts',
                     data: Object.values(countsMap), // Use the values as data points
-                    backgroundColor: 'pink',
+                    backgroundColor: 'rgb(250,170,13,0.70)',
                     borderColor: 'black',
                     borderWidth: 1
                 }

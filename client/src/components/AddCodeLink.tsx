@@ -86,7 +86,7 @@ const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmi
 
             {!(urls.length === 2) &&
                 <div className="d-flex justify-content-center mt-3">
-                    <Button variant="outline-secondary" className="btn-outline-secondary" onClick={() => addLink()}>
+                    <Button variant="orang" className="btn-outline-secondary" onClick={() => addLink()}>
                         Add a second file
                     </Button>
                 </div>}
@@ -124,7 +124,7 @@ const LinkRow = ({ githublink, setLink, deleteLink }: LinkRowProps) => {
                         }} />
                 </Col>
                 <Col sm={2} className="d-flex justify-content-center align-items-center">
-                    <Button variant="danger" onClick={() => deleteLink()} > Remove</Button>
+                    <Button variant="dangerdark" onClick={() => deleteLink()} > Remove</Button>
                 </Col>
             </Row>
         </Container>
