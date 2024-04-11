@@ -30,6 +30,7 @@ body {
 
 
 
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -41,7 +42,7 @@ body {
   }
 }
 
-.App-header { 
+.App-header {
 
   min-height: 100vh;
   display: flex;
