@@ -1,6 +1,12 @@
 .page-container {
     height: 90vh;
     width: 70%;
+    background-image: url(reviewtoolmypagestemplates.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    height: 90vh;
 }
 
 .container-details {
@@ -57,7 +63,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: var(--bs-secondary-bg);
+
     border-radius: 10px;
     border: none;
     color: black;
