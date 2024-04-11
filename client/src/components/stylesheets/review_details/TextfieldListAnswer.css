@@ -2,11 +2,11 @@
     text-align: left;
     border-radius: 10px;
     width: 20rem;
-    background-color: rgb(238, 238, 238);
+    background-color: var(--bs-secondary-bg);
 }
 
 .individual-text {
-    background-color: white;
+    background-color: var(--bs-body-bg);
     padding: 5px;
     border-radius: 5px;
     word-wrap: break-word;
@@ -15,7 +15,7 @@
 .individual-binary {
     border-radius: 10px;
     width: 20rem;
-    background-color: rgb(238, 238, 238);
+    background-color: var(--bs-secondary-bg);
 }
 
 .individual-binary-question {
@@ -25,7 +25,7 @@
 .individual-range {
     border-radius: 10px;
     width: 20rem;
-    background-color: rgb(238, 238, 238);
+    background-color: var(--bs-secondary-bg);
     text-align: left;
 }
 .range-slider {
