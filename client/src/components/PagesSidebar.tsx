@@ -61,6 +61,8 @@
                                     style={currentPageIndex === index ? { backgroundColor: "var(--active-color)" } : {}}
                                     >
                                     <Row className="d-flex justify-content-center align-items-center">
+                                        {currentStep ?
+                                        <>
                                         <Col xs={9} className="sidebar-page-title" style={{ fontSize: "20px" }}>{title}</Col>                 
                                         <Col xs={3}>
                                             {handleDeletePage &&                         
@@ -70,6 +72,11 @@
                                                 src={isDarkMode ? deleteWhite : deleteBlack} width={30}/>
                                             }
                                         </Col>
+                                        </> :
+                                        <>
+                                            <Col className="sidebar-page-title" style={{ fontSize: "20px" }}>{title}</Col>
+                                        </>}
+                                        
                                     </Row>
                                     <Modal centered show={showDeletePrompt} onHide={() => setShowDeletePrompt(false)}>
                                         <Modal.Header closeButton>
