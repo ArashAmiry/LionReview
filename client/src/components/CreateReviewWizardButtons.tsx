@@ -7,7 +7,7 @@ type CreateReviewWizardButtonsProps = {
     currentPageIndex: number,
     amountSteps: number,
     previousStep: () => void,
-    nextStep: () => void
+    nextStep: () => void,
 }
 
 function CreateReviewWizardButtons({pagesData, currentPageIndex, amountSteps, previousStep, nextStep} : CreateReviewWizardButtonsProps) {

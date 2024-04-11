@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import { Col, Row } from 'react-bootstrap';
@@ -12,53 +11,10 @@ export interface CodeFile {
 }
 
 interface CodePreviewPageProps {
-    urls: string[];
-    cachedFiles: Record<string, CodeFile>; 
-    updateCachedFiles: (url: string, fileData: CodeFile) => void;
+    files: CodeFile[];
 }
 
-const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPageProps) => {
-    const [files, setFiles] = useState<CodeFile[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        const fetchCode = async (url: string): Promise<CodeFile> => {
-            if (cachedFiles[url]) {
-                return cachedFiles[url];
-            }
-            try {
-                const response = await axios.get('http://localhost:8080/fetch', {
-                    params: {
-                        path: url
-                    }
-                });
-                const newFile : CodeFile = {
-                    url: url,
-                    content: response.data,
-                    name: extractFileName(url)
-                };
-                updateCachedFiles(url, newFile);
-                return newFile;
-            } catch (error) {
-                console.error('Error fetching file content:', error);
-                return {
-                    url: "",
-                    content: "",
-                    name: "File not found"
-                }
-            }
-        };
-
-        const fetchAllFiles = async () => {
-            const filesPromises = urls.map(url => fetchCode(url));
-            const fetchedFiles = await Promise.all(filesPromises);
-            setFiles(fetchedFiles);
-            setLoading(false);
-
-        };
-
-        fetchAllFiles();
-    }, [urls]);
+const CodePreviewPage = ({ files }: CodePreviewPageProps) => {
 
     useEffect(() => {
         // Highlight code when the 'files' state updates
@@ -71,14 +27,6 @@ const CodePreviewPage = ({ urls, cachedFiles, updateCachedFiles }: CodePreviewPa
         });
     }, [files]);
 
-    const extractFileName = (url: string): string => {
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    };
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
     return (
         <Row className='code-container'>
             {files.length === 2 &&

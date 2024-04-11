@@ -2,6 +2,7 @@ import { Form, Col, Container, Row, Image, Button } from "react-bootstrap";
 import './stylesheets/AddCodeLink.css';
 import img from '../images/github-logo.png';
 import { CreateReviewPage } from "../interfaces/ICreateReviewPage";
+import { CodeFile } from "./CodePreview";
 
 interface AddCodeLinkProps {
     currentPageIndex: number;
@@ -11,80 +12,46 @@ interface AddCodeLinkProps {
 }
 
 const AddCodeLink = ({currentPageIndex, pagesData, setPagesData, setTriedToSubmit}: AddCodeLinkProps) => {
-    const urls = pagesData[currentPageIndex].urls;
+    const files = pagesData[currentPageIndex].files;
     const triedToSubmit = pagesData[currentPageIndex].triedToSubmit;
     const invalidURLExists = pagesData[currentPageIndex].invalidURLExists;
 
-    const setInvalidURLExists = (value: boolean) => {
-        setPagesData((prevPageData) => {
-          const updatedPageData = [...prevPageData]; // Create a copy of the array of page states
-          updatedPageData[currentPageIndex].invalidURLExists = value; // Update invalidURLExists of the current page
-          return updatedPageData; // Return the updated array of page states
-        });
-      };
     
-      const setUrls = (urls: string[]) => {
+      const setFiles = (files: CodeFile[]) => {
         setPagesData((prevPageData) => {
           const updatedPageData = [...prevPageData];
-          updatedPageData[currentPageIndex].urls = urls;
+          updatedPageData[currentPageIndex].files = files;
           return updatedPageData;
         });
       };
-
-    const validateUrls = (list : string[]) => {
-        let hasInvalidURL = false;
-        list.forEach(item => {
-            if (!isValidUrl(item)) {
-                hasInvalidURL = true;  
-                return;
-            }
-        });
-        setInvalidURLExists(hasInvalidURL);
-        if (!hasInvalidURL) {
-            setTriedToSubmit(false);
-        }
-    }
     
     const addLink = () => {
-        setUrls([...urls, ""]);
-        setInvalidURLExists(true);
+        setFiles([...files, {url: "", content: "", name: ""}]);
     }
 
     const setLink = (link: string, index: number) => {
-        const list = [...urls];
-        list[index] = link;
-        setUrls(list);
-        validateUrls(list);
+        const list = [...files];
+        list[index].url = link;
+        setFiles(list);
     }
+    
     const deleteLink = (index: number) => {
-        let list = [...urls];
+        let list = [...files];
         list.splice(index, 1);
         if (list.length === 0) {
-            list = [""];
+            list = [{url: "", content: "", name: ""}];
         }
-        setUrls(list);
-        validateUrls(list);
+        setFiles(list);
+        pagesData[currentPageIndex].invalidURLExists = false;
     }
-
-    const isValidUrl = (urlString: string | URL) => {
-      try { 
-      	return Boolean(new URL(urlString).hostname === 'github.com'); 
-      }
-      catch(e){ 
-      	return false; 
-      }
-  }
 
     return (
         <Col className='links-container'>
-            {/* <div className="d-flex justify-content-center">
-                <h3>Add the link to one or two code files</h3>
-            </div> */}
-            {urls.map((url, index) => (
-                <LinkRow key={index} githublink={url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} />
+            {files.map((file, index) => (
+                <LinkRow key={index} githublink={file.url} setLink={(url) => setLink(url, index)} deleteLink={() => deleteLink(index)} />
             ))}
 
-            {!(urls.length === 2) &&
+            {!(files.length === 2) &&
                 <div className="d-flex justify-content-center mt-3">
                     <Button variant="orang" className="btn-outline-secondary" onClick={() => addLink()}>
                         Add a second file
