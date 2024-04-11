@@ -17,6 +17,7 @@
     function PagesSidebar({ pagesTitles, currentPageIndex, setCurrentPageIndex, isDarkMode, currentStep, handleDeletePage}: PagesSidebarProps) {
         const [collapsed, setCollapsed] = useState(false);
         const [showDeletePrompt, setShowDeletePrompt] = useState(false);
+        const [indexToDelete, setIndexToDelete] = useState(0);
 
         // Function to toggle the collapse state
         const toggleSidebar = () => setCollapsed(!collapsed);
@@ -66,7 +67,7 @@
                                             {handleDeletePage &&                         
                                                 <Image 
                                                 className="justify-content-end" 
-                                                onClick={(e) => { e.stopPropagation(); setShowDeletePrompt(true); }} 
+                                                onClick={(e) => { e.stopPropagation(); setShowDeletePrompt(true); setIndexToDelete(index) }} 
                                                 src={isDarkMode ? deleteWhite : deleteBlack} width={30}/>
                                             }
                                         </Col>
@@ -83,7 +84,7 @@
                                             No, Close!
                                         </Button>
                                         {handleDeletePage && (
-                                            <Button variant="danger" onClick={() => { handleDeletePage(index); setShowDeletePrompt(false);}}>
+                                            <Button variant="danger" onClick={(e) => { e.stopPropagation(); handleDeletePage(indexToDelete); setShowDeletePrompt(false);}}>
                                                 Yes, Delete!
                                             </Button>
                                         )}
