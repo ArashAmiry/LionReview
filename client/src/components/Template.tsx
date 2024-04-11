@@ -114,7 +114,7 @@ function Template({ questions, setQuestions }: TemplateProps) {
 
     <Row>
       <Col className="presetQuestionSelectionBox">
-        <h4>{selectedTemplate.template.name}</h4>
+        <h4 className='template-name-title'>{selectedTemplate.template.name}</h4>
         <p>{selectedTemplate.template.info}</p>
         <Form>
           {selectedTemplate.template.questions.map((question) => (
@@ -137,10 +137,11 @@ function Template({ questions, setQuestions }: TemplateProps) {
 
       </Col>
 
-      <Col>
+      <Col className='templates-col-adds'>
         <ListGroup>
           {templates.map((template, index) => (
             <ListGroup.Item
+            className='template-items'
               key={index + 1}
               action
               active={template === selectedTemplate && !template.isAdded}
