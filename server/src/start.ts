@@ -17,6 +17,7 @@ const sessionStore = MongoStore.create({
     collectionName: 'sessions'
 })
 
+app.set("trust proxy", 1);
 app.use(session({
     secret: process.env.SECRET as string,
     resave: false,
