@@ -277,10 +277,10 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
 
 
     return (
-        <div className="edit-container">
+        <div className="edit-container bg-body">
             {!isEditModeOn ? (
                 <><Preview questions={template.questions}></Preview>
-                    <div className="preview">
+                    <div className="preview bg-body">
                         <div className="name-intro-cont">
                             <p className="intro-name">Name of Template:</p>
                             <h1 className="name">{template.name}</h1>
@@ -359,7 +359,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                         </CardBody>
                     </Card>
 
-                    <div className="edit-name-info-cont">
+                    <div className="edit-name-info-cont bg-body">
                         <div className="name-intro-cont-edit">
                             <p className="intro-name">Name of Template:</p>
                             <input
