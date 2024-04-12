@@ -58,7 +58,8 @@
 
 .center-add-code {
     height: 72vh;
-    align-content: center;
+    display: flex;
+    align-items: center;
 }
 
 .sidebar-page-title {
