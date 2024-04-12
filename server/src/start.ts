@@ -23,7 +23,9 @@ app.use(session({
     saveUninitialized: false,
     store: sessionStore,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 60 * 60 * 24,
+        secure: true,
+        sameSite: 'strict'
     }
 }));
 app.use(cors({
