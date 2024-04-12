@@ -42,7 +42,7 @@ const TemplatePage: React.FC = () => {
   
 
   const fetchSavedTemplates = async () => {
-    const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getTemplates`) //ändra /templates/...
+    const response = await axios.get<ITemplate[]>(`${process.env.REACT_APP_API_URL}/template/getTemplates`) //ändra /templates/...
       .then(function (response) {
         setSavedTemplates(response.data); //ändra (setTemplates, rad 60)
         console.log(response);
@@ -63,7 +63,7 @@ const TemplatePage: React.FC = () => {
   };
 
   const deleteTemplate = async (templateId: string) => {
-    const response = await axios.delete<Boolean>(`http://localhost:8080/template/deleteTemplate/${templateId}`) //ändra /templates/...
+    const response = await axios.delete<Boolean>(`${process.env.REACT_APP_API_URL}/template/deleteTemplate/${templateId}`) //ändra /templates/...
         .then(function (response) {
         //setSavedTemplates(response.data);
         //handleDelete()

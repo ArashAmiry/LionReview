@@ -84,7 +84,7 @@ function Template({ questions, setQuestions }: TemplateProps) {
 
 
   const fetchSavedTemplates = async () => {
-    const response = await axios.get<ITemplate[]>(`http://localhost:8080/template/getTemplates`) //ändra /templates/...
+    const response = await axios.get<ITemplate[]>(`${process.env.REACT_APP_API_URL}/template/getTemplates`) //ändra /templates/...
       .then(function (response) {
         let list: { template: ITemplate, isAdded: boolean }[] = [];
         response.data.map((res) => {

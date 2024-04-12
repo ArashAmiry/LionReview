@@ -205,7 +205,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
     };
 
     const updateTemplate = async (templateId: string, updatedTemplateData: Partial<ITemplate>) => {
-        const response = await axios.put<ITemplate[]>(`http://localhost:8080/template/editTemplate/${templateId}`, updatedTemplateData) //ändra /templates/...
+        const response = await axios.put<ITemplate[]>(`${process.env.REACT_APP_API_URL}/template/editTemplate/${templateId}`, updatedTemplateData) //ändra /templates/...
 
             .then(function (response) {
                 //setSavedTemplates(response.data); //ändra (setTemplates, rad 60)

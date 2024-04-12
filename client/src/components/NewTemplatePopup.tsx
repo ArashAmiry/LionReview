@@ -91,7 +91,7 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
 
 
     const createNewTemplate = async (newTemplateData: Partial<ITemplate>) => {
-        const response = await axios.post<ITemplate[]>(`http://localhost:8080/template/createTemplate`, newTemplateData) //ändra /templates/...
+        const response = await axios.post<ITemplate[]>(`${process.env.REACT_APP_API_URL}/template/createTemplate`, newTemplateData) //ändra /templates/...
             .then(function (response) {
                 //setSavedTemplates(response.data);
                 onClose()
