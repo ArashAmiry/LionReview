@@ -11,6 +11,7 @@
   --text-color: #000000;
   --opposite-text-color: #ffffff;
   --active-color: #D6D6D6;
+  --template-hover-color: rgb(225, 225, 225);
 }
 
 .dark-mode {
@@ -18,6 +19,7 @@
   --text-color: #ffffff;
   --opposite-text-color: #000000;
   --active-color: #49525B;
+  --template-hover-color: #272c30;
 }
 
 body {

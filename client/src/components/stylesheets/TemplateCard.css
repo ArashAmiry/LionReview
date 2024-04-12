@@ -8,11 +8,11 @@
 
 .template-card:hover {
   cursor: pointer;
-  background-color: rgb(225, 225, 225);
+  background-color: var(--template-hover-color);
 }
 
 .title {
-  color: black;
+  color: var(--text-color);
   padding: 10px;
   word-wrap: break-word;
 }

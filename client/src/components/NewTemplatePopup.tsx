@@ -220,7 +220,7 @@ const NewTemplatePopup: React.FC<NewTemplatePopupProps> = ({ onClose }) => {
                 </CardBody>
             </Card>
 
-            <div className="edit-name-info-cont">
+            <div className="edit-name-info-cont bg-body">
                 <div className="name-intro-cont">
                     <p className="intro-name">Name of Template:</p>
                     <input

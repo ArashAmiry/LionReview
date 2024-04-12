@@ -37,7 +37,7 @@ const TemplateCard: React.FC<CardProps> = ({templateId, template, deleteTemplate
   return (
     <>
     <div 
-      className={`template-card`}
+      className={`template-card bg-body`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handlePreviewEditClick}
