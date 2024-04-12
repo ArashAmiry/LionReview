@@ -48,7 +48,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
 
     const fetchReview = async (): Promise<IReview | undefined> => {
         try {
-            const response = await axios.get(`http://localhost:8080/review/single/${reviewId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/review/single/${reviewId}`);
             console.log(response.data)
             return response.data;
         } catch (e) {
@@ -58,7 +58,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
 
     const fetchIndividualAnswers = async (): Promise<{ questionId: string, answer: string }[][] | undefined> => {
         try {
-            const response = await axios.get(`http://localhost:8080/review/answer/individual/${reviewId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/review/answer/individual/${reviewId}`);
             return response.data;
         } catch (e) {
             console.log(e);
@@ -112,7 +112,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
                     const responses = await Promise.all(
                         questionsID.map(async (questionID) => {
                             try {
-                                const response = await axios.get(`http://localhost:8080/review/answer/${questionID}`);
+                                const response = await axios.get(`${process.env.REACT_APP_API_URL}/review/answer/${questionID}`);
                                 console.log("ska int efinnas något här: " + response.data.length);
                                 return { questionId: questionID, answers: response.data };
                             } catch (error) {
@@ -163,7 +163,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
 
     const completeReview = async () => {
         try {
-            const response = await axios.put(`http://localhost:8080/review/${reviewId}`);
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/review/${reviewId}`);
 
             if (response.status === 200) {
                 navigate("/myReviews");
@@ -178,7 +178,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
     }
 
     const deleteReview = async () => {
-        await axios.delete<Boolean>(`http://localhost:8080/review/${reviewId}`)
+        await axios.delete<Boolean>(`${process.env.REACT_APP_API_URL}/review/${reviewId}`)
             .catch(function (error) {
                 if (error.response) {
                     console.log(error.response.data);

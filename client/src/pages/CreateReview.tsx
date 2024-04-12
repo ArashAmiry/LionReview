@@ -224,7 +224,7 @@ function CreateReview({isDarkMode} : {isDarkMode: boolean}) {
         questions: getAllNonEmptyQuestions(index),
       };
     });
-    const review = await axios.post("http://localhost:8080/review/", {
+    const review = await axios.post(`${process.env.REACT_APP_API_URL}/review/`, {
       name: reviewName,
       createdBy: "username", // TODO ta bort
       pages: reviewPages,

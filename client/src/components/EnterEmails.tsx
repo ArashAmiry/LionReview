@@ -14,7 +14,7 @@ const EnterEmails = ({ reviewID, showEmail, setShowEmail, displayToast }: { revi
         // Handle email submission logic
         console.log(emails);
         console.log(reviewID);
-        await axios.post('http://localhost:8080/review/distribute', {
+        await axios.post(`${process.env.REACT_APP_API_URL}/review/distribute`, {
                 "emails": emails,
                 "reviewID": reviewID
             }).catch((error: Error) => {

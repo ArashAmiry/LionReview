@@ -25,7 +25,7 @@ const LoginSquare: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:8080/auth/logIn', {
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/logIn`, {
       "username": username,
       "password": password
     })

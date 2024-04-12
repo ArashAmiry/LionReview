@@ -16,7 +16,7 @@ const CreateReviewSendEmail = ({ submitReview, showEmail, setShowEmail, setShowT
         const reviewID = await submitReview(e); 
         console.log(reviewID);
         console.log(emails);
-        await axios.post('http://localhost:8080/review/distribute', {
+        await axios.post(`${process.env.REACT_APP_API_URL}/review/distribute`, {
                 "emails": emails,
                 "reviewID": reviewID
             }).catch((error: Error) => {

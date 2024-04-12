@@ -35,7 +35,7 @@ const MyReviews = ({ username }: { username: string }) => {
   );
 
   const fetchReviews = async () => {
-    const response = await axios.get<IReview[]>(`http://localhost:8080/review`)
+    const response = await axios.get<IReview[]>(`${process.env.REACT_APP_API_URL}/review`)
       .then(function (response) {
         setUserReviews(response.data);
         console.log(response);

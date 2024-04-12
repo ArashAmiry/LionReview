@@ -98,7 +98,7 @@ authenticationRouter.get("/:token", async (
         const tokenHandler = new TokenHandler();
         const decodedUsername = tokenHandler.decodeToken(tok);
         await accountModel.findOneAndUpdate({ username: decodedUsername }, { active: true });
-        return res.redirect('http://localhost:3000/activated');
+        return res.redirect(`${process.env.REACT_APP_CLIENT_URL}/activated`);
     } catch (error) {
         console.error(error);
         return res.status(500).send('Error activating account');

@@ -38,7 +38,7 @@ function RespondentReview() {
 
     const fetchReview = async (): Promise<IReview | undefined> => {
         try {
-            const response = await axios.get(`http://localhost:8080/review/single/${reviewId}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/review/single/${reviewId}`);
             return response.data;
         } catch (e) {
             console.log(e);
@@ -48,7 +48,7 @@ function RespondentReview() {
     const handleAccessSubmit = async (e: any) => {
         e.preventDefault()
         try {
-            const res = await axios.get(`http://localhost:8080/access/review`, {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/access/review`, {
                 params: {
                     accessCode: accessCode,
                     reviewId: reviewId

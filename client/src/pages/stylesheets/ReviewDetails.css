@@ -66,20 +66,19 @@
 
     border-radius: 10px;
     border: none;
-    color: black;
+    color: var(--bs-body-text);
 }
 
 .page-change.page-change-disabled {
-    background-color: rgb(241, 241, 241);
+    background-color: var(--bs-secondary-bg);
     color: darkgray;
     /* Set text color for disabled state */
 }
 
 .page-change.page-change-enabled:hover {
     cursor: pointer;
-    background-color: rgb(213, 213, 213);
+    background-color: var(--bs-tertiary-color);
     border-radius: 10px;
-    color: black;
 }
 
 .action-container {
@@ -93,7 +92,7 @@
 
 .buttons-row {
     width: fit-content;
-    background-color: rgb(241, 241, 241);
+    background-color: var(--bs-secondary-bg);
     border-radius: 10px;
     font-size: 20px;
     align-content: center;

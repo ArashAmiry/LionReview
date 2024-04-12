@@ -30,7 +30,7 @@ export class SignUpManager {
             const sendEmail = new SendEmail();
             const tokenGenerator = new TokenHandler();
             const token = tokenGenerator.generateToken(username);
-            const activationLink = `http://localhost:8080/auth/${token}`;
+            const activationLink = `${process.env.REACT_APP_API_URL}/auth/${token}`;
             await sendEmail.sendAuthenticationEmail(email, activationLink);
         }
         return successfullyCreated;

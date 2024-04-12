@@ -10,7 +10,7 @@ export class SendEmail {
             const html = `
             <h3>Hello!</h3>
             <p>You've been invited to participate in a code review.</p>
-            <p>To access the code review, kindly click <a href="http://localhost:3000/answer/${reviewID}">here</a>.</p>
+            <p>To access the code review, kindly click <a href=${process.env.REACT_APP_CLIENT_URL}/answer/${reviewID}>here</a>.</p>
             <p>Additionally, here's your unique access code: ${code}. This code is valid for a single use.</p>            
                 `;
             const transporter = nodeMailer.createTransport({
