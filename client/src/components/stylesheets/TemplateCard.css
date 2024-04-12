@@ -20,6 +20,7 @@
 .card-info {
   padding: 10px;
   padding-top: 0px;
+  word-wrap: break-word;
 }
 
 .button {
