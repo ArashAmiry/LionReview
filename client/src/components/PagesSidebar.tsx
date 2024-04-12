@@ -83,7 +83,7 @@
                                             No, Close!
                                         </Button>
                                         {handleDeletePage && (
-                                            <Button variant="danger" onClick={() => { handleDeletePage(index); setShowDeletePrompt(false);}}>
+                                            <Button variant="danger" onClick={(e) => { e.stopPropagation(); handleDeletePage(index); setShowDeletePrompt(false);}}>
                                                 Yes, Delete!
                                             </Button>
                                         )}
