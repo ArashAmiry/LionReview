@@ -17,7 +17,7 @@ const sessionStore = MongoStore.create({
     collectionName: 'sessions'
 })
 
-app.set("trust proxy", 1);
+//app.set("trust proxy", 1);
 app.use(session({
     secret: process.env.SECRET as string,
     resave: false,
@@ -26,7 +26,7 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
         secure: true,
-        sameSite: 'strict'
+        sameSite: 'none'
     }
 }));
 app.use(cors({
