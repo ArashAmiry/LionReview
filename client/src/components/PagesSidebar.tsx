@@ -9,7 +9,7 @@
         pagesTitles: string[];
         currentPageIndex: number;
         setCurrentPageIndex: (index: number) => void;
-        isDarkMode?: boolean;
+        isDarkMode: boolean;
         currentStep?: number;
         handleDeletePage?: (pageIndex: number) => void;
     };
@@ -34,7 +34,7 @@
             <Sidebar className="sidebar" collapsed={collapsed} style={{borderWidth: 0}}
                 rootStyles={{
                     [`.${sidebarClasses.container}`]: {
-                    backgroundColor: `${isDarkMode ? 'var(--bs-body-bg)' : 'rgb(242, 242, 242, 1)'}`
+                    backgroundColor: `${isDarkMode ? 'var(--bs-secondary-bg)' : 'rgb(242, 242, 242, 1)'}`
                     },
                 }}
             >

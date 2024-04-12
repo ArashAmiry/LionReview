@@ -24,7 +24,7 @@ export interface AnswerPage {
     }[]
 }
 
-function RespondentReview() {
+function RespondentReview({isDarkMode}: {isDarkMode: boolean}) {
     const [currentPageIndex, setCurrentPageIndex] = useState(0);
     const [review, setReview] = useState<IReview>();
     const [answerPages, setAnswerPages] = useState<AnswerPage[]>([]);
@@ -149,7 +149,7 @@ function RespondentReview() {
         <Container fluid className="answer-container px-0">
             <Row className="code-row">
                 <Col className="sidebar-col" md={1}>
-                    <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+                    <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} isDarkMode={isDarkMode}/>
                 </Col>
                 <Col className="code-preview" md={9}><CodeReview files={answerPages[currentPageIndex].files} /></Col>
                 <Col md={3} className="p-0">

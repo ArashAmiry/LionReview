@@ -74,7 +74,7 @@ function App() {
             />
             <Route path="/activated" element={<AfterActivation />} />
             <Route path="/emailSent" element={<EmailSent />} />
-            <Route path="/answer/:reviewId" element={<RespondentReview />} />
+            <Route path="/answer/:reviewId" element={<RespondentReview isDarkMode={darkMode}/>} />
             <Route path="/myReviews" element={
               <PrivateRoute>
                 <MyReviews username={"username"} />

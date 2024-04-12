@@ -199,7 +199,7 @@ const ReviewDetails = ({isDarkMode} : {isDarkMode: boolean}) => {
     return (
         <Container fluid className="page-container d-flex flex-column">
             <Col className="sidebar-col" md={2}>
-                <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} />
+                <PagesSidebar pagesTitles={reviewPages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} isDarkMode={isDarkMode} />
             </Col>
             <h1 className="review-name">{reviewName}</h1>
             <Button className="toggle-code-answers m-1" variant="lightblue" onClick={() => setShowCode(!showCode)} >{showCode ? "Show answers" : "Show code"}</Button>
