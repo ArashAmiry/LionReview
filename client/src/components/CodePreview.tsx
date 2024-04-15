@@ -22,7 +22,7 @@ const CodePreviewPage = ({ files, isDarkMode }: CodePreviewPageProps) => {
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>                
-                        <pre className='mb-0'>
+                        <pre className={`mb-0 ${index === 0 ? 'no-border-right' : 'no-border-left'}`}>
                             <SyntaxHighlighter style={isDarkMode ? darkTheme : lightTheme} showLineNumbers={true}>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content }</SyntaxHighlighter>
                         </pre>
                     </Col>
