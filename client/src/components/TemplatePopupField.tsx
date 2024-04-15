@@ -293,7 +293,7 @@ const PreviewTemplate: React.FC<PreviewTemplateProps> = ({ templateId, template,
                         </div>
                     </div></>
             ) : (
-                <div className='editModeOn-container'>
+                <div className='editModeOn-container bg-body'>
 
                     <Card className="edit-question-cont">
                         <CardBody className="sidebar-form">
