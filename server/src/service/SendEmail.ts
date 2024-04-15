@@ -18,13 +18,13 @@ export class SendEmail {
                 port: 465,
                 secure: true,
                 auth: {
-                    user: 'noreply.reviewtool@gmail.com', // fixa
+                    user: 'lionreview.noreply@gmail.com', // fixa
                     pass: process.env.EMAIL_PASSWORD // fixa 
                 }
             });
 
             const info = await transporter.sendMail({
-                from: 'ReviewTool <noreply.reviewtool@gmail.com>',
+                from: 'Lion Review <lionreview.noreply@gmail.com>',
                 to: email,
                 subject: 'You have a code review to do',
                 html: html
@@ -51,13 +51,13 @@ export class SendEmail {
             port: 465,
             secure: true,
             auth: {
-                user: 'noreply.reviewtool@gmail.com',
+                user: 'lionreview.noreply@gmail.com',
                 pass: process.env.EMAIL_PASSWORD
             }
         });
 
         const info = await transporter.sendMail({
-            from: 'ReviewTool <noreply.reviewtool@gmail.com>',
+            from: 'Lion Review <lionreview.noreply@gmail.com>',
             to: email,
             subject: 'Activate Account',
             html: html
