@@ -28,7 +28,7 @@ function Textfields({questions, setQuestions}: {questions: {questionType: string
               )
             ))}
             <Button variant="outline-secondary" className="btn-outline-secondary mt-3 mb-3" onClick={() => addTextfield()}>
-                Add new textfield question
+                Add new text question
             </Button>
         </>
     )

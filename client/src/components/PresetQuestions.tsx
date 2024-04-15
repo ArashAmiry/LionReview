@@ -82,7 +82,6 @@ function PresetQuestions ({ categories, questions, setQuestions }: PresetQuestio
                 </Form>
             </Col>
             <Col>
-                <Form.Control placeholder="Search..."></Form.Control>
             <h6>Categories</h6>
                 <ListGroup>
                 <ListGroup.Item
