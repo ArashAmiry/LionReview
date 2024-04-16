@@ -111,7 +111,7 @@ function Template({ questions, setQuestions }: TemplateProps) {
 
   return (
     <Row>
-      {selectedTemplate && (
+      {selectedTemplate ? (
         <>
       <Col className="presetQuestionSelectionBox">
         <h4 className='template-name-title'>{selectedTemplate.template.name}</h4>
@@ -154,7 +154,7 @@ function Template({ questions, setQuestions }: TemplateProps) {
         </ListGroup>
       </Col>
      </> 
-    )}
+    ) : <div>No templates exist</div>}
     </Row>
 
   );
