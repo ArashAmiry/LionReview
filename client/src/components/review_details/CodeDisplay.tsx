@@ -19,27 +19,22 @@ function CodeDisplay({ files, isDarkMode}: CodeDisplayProps) {
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>
                         <h1 className='header-code'>{file.name}</h1>
-                        <pre className={`mb-0 ${index === 0 ? 'no-border-right' : 'no-border-left'}`}>
                             <SyntaxHighlighter 
                                 style={isDarkMode ? darkTheme : lightTheme} 
                                 showLineNumbers={true}>
                                     {typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}
-                            </SyntaxHighlighter>
-                        </pre>
-                        
+                            </SyntaxHighlighter>           
                     </Col>
                 ))}
             {files.length === 1 &&
                 files.map((file, index) => (
                     <Col key={index} md="12" className='p-0'>
                         <h1 className='header-code'>{file.name}</h1>   
-                        <pre className={`mb-0 ${index === 0 ? 'no-border-right' : 'no-border-left'}`}>
                             <SyntaxHighlighter 
                                 style={isDarkMode ? darkTheme : lightTheme} 
                                 showLineNumbers={true}>
                                     {typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}
-                            </SyntaxHighlighter>
-                        </pre>                                         
+                            </SyntaxHighlighter>                              
                     </Col>
                 ))}
         </Row>
