@@ -43,7 +43,7 @@ function PreviewForm({reviewTitle, questions, errorMessage }: PreviewFormProps) 
         <div style={{"height":'100%'}}>
             {isSavedActive ?(
                 <>
-                <Card className="preview-box" >
+                <Card className="preview-box bg-body" >
                     <SaveTemplate questions={questions} onClose={handleSaveTemplate}></SaveTemplate>
                 </Card>
                 <Button className="save-btn" size="lg" onClick={handleSaveTemplate} variant="light" style={{backgroundColor: "#CD2635 " ,borderColor:"#CD2635", color: "#FFFFFF"}}>Exit</Button>
