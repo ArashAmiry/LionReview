@@ -110,9 +110,9 @@ function Template({ questions, setQuestions }: TemplateProps) {
   };
 
   return (
-
-
     <Row>
+      {selectedTemplate && (
+        <>
       <Col className="presetQuestionSelectionBox">
         <h4 className='template-name-title'>{selectedTemplate.template.name}</h4>
         <p>{selectedTemplate.template.info}</p>
@@ -153,6 +153,8 @@ function Template({ questions, setQuestions }: TemplateProps) {
           ))}
         </ListGroup>
       </Col>
+     </> 
+    )}
     </Row>
 
   );
