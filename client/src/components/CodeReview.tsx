@@ -8,7 +8,7 @@ import lightTheme from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-light
 function CodeReview({ files, isDarkMode}: { files: { name: string, content: string }[], isDarkMode: boolean}) {
 
     return (
-        <Row className='code-container'>
+        <Row className='code-container bg-body'>
             {files.length === 2 &&
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>
