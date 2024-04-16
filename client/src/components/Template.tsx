@@ -14,13 +14,18 @@ interface TemplateProps {
 }
 
 interface ICreateTemplate {
-  template: ITemplate,
+  name: string;
+  info: string,
+  questions: {
+    questionType: string
+    question: string
+  }[],
   isAdded: boolean
 }
 
 function Template({ questions, setQuestions }: TemplateProps) {
   const [templates, setTemplates] = useState<ICreateTemplate[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<ICreateTemplate>({ template: { _id: 'exampleId', name: 'select template to see a preview', info: '', questions: [{ questionType: 'binary', question: '' }] }, isAdded: false });
+  const [selectedTemplate, setSelectedTemplate] = useState<ICreateTemplate>({ name: 'select template to see a preview', info: '', questions: [{ questionType: 'binary', question: '' }], isAdded: false });
   const [addedTemplate, setAddedTemplate] = useState<ICreateTemplate[]>([]);
   const [saveButtonText, setSavebuttonText] = useState<string>("Add Template")
 
@@ -41,7 +46,7 @@ function Template({ questions, setQuestions }: TemplateProps) {
     setAddedTemplate(newAddedTemplates);
 
     let updatedList = [...questions];
-    const questionsToRemove = removeTemplate.template.questions
+    const questionsToRemove = removeTemplate.questions
     questionsToRemove.forEach(questionToRemove => {
       const index = updatedList.findIndex(question => question.question === questionToRemove.question);
       if (index !== -1) {
@@ -57,18 +62,27 @@ function Template({ questions, setQuestions }: TemplateProps) {
   }
 
   function handleAdd(selectedTemplate: ICreateTemplate): void {
+    console.log(selectedTemplate)
     selectedTemplate.isAdded = true;
     const newAddedTemplates = ([...addedTemplate, selectedTemplate]);
     setAddedTemplate(newAddedTemplates);
     console.log(addedTemplate)
 
-    const addedQuestions = selectedTemplate.template.questions;
+    const addedQuestions = selectedTemplate.questions.map((question) => {
+      console.log(question)
+      return {
+        question: question.question,
+        questionType: question.questionType
+      };
+    });
+    console.log("added: " + addedQuestions)
+    console.log(questions)
     setQuestions([...questions, ...addedQuestions]);
   }
 
   function handleAddTemplate(): void {
 
-    if (addedTemplate?.some(template => template.template._id === selectedTemplate.template._id)) { //Template already added, remove
+    if (addedTemplate?.some(template => template === selectedTemplate)) { //Template already added, remove
       handleRemove(selectedTemplate);
       setSavebuttonText("Add Template")
     }
@@ -86,12 +100,25 @@ function Template({ questions, setQuestions }: TemplateProps) {
   const fetchSavedTemplates = async () => {
     const response = await axios.get<ITemplate[]>(`${process.env.REACT_APP_API_URL}/template/getTemplates`) //ändra /templates/...
       .then(function (response) {
-        let list: { template: ITemplate, isAdded: boolean }[] = [];
+        let list: {
+          name: string;
+          info: string,
+          questions: {
+            questionType: string
+            question: string
+          }[],
+          isAdded: boolean
+        }[] = [];
         response.data.map((res) => {
-          list = [...list, { template: res, isAdded: false }]
+          list = [...list, {
+            name: res.name,
+            info: res.info,
+            questions: res.questions,
+            isAdded: false
+          }]
         })
         setTemplates(list); //ändra (setTemplates, rad 60)
-        setSelectedTemplate(list[0]);
+        setSelectedTemplate({ name: list[0].name, info: list[0].info, questions: list[0].questions, isAdded: list[0].isAdded });
         console.log(response);
       })
       .catch(function (error) {
@@ -113,48 +140,48 @@ function Template({ questions, setQuestions }: TemplateProps) {
     <Row>
       {selectedTemplate ? (
         <>
-      <Col className="presetQuestionSelectionBox">
-        <h4 className='template-name-title'>{selectedTemplate.template.name}</h4>
-        <p>{selectedTemplate.template.info}</p>
-        <Form>
-          {selectedTemplate.template.questions.map((question) => (
-            <>{question.questionType === "binary" &&
-              (<QuestionList questions={[question]} />)}
-              {question.questionType === "text" &&
-                (<TextfieldList textfields={[question]} />)}
-              {question.questionType === "range" &&
-                (<RangeQuestionList rangeQuestions={[question]} />)}
-            </>
+          <Col className="presetQuestionSelectionBox">
+            <h4 className='template-name-title'>{selectedTemplate.name}</h4>
+            <p>{selectedTemplate.info}</p>
+            <Form>
+              {selectedTemplate.questions.map((question) => (
+                <>{question.questionType === "binary" &&
+                  (<QuestionList questions={[question]} />)}
+                  {question.questionType === "text" &&
+                    (<TextfieldList textfields={[question]} />)}
+                  {question.questionType === "range" &&
+                    (<RangeQuestionList rangeQuestions={[question]} />)}
+                </>
 
-          ))}
-          {/*           <QuestionList questions={binaryQuestions} />
+              ))}
+              {/*           <QuestionList questions={binaryQuestions} />
           <TextfieldList textfields={textQuestions}/>
           <RangeQuestionList rangeQuestions={rangeQuestions}></RangeQuestionList> */}
-        </Form>
-        {selectedTemplate.isAdded ? <Button onClick={handleAddTemplate}variant="dangerdark">{"Remove template"}</Button> :
-          <Button onClick={handleAddTemplate} variant= "completeform" >{"Add template"}</Button>}
+            </Form>
+            {selectedTemplate.isAdded ? <Button onClick={handleAddTemplate} variant="dangerdark">{"Remove template"}</Button> :
+              <Button onClick={handleAddTemplate} variant="completeform" >{"Add template"}</Button>}
 
 
-      </Col>
+          </Col>
 
-      <Col className='templates-col-adds'>
-        <ListGroup>
-          {templates.map((template, index) => (
-            <ListGroup.Item
-            className='template-items'
-              key={index + 1}
-              action
-              active={template === selectedTemplate && !template.isAdded}
-              onClick={() => { handleSelect(template) }}
-              variant={`${template.isAdded ? 'success' : ''}`}
-            >
-              {templates[index].template.name}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </Col>
-     </> 
-    ) : <div>No templates exist</div>}
+          <Col className='templates-col-adds'>
+            <ListGroup>
+              {templates.map((template, index) => (
+                <ListGroup.Item
+                  className='template-items'
+                  key={index + 1}
+                  action
+                  active={template === selectedTemplate && !template.isAdded}
+                  onClick={() => { handleSelect(template) }}
+                  variant={`${template.isAdded ? 'success' : ''}`}
+                >
+                  {templates[index].name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Col>
+        </>
+      ) : <div>No templates exist</div>}
     </Row>
 
   );
