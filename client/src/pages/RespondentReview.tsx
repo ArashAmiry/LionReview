@@ -151,7 +151,7 @@ function RespondentReview({isDarkMode}: {isDarkMode: boolean}) {
                 <Col className="sidebar-col" md={1}>
                     <PagesSidebar pagesTitles={review.pages.map(page => page.formName)} currentPageIndex={currentPageIndex} setCurrentPageIndex={(index) => setCurrentPageIndex(index)} isDarkMode={isDarkMode}/>
                 </Col>
-                <Col className="code-preview" md={9}><CodeReview files={answerPages[currentPageIndex].files} /></Col>
+                <Col className="code-preview" md={9}><CodeReview files={answerPages[currentPageIndex].files} isDarkMode={isDarkMode} /></Col>
                 <Col md={3} className="p-0">
                     <ReviewFormSidebar
                         // pageTitle={review.pages[currentPageIndex].formName}

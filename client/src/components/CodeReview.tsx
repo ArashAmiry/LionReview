@@ -1,18 +1,11 @@
 import { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import hljs from "highlight.js";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import darkTheme from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
+import lightTheme from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-light';
 
-function CodeReview({ files }: { files: { name: string, content: string }[] }) {
-
-    useEffect(() => {
-        files.forEach(({ content }) => {
-            if (content) {
-                document.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightAll();
-                });
-            }
-        });
-    }, [files]);
+function CodeReview({ files, isDarkMode}: { files: { name: string, content: string }[], isDarkMode: boolean}) {
 
     return (
         <Row className='code-container'>
@@ -20,18 +13,22 @@ function CodeReview({ files }: { files: { name: string, content: string }[] }) {
                 files.map((file, index) => (
                     <Col key={index} md="6" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>
-                        <pre className="mb-0">
-                            <code>{typeof file.content === "object" ? JSON.stringify(file.content, null, 2) : file.content}</code>
-                        </pre>
+                        <SyntaxHighlighter 
+                                style={isDarkMode ? darkTheme : lightTheme} 
+                                showLineNumbers={true}>
+                                    {typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}
+                        </SyntaxHighlighter>      
                     </Col>
                 ))}
             {files.length === 1 &&
                 files.map((file, index) => (
                     <Col key={index} md="12" className='p-0'>
                         <h1 className='code-header'>{file.name}</h1>
-                        <pre className="mb-0">
-                            <code>{typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}</code>
-                        </pre>
+                        <SyntaxHighlighter 
+                                style={isDarkMode ? darkTheme : lightTheme} 
+                                showLineNumbers={true}>
+                                    {typeof file.content === "string" ? file.content : JSON.stringify(file.content, null, 2)}
+                        </SyntaxHighlighter>      
                     </Col>
                 ))}
         </Row>
