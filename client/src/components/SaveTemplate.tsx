@@ -76,7 +76,7 @@ interface SaveTemplateProps {
     };
   
     return (
-        <Card className="preview-box">
+        <Card className="preview-box bg-body">
             <label htmlFor="exampleFormControlInput1" className="form-label">Name of Template</label>
             <input  className="form-control form-control-lg" 
                     id="nameId"
