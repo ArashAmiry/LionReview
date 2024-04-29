@@ -40,4 +40,7 @@ app.use("/fetch", fetchCodeRouter);
 app.use("/review", reviewRouter);
 app.use("/auth", authenticationRouter);
 app.use("/template", templateRouter);
-app.use("/access", accessCodeRouter)
+app.use("/access", accessCodeRouter);
+app.get('/cron', (req, res) => {
+    res.status(200).send('OK');
+  });
