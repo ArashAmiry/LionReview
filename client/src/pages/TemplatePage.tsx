@@ -6,10 +6,13 @@ import { ITemplate } from "../interfaces/ITemplate"
 import { Col, Row } from 'react-bootstrap';
 import NewTemplatePopup from '../components/NewTemplatePopup';
 import SaveTemplate from '../components/SaveTemplate';
+import useStateCallBack from '../components/UseStateCallBack';
+import UseStateCallback from '../components/UseStateCallBack';
 
 const TemplatePage: React.FC = () => {
 
   const [newTemplatePopup, setnewTemplatePopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleNewTemplateButton = () => {
     if (newTemplatePopup){
@@ -33,7 +36,7 @@ const TemplatePage: React.FC = () => {
     };
   }, [newTemplatePopup]);
 
-  const [savedTemplates, setSavedTemplates] = useState<ITemplate[]>([]);
+  const [savedTemplates, setSavedTemplates] = UseStateCallback<ITemplate[]>([]);
 
 
   useEffect(() => {
@@ -42,10 +45,10 @@ const TemplatePage: React.FC = () => {
   
 
   const fetchSavedTemplates = async () => {
+    setIsLoading(true);
     const response = await axios.get<ITemplate[]>(`${process.env.REACT_APP_API_URL}/template/getTemplates`) //ändra /templates/...
       .then(function (response) {
-        setSavedTemplates(response.data); //ändra (setTemplates, rad 60)
-        console.log(response);
+        setSavedTemplates(response.data, () => setIsLoading(false)); //ändra (setTemplates, rad 60)
       })
       .catch(function (error) {
         if (error.response) {
@@ -94,7 +97,7 @@ const TemplatePage: React.FC = () => {
       <h1 className='saved-teamplates pt-3'>Saved Templates</h1>
       <button type="button" className="btn btn-orang"  onClick={handleNewTemplateButton}>Create New Template</button>
       <div className='d-flex align-center justify-content-center'>
-        {savedTemplates.length > 0 ? (
+        {isLoading ? (<p>Loading...</p>) : savedTemplates.length > 0 ? (
         <Row className="mx-0 templates-row">
           {savedTemplates.map((template) => (
             <Col key={template._id} xl={3} className='d-flex align-center justify-content-center mt-4 px-4'>
