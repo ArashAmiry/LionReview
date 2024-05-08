@@ -6,7 +6,6 @@ import { ITemplate } from "../interfaces/ITemplate"
 import { Col, Row } from 'react-bootstrap';
 import NewTemplatePopup from '../components/NewTemplatePopup';
 import SaveTemplate from '../components/SaveTemplate';
-import useStateCallBack from '../components/UseStateCallBack';
 import UseStateCallback from '../components/UseStateCallBack';
 
 const TemplatePage: React.FC = () => {
@@ -97,7 +96,7 @@ const TemplatePage: React.FC = () => {
       <h1 className='saved-teamplates pt-3'>Saved Templates</h1>
       <button type="button" className="btn btn-orang"  onClick={handleNewTemplateButton}>Create New Template</button>
       <div className='d-flex align-center justify-content-center'>
-        {isLoading ? (<p>Loading...</p>) : savedTemplates.length > 0 ? (
+        {isLoading ? (<p className='loading-text'>Loading...</p>) : savedTemplates.length > 0 ? (
         <Row className="mx-0 templates-row">
           {savedTemplates.map((template) => (
             <Col key={template._id} xl={3} className='d-flex align-center justify-content-center mt-4 px-4'>

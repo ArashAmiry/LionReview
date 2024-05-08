@@ -32,3 +32,8 @@
   width: 67%;
   align-self: center;
 }
+
+.loading-text {
+  font-size: 1.5em; 
+  color: white; 
+}
